@@ -511,7 +511,7 @@ export const Auth = (props) => {
                 textAlign: "center",
                 color: "#111",
                 margin: "auto auto",
-                letterSpacing: "32px",
+                letterSpacing: { xs: "12px", lg: "32px" },
                 fontSize: { xs: "34px", lg: "62px" },
                 fontWeight: 600,
                 color: "#F56EB3",
