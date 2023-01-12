@@ -69,7 +69,7 @@ export const Suggestions = () => {
         padding: { xs: "0 1.5rem", lg: "0 5rem" },
       }}
     >
-      <Box sx={{ minHeight: "50vh", background: "", padding: "21px" }}>
+      <Box sx={{ minHeight: "50vh", background: "", padding: "0" }}>
         <Typography
           sx={{
             textAlign: "",
@@ -99,7 +99,7 @@ export const Suggestions = () => {
         >
           <Box
             sx={{
-              height: "45vh",
+              minHeight: "45vh",
               scale: "0.95",
               left: "0",
               width: { xs: "100%", lg: "50%" },
@@ -117,7 +117,7 @@ export const Suggestions = () => {
             <Box
               sx={{
                 width: "100%",
-                height: "150px",
+                minHeight: "150px",
                 background:
                   "linear-gradient(180deg, rgba(0,0,0,0.23012955182072825) 0%, rgba(0,0,0,0.7847514005602241) 50%, rgba(0,0,0,0.10968137254901966) 1000%);",
                 padding: "21px",
@@ -140,7 +140,7 @@ export const Suggestions = () => {
                   Sandton Majestic Palace of Kings{" "}
                 </Typography>
                 <Typography
-                  noWrap={true}
+                  noWrap={false}
                   sx={{
                     textAlign: "",
                     width: "100%",
@@ -175,7 +175,7 @@ export const Suggestions = () => {
 
           <Box
             sx={{
-              height: "45vh",
+              minHeight: "45vh",
               scale: "0.95",
               width: { xs: "100%", lg: "50%" },
               backgroundImage:
@@ -192,7 +192,7 @@ export const Suggestions = () => {
             <Box
               sx={{
                 width: "100%",
-                height: "150px",
+                minHeight: "150px",
                 background:
                   "linear-gradient(180deg, rgba(0,0,0,0.23012955182072825) 0%, rgba(0,0,0,0.7847514005602241) 50%, rgba(0,0,0,0.10968137254901966) 1000%);",
                 padding: "21px",
@@ -214,7 +214,7 @@ export const Suggestions = () => {
                   Plaza of Life{" "}
                 </Typography>
                 <Typography
-                  noWrap={true}
+                  noWrap={false}
                   sx={{
                     textAlign: "",
                     width: "100%",
