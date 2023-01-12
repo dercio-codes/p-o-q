@@ -62,7 +62,13 @@ export const Suggestions = () => {
   //   }, []);
 
   return (
-    <Box sx={{ minHeight: "100vh", background: "#000", padding: "0 5rem" }}>
+    <Box
+      sx={{
+        minHeight: "100vh",
+        background: "#000",
+        padding: { xs: "0 1.5rem", lg: "0 5rem" },
+      }}
+    >
       <Box sx={{ minHeight: "50vh", background: "", padding: "21px" }}>
         <Typography
           sx={{
@@ -134,7 +140,7 @@ export const Suggestions = () => {
                   Sandton Majestic Palace of Kings{" "}
                 </Typography>
                 <Typography
-                  Wrap={true}
+                  noWrap={true}
                   sx={{
                     textAlign: "",
                     width: "100%",
@@ -208,7 +214,7 @@ export const Suggestions = () => {
                   Plaza of Life{" "}
                 </Typography>
                 <Typography
-                  Wrap={true}
+                  noWrap={true}
                   sx={{
                     textAlign: "",
                     width: "100%",
