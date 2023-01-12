@@ -424,7 +424,7 @@ export const Auth = () => {
             opacity: signUp ? "0.3" : "1",
             transition: "800ms",
             scale: "0.9",
-            minHeight: "95vh",
+            minHeight: { xs: "50vh", lg: "95vh" },
             borderRadius: { xs: "32px 32px 0 0", lg: "32px 0 0 32px" },
             background: "#eee",
             padding: "2.5rem",
@@ -444,7 +444,7 @@ export const Auth = () => {
                 color: "#111",
                 margin: "auto auto",
                 letterSpacing: "32px",
-                fontSize: "62px",
+                fontSize: { xs: "34px", lg: "62px" },
                 fontWeight: 600,
                 color: "#F56EB3",
               }}
@@ -462,7 +462,7 @@ export const Auth = () => {
           >
             <TextField
               fullWidth
-              placeHolder={"Username"}
+              placeholder={"Username"}
               name="name"
               type="text"
               label="Name"
@@ -484,7 +484,7 @@ export const Auth = () => {
             <br />
             <TextField
               fullWidth
-              placeHolder={"Password"}
+              placeholder={"Password"}
               name="password"
               type="password"
               label="Password"
@@ -619,7 +619,7 @@ export const Auth = () => {
           xs={12}
           lg={6}
           sx={{
-            minHeight: "95vh",
+            minHeight: { xs: "50vh", lg: "95vh" },
             borderRadius: { xs: "0 0 32px 32px", lg: "0 32px 32px 0" },
             background: "red",
             display: signUp ? "none" : "block",
@@ -647,7 +647,7 @@ export const Auth = () => {
           xs={12}
           lg={6}
           sx={{
-            minHeight: "95vh",
+            minHeight: { xs: "50vh", lg: "95vh" },
             borderRadius: "32px 0 0 32px",
             background: "red",
             display: signUp ? "block" : "none",
@@ -701,7 +701,7 @@ export const Auth = () => {
           <Divider sx={{ width: "24px", margin: "0 0 21px 0" }} />
           <TextField
             fullWidth
-            placeHolder={"Name"}
+            placeholder={"Name"}
             name="name"
             type="text"
             label="Name"
@@ -709,7 +709,7 @@ export const Auth = () => {
           />
           <TextField
             fullWidth
-            placeHolder={"Surname"}
+            placeholder={"Surname"}
             name="surname"
             type="text"
             label="Surname"
@@ -717,7 +717,7 @@ export const Auth = () => {
           />
           <TextField
             fullWidth
-            placeHolder={"Username"}
+            placeholder={"Username"}
             name="username"
             type="text"
             label="Username"
@@ -725,7 +725,7 @@ export const Auth = () => {
           />
           <TextField
             fullWidth
-            placeHolder={"Email"}
+            placeholder={"Email"}
             name="email"
             type="email"
             label="Email"
@@ -733,7 +733,7 @@ export const Auth = () => {
           />
           <TextField
             fullWidth
-            placeHolder={"Age"}
+            placeholder={"Age"}
             name="age"
             type="number"
             label="Age"
@@ -741,7 +741,7 @@ export const Auth = () => {
           />
           <TextField
             fullWidth
-            placeHolder={"DOB"}
+            placeholder={"DOB"}
             name="dob"
             type="date"
             label=""
@@ -749,11 +749,12 @@ export const Auth = () => {
           />
           <TextField
             fullWidth
-            placeHolder={"Gender"}
+            placeholder={"Gender"}
             name="gender"
             type="select"
             select
             label="Gender"
+            value={""}
             sx={{ margin: "21px 0" }}
           >
             <MenuItem value="" sx={{ color: "transparent" }}>
@@ -764,10 +765,11 @@ export const Auth = () => {
           </TextField>
           <TextField
             fullWidth
-            placeHolder={"User Type"}
+            placeholder={"User Type"}
             name="userType"
             type="select"
             select
+            value={""}
             label="User Type"
             sx={{ margin: "21px 0" }}
           >
@@ -793,7 +795,7 @@ export const Auth = () => {
           <Divider sx={{ width: "24px", margin: "0 0 21px 0" }} />
           <TextField
             fullWidth
-            placeHolder={"Number"}
+            placeholder={"Number"}
             name=""
             type=""
             label="Number"
@@ -801,7 +803,7 @@ export const Auth = () => {
           />
           <TextField
             fullWidth
-            placeHolder={"StreetName"}
+            placeholder={"StreetName"}
             name="name"
             type="text"
             label="Street Name"
@@ -809,7 +811,7 @@ export const Auth = () => {
           />
           <TextField
             fullWidth
-            placeHolder={"Town"}
+            placeholder={"Town"}
             name=""
             type=""
             label="Town"
@@ -817,7 +819,7 @@ export const Auth = () => {
           />
           <TextField
             fullWidth
-            placeHolder={"City"}
+            placeholder={"City"}
             name="name"
             type="text"
             label="City"
@@ -825,7 +827,7 @@ export const Auth = () => {
           />
           <TextField
             fullWidth
-            placeHolder={"Province"}
+            placeholder={"Province"}
             name=""
             type=""
             label="Province"
@@ -833,7 +835,7 @@ export const Auth = () => {
           />
           <TextField
             fullWidth
-            placeHolder={"Postal"}
+            placeholder={"Postal"}
             name="name"
             type="text"
             label="Postal"
@@ -841,7 +843,7 @@ export const Auth = () => {
           />
           <TextField
             fullWidth
-            placeHolder={"Country"}
+            placeholder={"Country"}
             name=""
             type=""
             label="Country"
@@ -849,153 +851,6 @@ export const Auth = () => {
           />
         </Grid>
       </Grid>
-
-      <Box sx={{ minHeight: "100vh", margin: "60px 0" }}>
-        <Typography
-          sx={{
-            textAlign: "",
-            margin: "21px 0 12px 0",
-            fontWeight: 100,
-            color: "rgba(255,255,255,.5)",
-            fontSize: "32px",
-          }}
-        >
-          {" "}
-          Models{" "}
-        </Typography>
-        <Divider
-          sx={{
-            width: "24px",
-            margin: "0 0 62px 0",
-            background: "rgba(255,255,255,.7)",
-          }}
-        />
-        <Grid container spacing={6}>
-          {DUMMY_USERS.map((item, index) => {
-            return (
-              <Grid key={index} item xs={6} lg={2}>
-                <Box
-                  sx={{
-                    height: "400px",
-                    background: "rgba(255,255,255,.9)",
-                    width: "100%",
-                    padding: "0",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    borderRadius: "21px",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      height: "200px",
-                      width: "100%",
-                      backgroundImage: `url("${item.img})`,
-                      backgroundSize: "contain",
-                      backgroundRepeat: "no-repeat",
-                      backgroundPosition: "center",
-                    }}
-                  />
-                  <Box
-                    sx={{
-                      height: "200px",
-                      background: "",
-                      width: "100%",
-                      padding: "0 21px",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-evenly",
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        textAlign: "",
-                        margin: "0 0 0 0",
-                        fontWeight: 600,
-                        color: "rgba(1,1,1,.8)",
-                        fontSize: "18px",
-                      }}
-                    >
-                      {" "}
-                      <Typography
-                        variant="span"
-                        sx={{
-                          fontSize: "16px",
-                          fontWeight: "100",
-                          color: "rgba(1,1,1,.6)",
-                        }}
-                      >
-                        {" "}
-                        Name :
-                      </Typography>{" "}
-                      {item.username}{" "}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        textAlign: "",
-                        margin: "0 0 0 0",
-                        fontWeight: 600,
-                        color: "rgba(1,1,1,.8)",
-                        fontSize: "18px",
-                      }}
-                    >
-                      {" "}
-                      <Typography
-                        variant="span"
-                        sx={{
-                          fontSize: "16px",
-                          fontWeight: "100",
-                          color: "rgba(1,1,1,.6)",
-                        }}
-                      >
-                        {" "}
-                        Location :
-                      </Typography>{" "}
-                      {item.address.city}{" "}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        textAlign: "",
-                        margin: "0 0 0 0",
-                        fontWeight: 600,
-                        color: "rgba(1,1,1,.8)",
-                        fontSize: "18px",
-                      }}
-                    >
-                      {" "}
-                      <Typography
-                        variant="span"
-                        sx={{
-                          fontSize: "16px",
-                          fontWeight: "100",
-                          color: "rgba(1,1,1,.6)",
-                        }}
-                      >
-                        {" "}
-                        Status :
-                      </Typography>{" "}
-                      {index % 2 == 0 ? "Available" : "Busy"}{" "}
-                    </Typography>
-                    <Button
-                      sx={{
-                        background: "#460C68",
-                        padding: "12px 0",
-                        color: "#eee",
-                        fontWeight: "600",
-                        width: "100%",
-                        margin: "8px 0",
-                      }}
-                    >
-                      {" "}
-                      Book{" "}
-                    </Button>
-                  </Box>
-                </Box>
-              </Grid>
-            );
-          })}
-        </Grid>
-      </Box>
 
       <Box
         sx={{
