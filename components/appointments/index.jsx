@@ -297,7 +297,7 @@ export const Appointments = () => {
                   <Box
                     sx={{
                       height: "100%",
-                      flex: "1",
+                      flex: { xs: "3" , lg:"1"},
                       backgroundImage: `url("${item.img}")`,
                       backgroundSize: "cover",
                       backgroundRepeat: "no-repeat",
@@ -307,7 +307,7 @@ export const Appointments = () => {
                   <Box
                     sx={{
                       height: "100%",
-                      flex: "2",
+                      flex: { xs:"1" , lg:"2"},
                       background: "",
                       padding: "8px",
                     }}
