@@ -9,12 +9,41 @@ import {
   MenuItem,
   Paper,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import MenuIcon from "@mui/icons-material/Menu";
 import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
 import LaunchIcon from "@mui/icons-material/Launch";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import {
+  query,
+  collection,
+  addDoc,
+  setDoc,
+  deleteDoc,
+  doc,
+  getDocs,
+  where,
+} from "firebase/firestore";
+import {
+  storage,
+  googleProvider,
+  facebookProvider,
+  auth,
+  db,
+} from "./../../config/firebaseConfig";
+import {
+  signInWithPopup,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  setPersistence,
+  browserLocalPersistence,
+  browserSessionPersistence,
+  inMemoryPersistence,
+} from "firebase/auth";
 
 const DUMMY_USERS = [
   {
@@ -187,7 +216,8 @@ const DUMMY_USERS = [
   },
 ];
 
-export const Auth = () => {
+export const Auth = (props) => {
+  const router = useRouter();
   const [signUp, setSignUp] = useState(false);
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState({
@@ -229,6 +259,40 @@ export const Auth = () => {
     hotelReccomendations: [],
     appointments: [],
   });
+
+  const googleHandler = async () => {
+    googleProvider.setCustomParameters({ prompt: "select_account" });
+    signInWithPopup(auth, googleProvider)
+      .then(async (result) => {
+        console.log(result);
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const resultsUser = result.user;
+        // auth.onAuthStateChanged((user)=> console.log("changed user here : " , user))
+        auth.onAuthStateChanged((authUser) => {
+          authUser
+            ? localStorage.setItem("authUser", JSON.stringify(authUser))
+            : localStorage.removeItem("authUser");
+        });
+        console.log(resultsUser);
+        setUser({ ...resultsUser });
+        alert("Welcome : ", resultUser.displayName);
+        // router.push("/home");
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        console.log(error);
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  };
 
   return (
     <Box
@@ -276,6 +340,10 @@ export const Auth = () => {
           <MenuOpenIcon />{" "}
         </Button>
         <Button
+          onClick={(e) => {
+            e.preventDefault();
+            router.push("/home");
+          }}
           sx={{
             scale: "0.8",
             transition: "800ms",
@@ -575,25 +643,26 @@ export const Auth = () => {
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Button
               sx={{
-                margin: "21px 0",
+                margin: "21px 6px",
                 background: "#3b5998",
                 padding: "21px 0",
                 color: "#eee",
                 fontWeight: "600",
-                width: "250px",
+                width: "230px",
               }}
             >
               {" "}
               Facebook{" "}
             </Button>
             <Button
+              onClick={googleHandler}
               sx={{
-                margin: "21px 0",
+                margin: "21px 6px",
                 background: "#F4B400",
                 padding: "21px 0",
                 color: "#eee",
                 fontWeight: "600",
-                width: "250px",
+                width: "230px",
               }}
             >
               {" "}
@@ -601,12 +670,12 @@ export const Auth = () => {
             </Button>
             <Button
               sx={{
-                margin: "21px 0",
+                margin: "21px 6px",
                 background: "#1DA1F2",
                 padding: "21px 0",
                 color: "#eee",
                 fontWeight: "600",
-                width: "250px",
+                width: "230px",
               }}
             >
               {" "}
@@ -851,186 +920,6 @@ export const Auth = () => {
           />
         </Grid>
       </Grid>
-
-      <Box
-        sx={{
-          minHeight: "30vh",
-          background: "",
-          margin: "50px 0",
-          padding: "12px",
-        }}
-      >
-        <Typography
-          sx={{
-            textAlign: "",
-            margin: "0 0 12px 0",
-            fontWeight: 100,
-            color: "rgba(255,255,255,.5)",
-            fontSize: "32px",
-          }}
-        >
-          {" "}
-          Appointments{" "}
-        </Typography>
-        <Divider
-          sx={{
-            width: "24px",
-            margin: "0 0 21px 0",
-            background: "rgba(255,255,255,.7)",
-          }}
-        />
-
-        <Grid container>
-          <Grid
-            item
-            xs={12}
-            lg={4}
-            sx={{
-              height: "120px",
-              display: "flex",
-              scale: "0.98",
-              transition: "800ms",
-              "&:hover": { scale: "1" },
-              padding: "0 0 0",
-              border: "5px solid #000",
-              background: "",
-            }}
-          >
-            <Paper
-              elevation={3}
-              sx={{
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                background: "rgba(255,255,255,.8)",
-              }}
-            >
-              <Box
-                sx={{
-                  height: "100%",
-                  flex: "1",
-                  backgroundImage:
-                    'url("https://images.pexels.com/photos/4883795/pexels-photo-4883795.png?auto=compress&cs=tinysrgb&w=600&lazy=load")',
-                  backgroundSize: "cover",
-                  backgroundRepeat: "no-repeat",
-                  backgroundPostion: "center",
-                }}
-              />
-              <Box
-                sx={{
-                  height: "100%",
-                  flex: "2",
-                  background: "",
-                  padding: "8px",
-                }}
-              >
-                <Typography
-                  sx={{
-                    textAlign: "",
-                    margin: "0 0 4px 0",
-                    fontWeight: 600,
-                    color: "rgba(1,1,1,.8)",
-                    fontSize: "18px",
-                  }}
-                >
-                  {" "}
-                  <Typography
-                    variant="span"
-                    sx={{
-                      fontSize: "16px",
-                      fontWeight: "100",
-                      color: "rgba(1,1,1,.6)",
-                    }}
-                  >
-                    {" "}
-                    Name :
-                  </Typography>{" "}
-                  Scarlett{" "}
-                </Typography>
-                <Typography
-                  sx={{
-                    textAlign: "",
-                    margin: "0 0 4px 0",
-                    fontWeight: 600,
-                    color: "rgba(1,1,1,.8)",
-                    fontSize: "18px",
-                  }}
-                >
-                  {" "}
-                  <Typography
-                    variant="span"
-                    sx={{
-                      fontSize: "16px",
-                      fontWeight: "100",
-                      color: "rgba(1,1,1,.6)",
-                    }}
-                  >
-                    {" "}
-                    Time :
-                  </Typography>{" "}
-                  09:00 - 21/02/23{" "}
-                </Typography>
-                <Typography
-                  sx={{
-                    textAlign: "",
-                    margin: "0 0 4px 0",
-                    fontWeight: 600,
-                    color: "rgba(1,1,1,.8)",
-                    fontSize: "18px",
-                  }}
-                >
-                  {" "}
-                  <Typography
-                    variant="span"
-                    sx={{
-                      fontSize: "16px",
-                      fontWeight: "100",
-                      color: "rgba(1,1,1,.6)",
-                    }}
-                  >
-                    {" "}
-                    Location :
-                  </Typography>{" "}
-                  Johanessbrg{" "}
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  height: "100%",
-                  flex: "1",
-                  background: "",
-                  padding: "8px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flexDirection: "column",
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-evenly",
-                    alignItems: "center",
-                  }}
-                >
-                  <Button>
-                    <DoneIcon sx={{ color: "rgba(1,1,1,.7)" }} />
-                  </Button>
-                  <Button>
-                    <ClearIcon sx={{ color: "rgba(1,1,1,.7)" }} />
-                  </Button>
-                </Box>
-
-                <Box>
-                  <Button>
-                    <LaunchIcon sx={{ color: "rgba(1,1,1,.7)" }} />
-                  </Button>
-                </Box>
-              </Box>
-            </Paper>
-          </Grid>
-        </Grid>
-      </Box>
     </Box>
   );
 };
