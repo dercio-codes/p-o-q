@@ -261,7 +261,7 @@ export const Models = () => {
         <Grid container spacing={6}>
           {DUMMY_USERS.map((item, index) => {
             return (
-              <Grid key={index} item xs={12} md={6} lg={2}>
+              <Grid key={index} item xs={12} md={6} lg={4}>
                 <Box
                   sx={{
                     height: "400px",

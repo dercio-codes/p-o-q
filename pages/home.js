@@ -3,13 +3,13 @@ import { Suggestions } from "./../components/suggestions";
 import { Models } from "./../components/models";
 import { Appointments } from "./../components/appointments";
 
-export default function Home() {
+export default function HomePage() {
   return (
     <>
-      <Auth />
-      {/* <Models />
+      {/* <Auth /> */}
+      <Models />
       <Appointments />
-      <Suggestions /> */}
+      <Suggestions />
     </>
   );
 }
