@@ -278,10 +278,10 @@ export const Models = () => {
                     sx={{
                       height: "200px",
                       width: "100%",
-                      backgroundImage: `url("${item.img})`,
-                      backgroundSize: "contain",
+                      backgroundImage: `url("${item.img}")`,
+                      backgroundSize: "cover",
                       backgroundRepeat: "no-repeat",
-                      backgroundPosition: "center",
+                      backgroundPostion: "center",
                     }}
                   />
                   <Box
