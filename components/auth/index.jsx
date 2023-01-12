@@ -14,6 +14,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
 import LaunchIcon from "@mui/icons-material/Launch";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 
 const DUMMY_USERS = [
   {
@@ -973,7 +974,7 @@ export const Auth = () => {
                         {" "}
                         Status :
                       </Typography>{" "}
-                      {index % 2 == 0 ? "Available" : "Not Available"}{" "}
+                      {index % 2 == 0 ? "Available" : "Busy"}{" "}
                     </Typography>
                     <Button
                       sx={{
