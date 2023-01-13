@@ -111,6 +111,7 @@ const DUMMY_USERS = [
       zipcode: "12346-0456",
     },
     id: 6,
+    img: "https://images.pexels.com/photos/219575/pexels-photo-219575.jpeg?auto=compress&cs=tinysrgb&w=1600",
     email: "david_r@gmail.com",
     username: "david_r",
     password: "3478*#54",
@@ -178,6 +179,7 @@ const DUMMY_USERS = [
       zipcode: "10256-4532",
     },
     id: 10,
+    img: "https://images.pexels.com/photos/3470076/pexels-photo-3470076.jpeg?auto=compress&cs=tinysrgb&w=1600",
     email: "jimmie@gmail.com",
     username: "jimmie_k",
     password: "klein*#%*",
@@ -235,7 +237,7 @@ export const Appointments = () => {
       sx={{
         minHeight: "100vh",
         background: "#000",
-        padding: { xs: "0 1.2rem", lg: "0 5rem" },
+        padding: { xs: "0 0.5rem", lg: "0 5rem" },
       }}
     >
       <Box
@@ -275,7 +277,7 @@ export const Appointments = () => {
                 xs={12}
                 lg={4}
                 sx={{
-                  height: "120px",
+                  minHeight: "150px",
                   display: "flex",
                   scale: "0.98",
                   transition: "800ms",
@@ -297,7 +299,7 @@ export const Appointments = () => {
                   <Box
                     sx={{
                       height: "100%",
-                      flex: { xs: "3" , lg:"1"},
+                      width: "150px",
                       backgroundImage: `url("${item.img}")`,
                       backgroundSize: "cover",
                       backgroundRepeat: "no-repeat",
@@ -307,86 +309,88 @@ export const Appointments = () => {
                   <Box
                     sx={{
                       height: "100%",
-                      flex: { xs:"1" , lg:"2"},
+                      width: "150px",
+                      // flex: { xs: "1", lg: "2" },
                       background: "",
                       padding: "8px",
                     }}
                   >
                     <Typography
+                      variant="span"
+                      sx={{
+                        fontSize: "12px",
+                        fontWeight: "100",
+                        color: "rgba(1,1,1,.6)",
+                      }}
+                    >
+                      {" "}
+                      Name :
+                    </Typography>{" "}
+                    <Typography
                       sx={{
                         textAlign: "",
                         margin: "0 0 4px 0",
                         fontWeight: 600,
                         color: "rgba(1,1,1,.8)",
-                        fontSize: "18px",
+                        fontSize: "14px",
                       }}
                     >
-                      {" "}
-                      <Typography
-                        variant="span"
-                        sx={{
-                          fontSize: "16px",
-                          fontWeight: "100",
-                          color: "rgba(1,1,1,.6)",
-                        }}
-                      >
-                        {" "}
-                        Name :
-                      </Typography>{" "}
+                      {" - "}
                       {item.username}{" "}
                     </Typography>
                     <Typography
+                      variant="span"
                       sx={{
-                        textAlign: "",
-                        margin: "0 0 4px 0",
-                        fontWeight: 600,
-                        color: "rgba(1,1,1,.8)",
-                        fontSize: "18px",
+                        fontSize: "16px",
+                        fontWeight: "100",
+                        color: "rgba(1,1,1,.6)",
                       }}
                     >
                       {" "}
-                      <Typography
-                        variant="span"
-                        sx={{
-                          fontSize: "16px",
-                          fontWeight: "100",
-                          color: "rgba(1,1,1,.6)",
-                        }}
-                      >
-                        {" "}
-                        Time :
-                      </Typography>{" "}
-                      09:00 - 21/02/23{" "}
-                    </Typography>
+                      Time :
+                    </Typography>{" "}
                     <Typography
                       sx={{
                         textAlign: "",
                         margin: "0 0 4px 0",
                         fontWeight: 600,
                         color: "rgba(1,1,1,.8)",
-                        fontSize: "18px",
+                        fontSize: "14px",
+                      }}
+                    >
+                      {" - "}
+                      09:00 - 21/02/23{" "}
+                    </Typography>
+                    <Typography
+                      variant="span"
+                      sx={{
+                        fontSize: "16px",
+                        fontWeight: "100",
+                        color: "rgba(1,1,1,.6)",
                       }}
                     >
                       {" "}
-                      <Typography
-                        variant="span"
-                        sx={{
-                          fontSize: "16px",
-                          fontWeight: "100",
-                          color: "rgba(1,1,1,.6)",
-                        }}
-                      >
-                        {" "}
-                        Location :
-                      </Typography>{" "}
+                      Location :
+                    </Typography>{" "}
+                    <Typography
+                      sx={{
+                        textAlign: "",
+                        margin: "0 0 4px 0",
+                        fontWeight: 600,
+                        color: "rgba(1,1,1,.8)",
+                        fontSize: "14px",
+                      }}
+                    >
+                      {" - "}
                       {item.address.city}{" "}
                     </Typography>
                   </Box>
                   <Box
                     sx={{
                       height: "100%",
-                      flex: "1",
-                      background: "",
+                      // flex: "0.5",
+                      width: "20%",
+                      // background: "pink",
                       padding: "8px",
                       display: "flex",
                       justifyContent: "center",
@@ -397,6 +401,7 @@ export const Appointments = () => {
                     <Box
                       sx={{
                         display: "flex",
+                        flexDirection: "column",
                         justifyContent: "space-evenly",
                         alignItems: "center",
                       }}

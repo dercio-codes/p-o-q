@@ -111,6 +111,7 @@ const DUMMY_USERS = [
       zipcode: "12346-0456",
     },
     id: 6,
+    img: "https://images.pexels.com/photos/219575/pexels-photo-219575.jpeg?auto=compress&cs=tinysrgb&w=1600",
     email: "david_r@gmail.com",
     username: "david_r",
     password: "3478*#54",
@@ -178,6 +179,7 @@ const DUMMY_USERS = [
       zipcode: "10256-4532",
     },
     id: 10,
+    img: "https://images.pexels.com/photos/3470076/pexels-photo-3470076.jpeg?auto=compress&cs=tinysrgb&w=1600",
     email: "jimmie@gmail.com",
     username: "jimmie_k",
     password: "klein*#%*",
@@ -238,11 +240,11 @@ export const Models = () => {
         padding: { xs: "0 1.2rem", lg: "0 5rem" },
       }}
     >
-      <Box sx={{ minHeight: "100vh", margin: "60px 0" }}>
+      <Box sx={{ minHeight: "100vh", margin: "0" }}>
         <Typography
           sx={{
             textAlign: "",
-            margin: "21px 0 12px 0",
+            margin: "0 0 12px 0",
             fontWeight: 100,
             color: "rgba(255,255,255,.5)",
             fontSize: "32px",
@@ -264,8 +266,8 @@ export const Models = () => {
               <Grid key={index} item xs={12} md={6} lg={4}>
                 <Box
                   sx={{
-                    height: "400px",
-                    background: "rgba(255,255,255,.9)",
+                    height: "500px",
+                    background: "rgba(255,255,255,.7)",
                     width: "100%",
                     padding: "0",
                     display: "flex",
@@ -276,7 +278,7 @@ export const Models = () => {
                 >
                   <Box
                     sx={{
-                      height: "200px",
+                      height: "300px",
                       width: "100%",
                       backgroundImage: `url("${item.img}")`,
                       backgroundSize: "cover",
@@ -298,7 +300,7 @@ export const Models = () => {
                     <Typography
                       sx={{
                         textAlign: "",
-                        margin: "0 0 0 0",
+                        margin: "8px 0 0 0",
                         fontWeight: 600,
                         color: "rgba(1,1,1,.8)",
                         fontSize: "18px",
@@ -321,7 +323,7 @@ export const Models = () => {
                     <Typography
                       sx={{
                         textAlign: "",
-                        margin: "0 0 0 0",
+                        margin: "8px 0 0 0",
                         fontWeight: 600,
                         color: "rgba(1,1,1,.8)",
                         fontSize: "18px",
@@ -344,7 +346,7 @@ export const Models = () => {
                     <Typography
                       sx={{
                         textAlign: "",
-                        margin: "0 0 0 0",
+                        margin: "8px 0 0 0",
                         fontWeight: 600,
                         color: "rgba(1,1,1,.8)",
                         fontSize: "18px",

@@ -16,6 +16,9 @@ import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
 import LaunchIcon from "@mui/icons-material/Launch";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import GoogleIcon from "@mui/icons-material/Google";
+import TwitterIcon from "@mui/icons-material/Twitter";
 import {
   query,
   collection,
@@ -302,185 +305,20 @@ export const Auth = (props) => {
         padding: { xs: "0 1.2rem", lg: "0 5rem" },
       }}
     >
-      <Paper
-        elevation={3}
+      <Box
         sx={{
-          display: open ? "flex" : "none",
-          background: "rgba(250,250,250,1)",
-          margin: "0",
-          position: "fixed",
-          transition: "2500ms",
-          width: "99%",
-          left: "8px",
-          top: "1.5rem",
-          zIndex: "999",
-          height: "100px",
-          borderRadius: "32px",
-          justifyContent: "space-between",
-          padding: "0 2.5rem 0 1.5rem",
-          alignItems: "center",
+          height: "250px",
+          width: "100%",
+          backgroundColor: "#eee",
+          backgroundImage:
+            'url("https://images.pexels.com/photos/230986/pexels-photo-230986.jpeg?auto=compress&cs=tinysrgb&w=1600")',
+          // 'url("https://images.pexels.com/photos/1157936/pexels-photo-1157936.jpeg?auto=compress&cs=tinysrgb&w=1600")',
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPostion: "center",
         }}
-      >
-        <Button
-          onClick={() => setOpen(!open)}
-          sx={{
-            scale: "0.8",
-            transition: "800ms",
-            fontSize: "18px",
-            color: "#111",
-            "&:hover": {
-              borderRadius: "0",
-              borderBottom: "2px solid #111",
-              scale: "0.9",
-            },
-            postion: "fixed",
-          }}
-        >
-          {" "}
-          <MenuOpenIcon />{" "}
-        </Button>
-        <Button
-          onClick={(e) => {
-            e.preventDefault();
-            router.push("/home");
-          }}
-          sx={{
-            scale: "0.8",
-            transition: "800ms",
-            fontSize: "18px",
-            color: "#111",
-            "&:hover": {
-              borderRadius: "0",
-              borderBottom: "2px solid #111",
-              scale: "0.9",
-            },
-          }}
-        >
-          {" "}
-          Home{" "}
-        </Button>
-        <Button
-          sx={{
-            scale: "0.8",
-            transition: "800ms",
-            fontSize: "18px",
-            color: "#111",
-            "&:hover": {
-              borderRadius: "0",
-              borderBottom: "2px solid #111",
-              scale: "0.9",
-            },
-          }}
-        >
-          {" "}
-          Search{" "}
-        </Button>
-        <Button
-          sx={{
-            scale: "0.8",
-            transition: "800ms",
-            fontSize: "18px",
-            color: "#111",
-            "&:hover": {
-              borderRadius: "0",
-              borderBottom: "2px solid #111",
-              scale: "0.9",
-            },
-          }}
-        >
-          {" "}
-          Appointments{" "}
-        </Button>
-        <Button
-          sx={{
-            scale: "0.8",
-            transition: "800ms",
-            fontSize: "18px",
-            color: "#111",
-            "&:hover": {
-              borderRadius: "0",
-              borderBottom: "2px solid #111",
-              scale: "0.9",
-            },
-          }}
-        >
-          {" "}
-          Live Stream{" "}
-        </Button>
-        <Button
-          sx={{
-            scale: "0.8",
-            transition: "800ms",
-            fontSize: "18px",
-            color: "#111",
-            "&:hover": {
-              borderRadius: "0",
-              borderBottom: "2px solid #111",
-              scale: "0.9",
-            },
-          }}
-        >
-          {" "}
-          Recommendations{" "}
-        </Button>
-        <Button
-          sx={{
-            scale: "0.8",
-            transition: "800ms",
-            fontSize: "18px",
-            color: "#111",
-            "&:hover": {
-              borderRadius: "0",
-              borderBottom: "2px solid #111",
-              scale: "0.9",
-            },
-          }}
-        >
-          {" "}
-          Profile{" "}
-        </Button>
-        <Button
-          sx={{
-            scale: "0.8",
-            transition: "800ms",
-            fontSize: "18px",
-            color: "#111",
-            "&:hover": {
-              borderRadius: "0",
-              borderBottom: "2px solid #111",
-              scale: "0.9",
-            },
-          }}
-        >
-          {" "}
-          Sign Out{" "}
-        </Button>
-      </Paper>
-      <Paper
-        elevation={3}
-        onClick={() => setOpen(!open)}
-        sx={{
-          display: open ? "none" : "flex",
-          scale: "0.5",
-          background: "rgba(250,250,250,1)",
-          margin: "0",
-          position: "fixed",
-          transition: "2500ms",
-          width: "100px",
-          cursor: "pointer",
-          left: "0",
-          top: "1.5rem",
-          zIndex: "999",
-          height: "100px",
-          borderRadius: "32px",
-          justifyContent: "space-evenly",
-          alignItems: "center",
-        }}
-      >
-        <MenuIcon sx={{ fontSize: "50px" }} />
-      </Paper>
-
-      <Grid container sx={{ margin: "150px 0" }}>
+      ></Box>
+      <Grid container sx={{ margin: "8px 0" }}>
         <Grid
           item
           xs={12}
@@ -491,34 +329,36 @@ export const Auth = (props) => {
             boxShadow: "12px 21px 21px 21px rgba(1,1,1,.3)",
             opacity: signUp ? "0.3" : "1",
             transition: "800ms",
-            scale: "0.9",
+            scale: "0.98",
             minHeight: { xs: "50vh", lg: "95vh" },
             borderRadius: { xs: "32px 32px 0 0", lg: "32px 0 0 32px" },
-            background: "#eee",
+            background: "rgba(1,1,1,.8)",
             padding: "2.5rem",
           }}
         >
           <Box
             sx={{
-              height: "150px",
+              height: "200px",
               background: "",
               display: "flex",
               alignItems: "center",
+              margin: "0 0 12px 0",
             }}
           >
             <Typography
+              className={"paradise-font"}
               sx={{
                 textAlign: "center",
                 color: "#111",
                 margin: "auto auto",
                 letterSpacing: { xs: "12px", lg: "32px" },
-                fontSize: { xs: "34px", lg: "62px" },
-                fontWeight: 600,
+                fontSize: { xs: "32px", lg: "62px" },
+                fontWeight: 900,
                 color: "#F56EB3",
               }}
             >
               {" "}
-              PARADISE
+              PARADISE <br /> FOR <br /> QUEENS{" "}
             </Typography>
           </Box>
           <Box
@@ -528,58 +368,100 @@ export const Auth = (props) => {
               alignItems: "center",
             }}
           >
-            <TextField
-              fullWidth
-              placeholder={"Username"}
-              name="name"
-              type="text"
-              label="Name"
-              sx={{
-                margin: "21px auto",
-                width: "60%",
-                "& .MuiOutlinedInput-root": {
-                  border: "2px solid #111",
-                  color: "#111",
-                },
-                "& .MuiOutlinedInput-root.Mui-focused": {
-                  "& > fieldset": { border: "3px solid #111", color: "#111" },
-                },
-                "& .MuiOutlinedInput-root.Mui-focused": {
-                  "& > fieldset": { border: "3px solid #111", color: "#111" },
-                },
-              }}
-            />{" "}
-            <br />
-            <TextField
-              fullWidth
-              placeholder={"Password"}
-              name="password"
-              type="password"
-              label="Password"
-              sx={{
-                margin: "21px auto",
-                width: "60%",
-                "& .MuiOutlinedInput-root": {
-                  border: "2px solid #111",
-                  color: "#111",
-                },
-                "& .MuiOutlinedInput-root.Mui-focused": {
-                  "& > fieldset": { border: "3px solid #111", color: "#111" },
-                },
-                "& .MuiOutlinedInput-root.Mui-focused": {
-                  "& > fieldset": { border: "3px solid #111", color: "#111" },
-                },
-              }}
-            />{" "}
-            <br />
+            <Box>
+              <Typography
+                sx={{
+                  color: "rgba(255,255,255,.7)",
+                  margin: "0",
+                  width: "80%",
+                  fontSize: "21px",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                {" "}
+                Email{" "}
+              </Typography>
+              <TextField
+                fullWidth
+                placeholder={"Email"}
+                name="email"
+                type="email"
+                // label="Name"
+                sx={{
+                  margin: "12px auto 21px auto",
+                  width: { xs: "100%", lg: "60%" },
+                  "& .MuiOutlinedInput-root": {
+                    border: "2px solid rgba(255,255,255,.7)",
+                    color: "rgba(255,255,255,.7)",
+                  },
+                  "& .MuiOutlinedInput-root.Mui-focused": {
+                    "& > fieldset": {
+                      border: "1px solid rgba(255,255,255,.7)",
+                      color: "rgba(255,255,255,.7)",
+                    },
+                  },
+                  "& .MuiOutlinedInput-root.Mui-focused": {
+                    "& > fieldset": {
+                      border: "1px solid rgba(255,255,255,.7)",
+                      color: "rgba(255,255,255,.7)",
+                    },
+                  },
+                }}
+              />{" "}
+              <br />
+            </Box>
+            <Box>
+              <Typography
+                sx={{
+                  color: "rgba(255,255,255,.7)",
+                  margin: "0",
+                  width: "80%",
+                  fontSize: "21px",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                {" "}
+                Password{" "}
+              </Typography>
+              <TextField
+                fullWidth
+                placeholder={"Password"}
+                name="password"
+                type="password"
+                sx={{
+                  margin: "12px auto 21px auto",
+                  width: { xs: "100%", lg: "60%" },
+                  "& .MuiOutlinedInput-root": {
+                    border: "2px solid rgba(255,255,255,.7)",
+                    color: "rgba(255,255,255,.7)",
+                  },
+                  "& .MuiOutlinedInput-root.Mui-focused": {
+                    "& > fieldset": {
+                      border: "1px solid rgba(255,255,255,.7)",
+                      color: "rgba(255,255,255,.7)",
+                    },
+                  },
+                  "& .MuiOutlinedInput-root.Mui-focused": {
+                    "& > fieldset": {
+                      border: "1px solid rgba(255,255,255,.7)",
+                      color: "rgba(255,255,255,.7)",
+                    },
+                  },
+                }}
+              />{" "}
+              <br />
+            </Box>
             <Button
               sx={{
                 background: "#460C68",
                 padding: "21px 0",
                 color: "#eee",
                 fontWeight: "600",
-                width: "350px",
+                width: { xs: "80%", lg: "350px" },
                 margin: "21px 0",
+                "&:hover": { color: "#460C68" },
               }}
             >
               {" "}
@@ -587,7 +469,12 @@ export const Auth = (props) => {
             </Button>
           </Box>
           <Typography
-            sx={{ textAlign: "center", color: "#111", margin: "21px 0" }}
+            sx={{
+              textAlign: "center",
+              color: "rgba(255,255,255,.7)",
+              margin: "21px 0",
+              textDecoration: "underline",
+            }}
           >
             {" "}
             Terms & Conditions{" "}
@@ -603,11 +490,11 @@ export const Auth = (props) => {
             <Typography
               sx={{
                 textAlign: "center",
-                color: "#111",
-                margin: "21px 0",
+                color: "#7f167f",
+                margin: "12px 0",
                 width: "fit-content",
                 fontWeight: 600,
-                "&:hover": { color: "#7F167F" },
+                "&:hover": { color: "#7F167F", textDecoration: "underline" },
                 cursor: "pointer",
               }}
               onClick={() => setSignUp(!signUp)}
@@ -624,62 +511,117 @@ export const Auth = (props) => {
               alignItems: "center",
             }}
           >
-            <Divider sx={{ margin: "21px 0", width: "45%" }} />
+            {/* color: "rgba(255,255,255,.7)", */}
+            <Divider
+              sx={{
+                margin: "21px 0",
+                width: "40%",
+                background: "rgba(255,255,255,.7)",
+              }}
+            />
             <Typography
-              sx={{ textAlign: "center", color: "#111", fontWeight: "600" }}
+              sx={{
+                textAlign: "center",
+                color: "rgba(255,255,255,.7)",
+                fontWeight: "600",
+                fontSize: "21px",
+              }}
             >
               {" "}
-              or{" "}
+              OR{" "}
             </Typography>
-            <Divider sx={{ margin: "21px 0", width: "45%" }} />
+            <Divider
+              sx={{
+                margin: "21px 0",
+                width: "40%",
+                background: "rgba(255,255,255,.7)",
+              }}
+            />
           </Box>
 
           <Typography
-            sx={{ textAlign: "center", color: "#111", margin: "21px 0" }}
+            sx={{
+              textAlign: "center",
+              color: "rgba(255,255,255,.7)",
+              margin: "21px 0",
+            }}
           >
             {" "}
             Use Social Media{" "}
           </Typography>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexDirection: { xs: "column", lg: "row" },
+            }}
+          >
             <Button
               sx={{
-                margin: "21px 6px",
-                background: "#3b5998",
-                padding: "21px 0",
-                color: "#eee",
+                margin: "12px 6px",
+                border: "1px solid transparent",
+                "&:hover": {
+                  border: "1px solid #3b5998",
+                  filter: "invert(1px)",
+                },
+                padding: "16px 0",
+                color: "#3b5998",
                 fontWeight: "600",
                 width: "230px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
               {" "}
-              Facebook{" "}
+              Continue with{" "}
+              <FacebookIcon sx={{ color: "#3b5998", margin: "0 12px" }} />
             </Button>
+            {/* GoogleIcon - #F4B400 */}
+            {/* TwitterIcon - #1DA1F2 */}
             <Button
               onClick={googleHandler}
               sx={{
-                margin: "21px 6px",
-                background: "#F4B400",
-                padding: "21px 0",
-                color: "#eee",
+                margin: "12px 6px",
+                border: "1px solid transparent",
+                "&:hover": {
+                  border: "1px solid #F4B400",
+                  filter: "invert(1px)",
+                },
+                padding: "16px 0",
+                color: "#F4B400",
                 fontWeight: "600",
                 width: "230px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
               {" "}
-              Google{" "}
+              Continue with{" "}
+              <GoogleIcon sx={{ color: "#F4B400", margin: "0 12px" }} />
             </Button>
             <Button
               sx={{
-                margin: "21px 6px",
-                background: "#1DA1F2",
-                padding: "21px 0",
-                color: "#eee",
+                margin: "12px 6px",
+                border: "1px solid transparent",
+                "&:hover": {
+                  border: "1px solid #1DA1F2",
+                  filter: "invert(1px)",
+                },
+                padding: "16px 0",
+                color: "#1DA1F2",
                 fontWeight: "600",
                 width: "230px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
               {" "}
-              Twitter{" "}
+              Continue with{" "}
+              <TwitterIcon sx={{ color: "#1DA1F2", margin: "0 12px" }} />
             </Button>
           </Box>
         </Grid>
@@ -693,11 +635,11 @@ export const Auth = (props) => {
             background: "red",
             display: signUp ? "none" : "block",
             backgroundImage:
-              'url("https://images.pexels.com/photos/4336969/pexels-photo-4336969.jpeg?auto=compress&cs=tinysrgb&w=1600")',
+              'url("https://images.pexels.com/photos/267285/pexels-photo-267285.jpeg?auto=compress&cs=tinysrgb&w=1600")',
             // backgroundImage:'url("https://images.pexels.com/photos/925746/pexels-photo-925746.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load")' ,
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
-            background: "center",
+            background: "center bottom",
             padding: "0",
           }}
         >
@@ -716,12 +658,12 @@ export const Auth = (props) => {
           xs={12}
           lg={6}
           sx={{
-            minHeight: { xs: "50vh", lg: "95vh" },
+            minHeight: { xs: "95vh", lg: "95vh" },
             borderRadius: "32px 0 0 32px",
             background: "red",
             display: signUp ? "block" : "none",
             backgroundImage:
-              'url("https://images.pexels.com/photos/5756495/pexels-photo-5756495.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")',
+              'url("https://images.pexels.com/photos/1548274/pexels-photo-1548274.jpeg?auto=compress&cs=tinysrgb&w=1600")',
             // backgroundImage:'url("https://images.pexels.com/photos/925746/pexels-photo-925746.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load")' ,
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
