@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -26,7 +26,12 @@ import AddIcon from "@mui/icons-material/Add";
 
 export const Navbar = (props) => {
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState("");
 
+  useEffect(() => {
+    const page = window.location.href.split("/");
+    setActive(page.pop());
+  }, []);
   return (
     <Box
       sx={{
@@ -42,13 +47,33 @@ export const Navbar = (props) => {
         // justifyContent: "space-evenly",
       }}
     >
-      <Button sx={{ background: "#F56EB3", flex: 1 }}>
+      <Button
+        sx={{
+          background: active == "home" ? "#F56EB3" : "transparent",
+          "&:hover": { background: "#F56EB3" },
+          flex: 1,
+          borderRadius: "0",
+        }}
+      >
         <HomeIcon sx={{ color: "rgba(255,255,255,.7)" }} />
       </Button>
-      <Button sx={{ flex: 1 }}>
+      <Button
+        sx={{
+          background: active == "search" ? "#1589FF" : "transparent",
+          flex: 1,
+          borderRadius: "0",
+        }}
+      >
         <SearchIcon sx={{ color: "rgba(255,255,255,.7)" }} />
       </Button>
-      <Button onClick={() => setOpen(!open)} sx={{ flex: 1 }}>
+      <Button
+        onClick={() => setOpen(!open)}
+        sx={{
+          "&:hover": { background: "#FF3131" },
+          flex: 1,
+          borderRadius: "0",
+        }}
+      >
         {open ? (
           <CloseIcon
             sx={{ transition: "500ms", color: "rgba(255,255,255,.7)" }}
@@ -59,10 +84,25 @@ export const Navbar = (props) => {
           />
         )}
       </Button>
-      <Button sx={{ flex: 1 }}>
+      <Button
+        sx={{
+          // background: active == "recommend" ? "##16F529" : "transparent",
+          "&:hover": { background: "#16F529" },
+
+          flex: 1,
+          borderRadius: "0",
+        }}
+      >
         <RecommendIcon sx={{ color: "rgba(255,255,255,.7)" }} />
       </Button>
-      <Button sx={{ flex: 1 }}>
+      <Button
+        sx={{
+          // background: active == "home" ? "#FFFF33" : "transparent",
+          "&:hover": { background: "#FFFF33" },
+          flex: 1,
+          borderRadius: "0",
+        }}
+      >
         <AccountCircleIcon sx={{ color: "rgba(255,255,255,.7)" }} />
       </Button>
 
