@@ -21,6 +21,7 @@ import RecommendIcon from "@mui/icons-material/Recommend";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import CloseIcon from "@mui/icons-material/Close";
+import Link from "next/link";
 
 import AddIcon from "@mui/icons-material/Add";
 
@@ -47,29 +48,39 @@ export const Navbar = (props) => {
         // justifyContent: "space-evenly",
       }}
     >
-      <Button
-        sx={{
-          background: active == "home" ? "#F56EB3" : "transparent",
-          "&:hover": { background: "#F56EB3" },
-          flex: 1,
-          borderRadius: "0",
-        }}
-      >
-        <HomeIcon sx={{ color: "rgba(255,255,255,.7)" }} />
-      </Button>
-      <Button
-        sx={{
-          background: active == "search" ? "#1589FF" : "transparent",
-          flex: 1,
-          borderRadius: "0",
-        }}
-      >
-        <SearchIcon sx={{ color: "rgba(255,255,255,.7)" }} />
-      </Button>
+      <Link href="/home" style={{ flex: 1, height: "100%" }}>
+        <Button
+          sx={{
+            background: active == "home" ? "#F56EB3" : "transparent",
+            "&:hover": { background: "#F56EB3" },
+            // flex: 1,
+            width: "100%",
+            height: "100%",
+            borderRadius: "0",
+          }}
+        >
+          <HomeIcon sx={{ color: "rgba(255,255,255,.7)" }} />
+        </Button>
+      </Link>
+      <Link href="/search" style={{ flex: 1, height: "100%" }}>
+        <Button
+          sx={{
+            background: active == "search" ? "#1589FF" : "transparent",
+            width: "100%",
+            height: "100%",
+            borderRadius: "0",
+          }}
+        >
+          <SearchIcon sx={{ color: "rgba(255,255,255,.7)" }} />
+        </Button>
+      </Link>
+
       <Button
         onClick={() => setOpen(!open)}
         sx={{
           "&:hover": { background: "#FF3131" },
+          // width: "100%",
+          // height: "100%",
           flex: 1,
           borderRadius: "0",
         }}
@@ -84,27 +95,34 @@ export const Navbar = (props) => {
           />
         )}
       </Button>
-      <Button
-        sx={{
-          // background: active == "recommend" ? "##16F529" : "transparent",
-          "&:hover": { background: "#16F529" },
 
-          flex: 1,
-          borderRadius: "0",
-        }}
-      >
-        <RecommendIcon sx={{ color: "rgba(255,255,255,.7)" }} />
-      </Button>
-      <Button
-        sx={{
-          // background: active == "home" ? "#FFFF33" : "transparent",
-          "&:hover": { background: "#FFFF33" },
-          flex: 1,
-          borderRadius: "0",
-        }}
-      >
-        <AccountCircleIcon sx={{ color: "rgba(255,255,255,.7)" }} />
-      </Button>
+      <Link href="/" style={{ flex: 1, height: "100%" }}>
+        <Button
+          sx={{
+            // background: active == "recommend" ? "##16F529" : "transparent",
+            "&:hover": { background: "#16F529" },
+
+            width: "100%",
+            height: "100%",
+            borderRadius: "0",
+          }}
+        >
+          <RecommendIcon sx={{ color: "rgba(255,255,255,.7)" }} />
+        </Button>
+      </Link>
+      <Link href="/" style={{ flex: 1, height: "100%" }}>
+        <Button
+          sx={{
+            // background: active == "home" ? "#FFFF33" : "transparent",
+            "&:hover": { background: "#FFFF33" },
+            width: "100%",
+            height: "100%",
+            borderRadius: "0",
+          }}
+        >
+          <AccountCircleIcon sx={{ color: "rgba(255,255,255,.7)" }} />
+        </Button>
+      </Link>
 
       <Fade in={open}>
         <Box
