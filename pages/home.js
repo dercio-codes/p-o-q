@@ -14,12 +14,12 @@ import {
 
 export default function HomePage() {
   return (
-    <>
+    <Box>
       {/* <Auth /> */}
       <Box
         sx={{
           minHeight: "65vh",
-          margin: "52px 0 42px 0",
+          margin: "34px 0 42px 0",
           padding: "0 1.3rem",
           display: "flex",
           flexDirection: "column",
@@ -80,6 +80,6 @@ export default function HomePage() {
       <Models />
       <Appointments />
       <Suggestions />
-    </>
+    </Box>
   );
 }
