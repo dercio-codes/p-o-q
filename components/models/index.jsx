@@ -501,7 +501,7 @@ export const Models = () => {
                           {" "}
                           Status :
                         </Typography>{" "}
-                        {index % 2 == 0 ? "Available" : "Busy"}{" "}
+                        {"Available"}{" "}
                       </Typography>
                       <Box
                         sx={{
