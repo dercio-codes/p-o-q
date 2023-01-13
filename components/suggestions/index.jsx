@@ -258,6 +258,7 @@ export const Suggestions = () => {
           alignItems: "center",
           justifyContent: "center",
           padding: "21px",
+          margin: "0 0 90px 0",
         }}
       >
         <Typography

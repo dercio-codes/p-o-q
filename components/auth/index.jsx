@@ -710,54 +710,145 @@ export const Auth = (props) => {
             Personal{" "}
           </Typography>
           <Divider sx={{ width: "24px", margin: "0 0 21px 0" }} />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Name :{" "}
+          </Typography>
           <TextField
             fullWidth
-            placeholder={"Name"}
-            name="name"
+            placeholder={"John Doe"}
+            // name="name"
             type="text"
             label="Name"
-            sx={{ margin: "21px 0" }}
+            sx={{ margin: "12px 0 21px " }}
           />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Surname :{" "}
+          </Typography>
           <TextField
             fullWidth
             placeholder={"Surname"}
             name="surname"
             type="text"
             label="Surname"
-            sx={{ margin: "21px 0" }}
+            sx={{ margin: "12px 0 21px 0" }}
           />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Username :{" "}
+          </Typography>
           <TextField
             fullWidth
             placeholder={"Username"}
             name="username"
             type="text"
             label="Username"
-            sx={{ margin: "21px 0" }}
+            sx={{ margin: "12px 0 21px 0" }}
           />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Email :{" "}
+          </Typography>
           <TextField
             fullWidth
             placeholder={"Email"}
             name="email"
             type="email"
             label="Email"
-            sx={{ margin: "21px 0" }}
+            sx={{ margin: "12px 0 21px 0" }}
           />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Age :{" "}
+          </Typography>
           <TextField
             fullWidth
             placeholder={"Age"}
             name="age"
             type="number"
             label="Age"
-            sx={{ margin: "21px 0" }}
+            sx={{ margin: "12px 0 21px 0" }}
           />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Date of Birth :{" "}
+          </Typography>
           <TextField
             fullWidth
             placeholder={"DOB"}
             name="dob"
             type="date"
             label=""
-            sx={{ margin: "21px 0" }}
+            sx={{ margin: "12px 0 21px 0" }}
           />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Gender :{" "}
+          </Typography>
           <TextField
             fullWidth
             placeholder={"Gender"}
@@ -766,7 +857,7 @@ export const Auth = (props) => {
             select
             label="Gender"
             value={""}
-            sx={{ margin: "21px 0" }}
+            sx={{ margin: "12px 0 21px 0" }}
           >
             <MenuItem value="" sx={{ color: "transparent" }}>
               Client
@@ -774,6 +865,19 @@ export const Auth = (props) => {
             <MenuItem value="Male">Male</MenuItem>
             <MenuItem value="Female">Female</MenuItem>
           </TextField>
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            User Type :{" "}
+          </Typography>{" "}
           <TextField
             fullWidth
             placeholder={"User Type"}
@@ -782,7 +886,7 @@ export const Auth = (props) => {
             select
             value={""}
             label="User Type"
-            sx={{ margin: "21px 0" }}
+            sx={{ margin: "12px 0 21px 0" }}
           >
             <MenuItem value="" sx={{ color: "transparent" }}>
               Client
@@ -790,7 +894,6 @@ export const Auth = (props) => {
             <MenuItem value="Client">Client</MenuItem>
             <MenuItem value="Escort">Escort</MenuItem>
           </TextField>
-
           <Typography
             sx={{
               textAlign: "",
@@ -804,61 +907,152 @@ export const Auth = (props) => {
             Location{" "}
           </Typography>
           <Divider sx={{ width: "24px", margin: "0 0 21px 0" }} />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            House Number :{" "}
+          </Typography>
           <TextField
             fullWidth
             placeholder={"Number"}
             name=""
             type=""
             label="Number"
-            sx={{ margin: "21px 0" }}
+            sx={{ margin: "12px 0 21px 0" }}
           />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Street Name :{" "}
+          </Typography>
           <TextField
             fullWidth
             placeholder={"StreetName"}
             name="name"
             type="text"
             label="Street Name"
-            sx={{ margin: "21px 0" }}
+            sx={{ margin: "12px 0 21px 0" }}
           />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Town :{" "}
+          </Typography>
           <TextField
             fullWidth
             placeholder={"Town"}
             name=""
             type=""
             label="Town"
-            sx={{ margin: "21px 0" }}
+            sx={{ margin: "12px 0 21px 0" }}
           />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            City :{" "}
+          </Typography>
           <TextField
             fullWidth
             placeholder={"City"}
             name="name"
             type="text"
             label="City"
-            sx={{ margin: "21px 0" }}
+            sx={{ margin: "12px 0 21px 0" }}
           />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Province :{" "}
+          </Typography>
           <TextField
             fullWidth
             placeholder={"Province"}
             name=""
             type=""
             label="Province"
-            sx={{ margin: "21px 0" }}
+            sx={{ margin: "12px 0 21px 0" }}
           />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Postal :{" "}
+          </Typography>
           <TextField
             fullWidth
             placeholder={"Postal"}
             name="name"
             type="text"
             label="Postal"
-            sx={{ margin: "21px 0" }}
+            sx={{ margin: "12px 0 21px 0" }}
           />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Country :{" "}
+          </Typography>
           <TextField
             fullWidth
             placeholder={"Country"}
             name=""
             type=""
             label="Country"
-            sx={{ margin: "21px 0" }}
+            sx={{ margin: "12px 0 21px 0" }}
           />
         </Grid>
       </Grid>
