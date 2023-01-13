@@ -206,13 +206,11 @@ const DUMMY_USERS = [
   },
 ];
 
-export const Models = () => {
+export default function Search() {
   const [signUp, setSignUp] = useState(false);
   const [open, setOpen] = useState(false);
   const [openModel, setOpenMOdel] = useState({});
-  const [selectedGender, setSelectedGender] = useState(
-    "Select Preferred Gender"
-  );
+  const [SearchQuery, setSearchQuery] = useState("");
   const [user, setUser] = useState({
     personal: {
       uid: "",
@@ -292,15 +290,15 @@ export const Models = () => {
           }}
         >
           {" "}
-          Gender:{" "}
+          Search By Name or Place:{" "}
         </Typography>{" "}
         <TextField
           fullWidth
-          placeholder={"Gender"}
-          name="Gender"
-          type="select"
-          select
-          value={selectedGender}
+          placeholder={"Search By Name or Place"}
+          name="Search By Name or Place"
+          type="text"
+          value={SearchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           sx={{
             margin: "12px 0 21px 0",
             "& .MuiOutlinedInput-root": {
@@ -320,43 +318,21 @@ export const Models = () => {
               },
             },
           }}
-        >
-          <MenuItem
-            onClick={() => setSelectedGender("Select Preferred Gender")}
-            value={"Select Preferred Gender"}
-            // sx={{ color: "transparent" }}
-          >
-            Select Preferred Gender
-          </MenuItem>
-          <MenuItem onClick={() => setSelectedGender("Male")} value="Male">
-            Male
-          </MenuItem>
-          <MenuItem onClick={() => setSelectedGender("Female")} value="Female">
-            Female
-          </MenuItem>
-          <MenuItem
-            onClick={() => setSelectedGender("Transgender Female")}
-            value="Transgender Female"
-          >
-            Transgender Female
-          </MenuItem>
-          <MenuItem
-            onClick={() => setSelectedGender("Transgender Male")}
-            value="Transgender Male"
-          >
-            Transgender Male
-          </MenuItem>
-        </TextField>
+        ></TextField>
         <Grid
           container
           spacing={6}
           sx={{
-            display:
-              selectedGender == "Select Preferred Gender" ? "none" : "block",
+            display: SearchQuery == "" ? "none" : "block",
           }}
         >
           {DUMMY_USERS.map((item, index) => {
-            if (selectedGender == item.gender) {
+            if (
+              item.username.toUpperCase().includes(SearchQuery.toUpperCase()) ||
+              item.address.city
+                .toUpperCase()
+                .includes(SearchQuery.toUpperCase())
+            ) {
               return (
                 <Grid key={index} item xs={12} md={6} lg={4}>
                   <Box
@@ -501,7 +477,7 @@ export const Models = () => {
                           {" "}
                           Status :
                         </Typography>{" "}
-                        {"Available"}{" "}
+                        {index % 2 == 0 ? "Available" : "Busy"}{" "}
                       </Typography>
                       <Box
                         sx={{
@@ -516,7 +492,11 @@ export const Models = () => {
                         {/* #16F529
                       FiberManualRecordIcon */}
                         <IconButton>
-                          <FiberManualRecordIcon sx={{ color: "#16F529" }} />
+                          <FiberManualRecordIcon
+                            sx={{
+                              color: index % 2 == 0 ? "#16F529" : "#FF3131",
+                            }}
+                          />
                         </IconButton>
                         <IconButton>
                           <FavoriteBorderIcon
@@ -562,8 +542,7 @@ export const Models = () => {
           container
           spacing={6}
           sx={{
-            display:
-              selectedGender == "Select Preferred Gender" ? "block" : "none",
+            display: SearchQuery == "" ? "block" : "none",
           }}
         >
           {DUMMY_USERS.map((item, index) => {
@@ -726,7 +705,9 @@ export const Models = () => {
                       {/* #16F529
                       FiberManualRecordIcon */}
                       <IconButton>
-                        <FiberManualRecordIcon sx={{ color: "#16F529" }} />
+                        <FiberManualRecordIcon
+                          sx={{ color: index % 2 == 0 ? "#16F529" : "#FF3131" }}
+                        />
                       </IconButton>
                       <IconButton>
                         <FavoriteBorderIcon
@@ -897,4 +878,4 @@ export const Models = () => {
       </Drawer>
     </Box>
   );
-};
+}
