@@ -19,7 +19,7 @@ export default function HomePage() {
       <Box
         sx={{
           minHeight: "65vh",
-          margin: "34px 0 42px 0",
+          margin: "100px 0 42px 0",
           padding: "0 1.3rem",
           display: "flex",
           flexDirection: "column",
@@ -50,7 +50,7 @@ export default function HomePage() {
             textAlign: "center",
             color: "rgba(255,255,255,.7)",
             margin: "21px 0",
-            fontSize: "18px",
+            fontSize: "16px",
             lineHeight: "2.5rem",
             // textDecoration: "underline",
           }}
@@ -62,6 +62,36 @@ export default function HomePage() {
           human rights violations, and lack of health and safety protection,
           among others.{" "}
         </Typography>
+
+        <Typography
+          sx={{
+            textAlign: "center",
+            color: "#111",
+            // margin: "auto auto",
+            // letterSpacing: { xs: "6px" },
+            fontSize: { xs: "14px" },
+            lineHeight: "2.5rem",
+            // fontWeight: 900,
+            color: "rgba(255,255,255,.7)",
+          }}
+        >
+          {" "}
+          {"Why don't you give a try?"} <br />
+          {"Sign up below to join"}{" "}
+          <p
+            style={{ color: "#F56EB3", fontSize: "32px" }}
+            className={"paradise-font"}
+          >
+            {" "}
+            Paraside of Queens{" "}
+          </p>{" "}
+          {"as an escort , or become  "} <br />
+          {
+            "a member to safety request escort services from top escorts in SA "
+          }{" "}
+          <br />
+        </Typography>
+
         <Button
           sx={{
             background: "#460C68",

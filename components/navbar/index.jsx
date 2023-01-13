@@ -42,7 +42,7 @@ export const Navbar = (props) => {
         // justifyContent: "space-evenly",
       }}
     >
-      <Button sx={{ flex: 1 }}>
+      <Button sx={{ background: "#F56EB3", flex: 1 }}>
         <HomeIcon sx={{ color: "rgba(255,255,255,.7)" }} />
       </Button>
       <Button sx={{ flex: 1 }}>

@@ -20,7 +20,7 @@ const DUMMY_USERS = [
   {
     address: {
       geolocation: { lat: "-37.3159", long: "81.1496" },
-      city: "kilcoole",
+      city: "Durban",
       street: "new road",
       number: 7682,
       zipcode: "12926-3874",
@@ -28,16 +28,17 @@ const DUMMY_USERS = [
     id: 1,
     img: "https://images.pexels.com/photos/247204/pexels-photo-247204.jpeg?auto=compress&cs=tinysrgb&w=1600",
     email: "john@gmail.com",
-    username: "johnd",
+    username: "Nate Twins",
     password: "m38rmF$",
-    name: { firstname: "john", lastname: "doe" },
-    phone: "1-570-236-7033",
+    name: { firstname: "nathan", lastname: "levi" },
+    phone: "067-123-456",
+    gender: "Transgender Female",
     __v: 0,
   },
   {
     address: {
       geolocation: { lat: "-37.3159", long: "81.1496" },
-      city: "kilcoole",
+      city: "Durban",
       street: "Lovers Ln",
       number: 7267,
       zipcode: "12926-3874",
@@ -45,16 +46,17 @@ const DUMMY_USERS = [
     id: 2,
     img: "https://images.pexels.com/photos/1462637/pexels-photo-1462637.jpeg?auto=compress&cs=tinysrgb&w=1600",
     email: "morrison@gmail.com",
-    username: "mor_2314",
+    username: "Calvin",
     password: "83r5^_",
-    name: { firstname: "david", lastname: "morrison" },
-    phone: "1-570-236-7033",
+    name: { firstname: "Donovan", lastname: "Morrison" },
+    phone: "072-456-234",
+    gender: "Female",
     __v: 0,
   },
   {
     address: {
       geolocation: { lat: "40.3467", long: "-30.1310" },
-      city: "Cullman",
+      city: "Port ELizabeth",
       street: "Frances Ct",
       number: 86,
       zipcode: "29567-1452",
@@ -62,16 +64,17 @@ const DUMMY_USERS = [
     id: 3,
     img: "https://images.pexels.com/photos/2065203/pexels-photo-2065203.jpeg?auto=compress&cs=tinysrgb&w=1600",
     email: "kevin@gmail.com",
-    username: "kevinryan",
+    username: "Rian",
     password: "kev02937@",
-    name: { firstname: "kevin", lastname: "ryan" },
-    phone: "1-567-094-1345",
+    name: { firstname: "kevin", lastname: "rian" },
+    phone: "065-555-5005",
+    gender: "Transgender Female",
     __v: 0,
   },
   {
     address: {
       geolocation: { lat: "50.3467", long: "-20.1310" },
-      city: "San Antonio",
+      city: "Rosebank",
       street: "Hunters Creek Dr",
       number: 6454,
       zipcode: "98234-1734",
@@ -79,16 +82,17 @@ const DUMMY_USERS = [
     id: 4,
     img: "https://images.pexels.com/photos/1689731/pexels-photo-1689731.jpeg?auto=compress&cs=tinysrgb&w=1600",
     email: "don@gmail.com",
-    username: "donero",
+    username: "Troy",
     password: "ewedon",
     name: { firstname: "don", lastname: "romer" },
-    phone: "1-765-789-6734",
+    phone: "067-555-6234",
+    gender: "Female",
     __v: 0,
   },
   {
     address: {
       geolocation: { lat: "40.3467", long: "-40.1310" },
-      city: "san Antonio",
+      city: "Soutgate",
       street: "adams St",
       number: 245,
       zipcode: "80796-1234",
@@ -96,16 +100,17 @@ const DUMMY_USERS = [
     id: 5,
     img: "https://images.pexels.com/photos/1162983/pexels-photo-1162983.jpeg?auto=compress&cs=tinysrgb&w=1600",
     email: "derek@gmail.com",
-    username: "derek",
+    username: "Ken",
     password: "jklg*_56",
     name: { firstname: "derek", lastname: "powell" },
-    phone: "1-956-001-1945",
+    phone: "087-888-5432",
+    gender: "Transgender Female",
     __v: 0,
   },
   {
     address: {
       geolocation: { lat: "20.1677", long: "-10.6789" },
-      city: "el paso",
+      city: "Cape Town",
       street: "prospect st",
       number: 124,
       zipcode: "12346-0456",
@@ -113,16 +118,17 @@ const DUMMY_USERS = [
     id: 6,
     img: "https://images.pexels.com/photos/219575/pexels-photo-219575.jpeg?auto=compress&cs=tinysrgb&w=1600",
     email: "david_r@gmail.com",
-    username: "david_r",
+    username: "Diesel",
     password: "3478*#54",
     name: { firstname: "david", lastname: "russell" },
-    phone: "1-678-345-9856",
+    phone: "068-890-5552",
+    gender: "Transgender Female",
     __v: 0,
   },
   {
     address: {
       geolocation: { lat: "10.3456", long: "20.6419" },
-      city: "fresno",
+      city: "Bloemfontein",
       street: "saddle st",
       number: 1342,
       zipcode: "96378-0245",
@@ -130,16 +136,17 @@ const DUMMY_USERS = [
     id: 7,
     img: "https://images.pexels.com/photos/2036646/pexels-photo-2036646.jpeg?auto=compress&cs=tinysrgb&w=1600",
     email: "miriam@gmail.com",
-    username: "snyder",
+    username: "Amber",
     password: "f238&@*$",
-    name: { firstname: "miriam", lastname: "snyder" },
-    phone: "1-123-943-0563",
+    name: { firstname: "amber", lastname: "snyder" },
+    phone: "076-123-6789",
+    gender: "Female",
     __v: 0,
   },
   {
     address: {
       geolocation: { lat: "50.3456", long: "10.6419" },
-      city: "mesa",
+      city: "Sandton",
       street: "vally view ln",
       number: 1342,
       zipcode: "96378-0245",
@@ -147,16 +154,17 @@ const DUMMY_USERS = [
     id: 8,
     img: "https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=1600",
     email: "william@gmail.com",
-    username: "hopkins",
+    username: "Sebastian",
     password: "William56$hj",
     name: { firstname: "william", lastname: "hopkins" },
-    phone: "1-478-001-0890",
+    phone: "087-980-8850",
+    gender: "Male",
     __v: 0,
   },
   {
     address: {
       geolocation: { lat: "40.12456", long: "20.5419" },
-      city: "miami",
+      city: "Tshwane",
       street: "avondale ave",
       number: 345,
       zipcode: "96378-0245",
@@ -164,16 +172,17 @@ const DUMMY_USERS = [
     id: 9,
     img: "https://images.pexels.com/photos/432059/pexels-photo-432059.jpeg?auto=compress&cs=tinysrgb&w=1600",
     email: "kate@gmail.com",
-    username: "kate_h",
+    username: "Ashley",
     password: "kfejk@*_",
     name: { firstname: "kate", lastname: "hale" },
-    phone: "1-678-456-1934",
+    phone: "076-920-8250",
+    gender: "Transgender Male",
     __v: 0,
   },
   {
     address: {
       geolocation: { lat: "30.24788", long: "-20.545419" },
-      city: "fort wayne",
+      city: "Hammanskraal",
       street: "oak lawn ave",
       number: 526,
       zipcode: "10256-4532",
@@ -181,10 +190,11 @@ const DUMMY_USERS = [
     id: 10,
     img: "https://images.pexels.com/photos/3470076/pexels-photo-3470076.jpeg?auto=compress&cs=tinysrgb&w=1600",
     email: "jimmie@gmail.com",
-    username: "jimmie_k",
+    username: "Jay",
     password: "klein*#%*",
     name: { firstname: "jimmie", lastname: "klein" },
-    phone: "1-104-001-4567",
+    phone: "067-960-8660",
+    gender: "Female",
     __v: 0,
   },
 ];
@@ -258,7 +268,7 @@ export const Appointments = () => {
           }}
         >
           {" "}
-          Appointments{" "}
+          Top Rated Escorts{" "}
         </Typography>
         <Divider
           sx={{
@@ -312,7 +322,7 @@ export const Appointments = () => {
                       width: "150px",
                       // flex: { xs: "1", lg: "2" },
                       background: "",
-                      padding: "8px",
+                      padding: "8px 0px 0px 8px",
                     }}
                   >
                     <Typography
@@ -347,7 +357,7 @@ export const Appointments = () => {
                       }}
                     >
                       {" "}
-                      Time :
+                      Gender :
                     </Typography>{" "}
                     <Typography
                       sx={{
@@ -359,7 +369,7 @@ export const Appointments = () => {
                       }}
                     >
                       {" - "}
-                      09:00 - 21/02/23{" "}
+                      {item.gender}{" "}
                     </Typography>
                     <Typography
                       variant="span"

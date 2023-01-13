@@ -273,7 +273,7 @@ export const Auth = (props) => {
         const token = credential.accessToken;
         // The signed-in user info.
         const resultsUser = result.user;
-        // auth.onAuthStateChanged((user)=> console.log("changed user here : " , user))
+        // auth.onAuthStateChanged((user)=> console.log("changed user here: " , user))
         auth.onAuthStateChanged((authUser) => {
           authUser
             ? localStorage.setItem("authUser", JSON.stringify(authUser))
@@ -452,21 +452,21 @@ export const Auth = (props) => {
                 }}
               />{" "}
               <br />
+              <Button
+                sx={{
+                  background: "#460C68",
+                  padding: "21px 0",
+                  color: "#eee",
+                  fontWeight: "600",
+                  width: { xs: "100%", lg: "350px" },
+                  margin: "21px 0",
+                  "&:hover": { color: "#460C68" },
+                }}
+              >
+                {" "}
+                Login{" "}
+              </Button>
             </Box>
-            <Button
-              sx={{
-                background: "#460C68",
-                padding: "21px 0",
-                color: "#eee",
-                fontWeight: "600",
-                width: { xs: "80%", lg: "350px" },
-                margin: "21px 0",
-                "&:hover": { color: "#460C68" },
-              }}
-            >
-              {" "}
-              Login{" "}
-            </Button>
           </Box>
           <Typography
             sx={{
@@ -721,7 +721,7 @@ export const Auth = (props) => {
             }}
           >
             {" "}
-            Name :{" "}
+            Name:{" "}
           </Typography>
           <TextField
             fullWidth
@@ -742,7 +742,7 @@ export const Auth = (props) => {
             }}
           >
             {" "}
-            Surname :{" "}
+            Surname:{" "}
           </Typography>
           <TextField
             fullWidth
@@ -763,7 +763,7 @@ export const Auth = (props) => {
             }}
           >
             {" "}
-            Username :{" "}
+            Username:{" "}
           </Typography>
           <TextField
             fullWidth
@@ -784,7 +784,7 @@ export const Auth = (props) => {
             }}
           >
             {" "}
-            Email :{" "}
+            Email:{" "}
           </Typography>
           <TextField
             fullWidth
@@ -805,7 +805,7 @@ export const Auth = (props) => {
             }}
           >
             {" "}
-            Age :{" "}
+            Age:{" "}
           </Typography>
           <TextField
             fullWidth
@@ -826,7 +826,7 @@ export const Auth = (props) => {
             }}
           >
             {" "}
-            Date of Birth :{" "}
+            Date of Birth:{" "}
           </Typography>
           <TextField
             fullWidth
@@ -847,7 +847,7 @@ export const Auth = (props) => {
             }}
           >
             {" "}
-            Gender :{" "}
+            Gender:{" "}
           </Typography>
           <TextField
             fullWidth
@@ -876,7 +876,7 @@ export const Auth = (props) => {
             }}
           >
             {" "}
-            User Type :{" "}
+            User Type:{" "}
           </Typography>{" "}
           <TextField
             fullWidth
@@ -918,7 +918,7 @@ export const Auth = (props) => {
             }}
           >
             {" "}
-            House Number :{" "}
+            House Number:{" "}
           </Typography>
           <TextField
             fullWidth
@@ -939,7 +939,7 @@ export const Auth = (props) => {
             }}
           >
             {" "}
-            Street Name :{" "}
+            Street Name:{" "}
           </Typography>
           <TextField
             fullWidth
@@ -960,7 +960,7 @@ export const Auth = (props) => {
             }}
           >
             {" "}
-            Town :{" "}
+            Town:{" "}
           </Typography>
           <TextField
             fullWidth
@@ -981,7 +981,7 @@ export const Auth = (props) => {
             }}
           >
             {" "}
-            City :{" "}
+            City:{" "}
           </Typography>
           <TextField
             fullWidth
@@ -1002,7 +1002,7 @@ export const Auth = (props) => {
             }}
           >
             {" "}
-            Province :{" "}
+            Province:{" "}
           </Typography>
           <TextField
             fullWidth
@@ -1023,7 +1023,7 @@ export const Auth = (props) => {
             }}
           >
             {" "}
-            Postal :{" "}
+            Postal:{" "}
           </Typography>
           <TextField
             fullWidth
@@ -1044,7 +1044,7 @@ export const Auth = (props) => {
             }}
           >
             {" "}
-            Country :{" "}
+            Country:{" "}
           </Typography>
           <TextField
             fullWidth
