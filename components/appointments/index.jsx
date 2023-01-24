@@ -322,7 +322,7 @@ export const Appointments = () => {
                       width: "150px",
                       // flex: { xs: "1", lg: "2" },
                       background: "",
-                      padding: "8px 0px 0px 8px",
+                      padding: "8px 0openpx 0px 8px",
                     }}
                   >
                     <Typography
