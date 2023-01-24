@@ -24,11 +24,23 @@ import CloseIcon from "@mui/icons-material/Close";
 import Link from "next/link";
 
 import AddIcon from "@mui/icons-material/Add";
+import { signOut } from "firebase/auth";
+import { auth } from "./../../config/firebaseConfig"; // update path to your firestore config
 
 export const Navbar = (props) => {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
 
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        console.log("logged out");
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   useEffect(() => {
     const page = window.location.href.split("/");
     setActive(page.pop());
@@ -110,7 +122,7 @@ export const Navbar = (props) => {
           <RecommendIcon sx={{ color: "rgba(255,255,255,.7)" }} />
         </Button>
       </Link>
-      <Link href="/" style={{ flex: 1, height: "100%" }}>
+      <Link href="/profile" style={{ flex: 1, height: "100%" }}>
         <Button
           sx={{
             // background: active == "home" ? "#FFFF33" : "transparent",
@@ -159,6 +171,7 @@ export const Navbar = (props) => {
             </Button>
             <Button sx={{ background: "" }}>
               <ExitToAppIcon
+                onClick={handleSignOut}
                 sx={{ margin: "21px 0", color: "rgba(255,255,255,.7)" }}
               />
             </Button>

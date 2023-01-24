@@ -256,10 +256,10 @@ export default function Search() {
       sx={{
         minHeight: "100vh",
         background: "#000",
-        padding: { xs: "0 1.2rem", lg: "0 5rem" },
+        padding: { xs: "32px 1.2rem", lg: "32px 5rem" },
       }}
     >
-      <Box sx={{ minHeight: "100vh", margin: "0" }}>
+      <Box sx={{ minHeight: "100vh", margin: "21px 021px 021px 0" }}>
         <Typography
           sx={{
             textAlign: "",
@@ -275,7 +275,7 @@ export default function Search() {
         <Divider
           sx={{
             width: "24px",
-            margin: "0 0 12px 0",
+            margin: "0 0 32px 0",
             background: "rgba(255,255,255,.7)",
           }}
         />

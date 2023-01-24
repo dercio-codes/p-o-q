@@ -271,18 +271,77 @@ export const Auth = (props) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
+
         // The signed-in user info.
-        const resultsUser = result.user;
+        const resultUser = result.user;
+
         // auth.onAuthStateChanged((user)=> console.log("changed user here: " , user))
         auth.onAuthStateChanged((authUser) => {
           authUser
-            ? localStorage.setItem("authUser", JSON.stringify(authUser))
+            ? localStorage.setItem("authUser", resultUser.accessToken)
             : localStorage.removeItem("authUser");
         });
-        console.log(resultsUser);
-        setUser({ ...resultsUser });
-        alert("Welcome : ", resultUser.displayName);
-        // router.push("/home");
+        setUser({ ...resultUser });
+        // const uploadingUser = {
+        //   uid: result.user.uid,
+        //   email: result.user.email,
+        //   username: result.user.displayName,
+        //   ...user.personal,
+        // };
+        const updateUserResponse = async (result) => {
+          // console.log(uploadingUser);
+          try {
+            console.log("uploading : ", {
+              ...user,
+              personal: {
+                ...user.personal,
+                uid: result.user.uid,
+                email: result.user.email,
+                username: result.user.displayName,
+              },
+            });
+            await setDoc(doc(db, "users", result.user.email), {
+              ...user,
+              personal: {
+                ...user.personal,
+                uid: result.user.uid,
+                email: result.user.email,
+                username: result.user.displayName,
+              },
+            });
+          } catch (err) {
+            alert(err.message);
+          }
+        };
+        updateUserResponse(result);
+        // try {
+        //   console.log("uploading : ", {
+        //     uid: result.user.uid,
+        //     email: result.user.email,
+        //     cart: [],
+        //     wishlist: [],
+        //     orders: [],
+        //   });
+        // await setDoc(doc(db, "users", result.user.email), {
+        //   uid: result.user.uid,
+        //   email: result.user.email,
+        //   cart: [],
+        //   wishlist: [],
+        //   orders: [],
+        // });
+        // } catch (err) {
+        //   alert(err.message);
+        // }
+        // try {
+        //   await setDoc(
+        //     doc(db, "users", resultUser.email),
+        //     JSON.stringify(resultUser)
+        //   );
+        //   alert("done");
+        // } catch (err) {
+        //   console.error(err);
+        //   alert(err.message);
+        // }
       })
       .catch((error) => {
         // Handle Errors here.
