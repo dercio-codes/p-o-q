@@ -345,7 +345,8 @@ export const ProfileComponent = () => {
               justifyContent: "center",
             }}
             onClick={() => setOpenProfileModal(false)}
-          >
+          > 
+          <ArrowBackIcon             onClick={() => setOpenProfileModal(false)}/>
             <Stories />
           </Box>
           <Dialog
