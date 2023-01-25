@@ -56,11 +56,11 @@ export default function HomePage() {
           }}
         >
           {" "}
-          26 Women working in prostitution confront problems that are inherently
-          transboundary in nature, and sex workers in many parts of the world
-          face similar social stigma, criminalization, dire working conditions,
-          human rights violations, and lack of health and safety protection,
-          among others.{" "}
+          26 Women working in escort industry confront problems that are
+          inherently transboundary in nature, and sex workers in many parts of
+          the world face similar social stigma, criminalization, dire working
+          conditions, human rights violations, and lack of health and safety
+          protection, among others.{" "}
         </Typography>
 
         <Typography
