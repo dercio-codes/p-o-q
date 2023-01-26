@@ -341,11 +341,16 @@ export const ProfileComponent = () => {
               left: "0",
               zIndex: "99999999",
               display: openStories ? "flex" : "none",
-              alignItems: "center",
+              // alignItems: "flex-end",
               justifyContent: "center",
+              flexDirection: "column",
             }}
             onClick={() => setOpenProfileModal(false)}
           >
+            <ArrowBackIcon
+              sx={{ margin: "21px"  , cursor:'pointer' }}
+              onClick={() => setOpenStories(false)}
+            />
             <Stories />
           </Box>
           <Dialog
