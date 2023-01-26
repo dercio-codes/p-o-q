@@ -348,8 +348,8 @@ export const ProfileComponent = () => {
             onClick={() => setOpenProfileModal(false)}
           >
             <ArrowBackIcon
-              sx={{ margin: "21px"  }}
-              onClick={() => setOp(false)}
+              sx={{ margin: "21px"  , cursor:'pointer' }}
+              onClick={() => setOpenStories(false)}
             />
             <Stories />
           </Box>
