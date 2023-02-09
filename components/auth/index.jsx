@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   Box,
   Grid,
@@ -7,6 +7,7 @@ import {
   Divider,
   Typography,
   MenuItem,
+  Modal,
   Paper,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -28,6 +29,7 @@ import {
   doc,
   getDocs,
   where,
+  updateDoc,
 } from "firebase/firestore";
 import {
   storage,
@@ -47,6 +49,8 @@ import {
   browserSessionPersistence,
   inMemoryPersistence,
 } from "firebase/auth";
+import { UserContext } from "../../pages/_app";
+import { AgeAuthentication } from "./age-authentication";
 
 const DUMMY_USERS = [
   {
@@ -222,46 +226,8 @@ const DUMMY_USERS = [
 export const Auth = (props) => {
   const router = useRouter();
   const [signUp, setSignUp] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [user, setUser] = useState({
-    personal: {
-      uid: "",
-      name: "",
-      surname: "",
-      username: "",
-      email: "2",
-      age: "",
-      dob: "",
-      gender: "",
-      userType: "",
-      address: {
-        number: "",
-        street: "",
-        town: "",
-        city: "",
-        province: "",
-        country: "",
-        postal: "",
-        coordinates: {
-          latitude: "",
-          longitude: "",
-        },
-      },
-    },
-    social: {
-      // users profile picture
-      profilePicture: "",
-
-      // featured images are images or videos put up
-      stories: [],
-
-      // if unique id is subscribed we add them to subscribed users if not we hide the content and prompt user to purchase content
-      subscribedUsers: [],
-      content: [],
-    },
-    hotelReccomendations: [],
-    appointments: [],
-  });
+  const [open, setOpen] = useState(true);
+  const { user, setUser } = useContext(UserContext);
 
   const googleHandler = async () => {
     googleProvider.setCustomParameters({ prompt: "select_account" });
@@ -281,67 +247,58 @@ export const Auth = (props) => {
             ? localStorage.setItem("authUser", resultUser.accessToken)
             : localStorage.removeItem("authUser");
         });
-        setUser({ ...resultUser });
-        // const uploadingUser = {
-        //   uid: result.user.uid,
-        //   email: result.user.email,
-        //   username: result.user.displayName,
-        //   ...user.personal,
-        // };
+
         const updateUserResponse = async (result) => {
           // console.log(uploadingUser);
           try {
-            console.log("uploading : ", {
-              ...user,
-              personal: {
-                ...user.personal,
-                uid: result.user.uid,
-                email: result.user.email,
-                username: result.user.displayName,
-              },
-            });
-            await setDoc(doc(db, "users", result.user.email), {
-              ...user,
-              personal: {
-                ...user.personal,
-                uid: result.user.uid,
-                email: result.user.email,
-                username: result.user.displayName,
-              },
-            });
+            // console.log("uploading : ", {
+            //   ...user,
+            //   personal: {
+            //     ...user.personal,
+            //     uid: result.user.uid,
+            //     email: result.user.email,
+            //     username: result.user.displayName,
+            //   },
+            // });
+
+            let userExists = false;
+            // const querySnapshot = await getDocs(collection(db, "users"));
+
+            // querySnapshot.forEach((item) => {
+            //   console.log("snapshop result :", item.id);
+            //   if (item.id === result.user.email) {
+            //     userExists = true;
+            //     setUser({ ...item.data() });
+            //   }
+            // });
+
+            // if (userExists) {
+            //   console.log("updating");
+            // } else {
+            //   console.log("adding doc");
+            //   await setDoc(doc(db, "users", result.user.email), {
+            //     ...user,
+            //     personal: {
+            //       ...user.personal,
+            //       uid: result.user.uid,
+            //       email: result.user.email,
+            //       username: result.user.displayName,
+            //     },
+            //     social: {
+            //       // users profile picture
+            //       profilePicture: result.user.photoURL,
+            //     },
+            //   });
+            // }
+
+            // router.push("/profile");
+            setOpen(true);
+            // window.location.href = "/profile";
           } catch (err) {
             alert(err.message);
           }
         };
         updateUserResponse(result);
-        // try {
-        //   console.log("uploading : ", {
-        //     uid: result.user.uid,
-        //     email: result.user.email,
-        //     cart: [],
-        //     wishlist: [],
-        //     orders: [],
-        //   });
-        // await setDoc(doc(db, "users", result.user.email), {
-        //   uid: result.user.uid,
-        //   email: result.user.email,
-        //   cart: [],
-        //   wishlist: [],
-        //   orders: [],
-        // });
-        // } catch (err) {
-        //   alert(err.message);
-        // }
-        // try {
-        //   await setDoc(
-        //     doc(db, "users", resultUser.email),
-        //     JSON.stringify(resultUser)
-        //   );
-        //   alert("done");
-        // } catch (err) {
-        //   console.error(err);
-        //   alert(err.message);
-        // }
       })
       .catch((error) => {
         // Handle Errors here.
@@ -355,6 +312,10 @@ export const Auth = (props) => {
         // ...
       });
   };
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
   return (
     <Box
@@ -1115,6 +1076,47 @@ export const Auth = (props) => {
           />
         </Grid>
       </Grid>
+      <Modal
+        open={open}
+        sx={{
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          zIndex: 99999,
+        }}
+      >
+        <Box
+          sx={{
+            width: "95%",
+            margin: "auto auto",
+            background: "#111",
+            minHeight: "90vh",
+            padding: "2.5rem 1rem",
+          }}
+        >
+          <Typography
+            component="div"
+            sx={{
+              textAlign: "",
+              margin: "0 0 12px 0",
+              fontWeight: 100,
+              color: "rgba(255,255,255,.5)",
+              fontSize: "32px",
+            }}
+          >
+            {" "}
+            Complete Profile{" "}
+          </Typography>
+          <Divider
+            sx={{
+              width: "24px",
+              margin: "0 0 32px 0",
+              background: "rgba(255,255,255,.7)",
+            }}
+          />
+          <AgeAuthentication user={user} setUser={setUser} />
+        </Box>
+      </Modal>
     </Box>
   );
 };

@@ -26,7 +26,7 @@ import ScheduleIcon from "@mui/icons-material/Schedule";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import LockIcon from "@mui/icons-material/Lock";
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -43,6 +43,7 @@ import { Stories } from "../stories";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import { UserContext } from "../../pages/_app";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -55,11 +56,7 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
@@ -265,49 +262,18 @@ export const ProfileComponent = () => {
   const [openProfileModal, setOpenProfileModal] = useState(false);
   const [openStories, setOpenStories] = useState(false);
   const [value, setValue] = React.useState(0);
-  const [user, setUser] = useState({
-    personal: {
-      uid: "",
-      name: "",
-      surname: "",
-      username: "",
-      email: "2",
-      age: "",
-      dob: "",
-      gender: "",
-      userType: "",
-      address: {
-        number: "",
-        street: "",
-        town: "",
-        city: "",
-        province: "",
-        country: "",
-        postal: "",
-        coordinates: {
-          latitude: "",
-          longitude: "",
-        },
-      },
-    },
-    social: {
-      // users profile picture
-      profilePicture: "",
+  const { user, setUser } = useContext(UserContext);
+  const [domLoaded, setDomLoaded] = useState(false);
 
-      // featured images are images or videos put up
-      stories: [],
-
-      // if unique id is subscribed we add them to subscribed users if not we hide the content and prompt user to purchase content
-      subscribedUsers: [],
-      content: [],
-    },
-    hotelReccomendations: [],
-    appointments: [],
-  });
+  useEffect(() => {
+    setDomLoaded(true);
+  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  console.log(user);
 
   return (
     <Box sx={{ minHeight: "100vh", background: "", padding: "32px 0" }}>
@@ -319,7 +285,7 @@ export const ProfileComponent = () => {
         >
           <Avatar
             onClick={() => setOpenProfileModal(true)}
-            src={DUMMY_USERS[4].img}
+            src={user.social.profilePicture}
             sx={{
               width: "250px",
               height: "250px",
@@ -348,7 +314,7 @@ export const ProfileComponent = () => {
             onClick={() => setOpenProfileModal(false)}
           >
             <ArrowBackIcon
-              sx={{ margin: "21px"  , cursor:'pointer' }}
+              sx={{ margin: "21px", cursor: "pointer" }}
               onClick={() => setOpenStories(false)}
             />
             <Stories />
@@ -479,30 +445,12 @@ export const ProfileComponent = () => {
               <Social />
             </TabPanel>
             <TabPanel value={value} index={2}>
-              <Typography
-                sx={{
-                  textAlign: "",
-                  margin: "0 0 12px 0",
-                  fontWeight: 100,
-                  color: "rgba(255,255,255,.5)",
-                  fontSize: "32px",
-                }}
-              >
-                {" "}
-                New Appointments{" "}
-              </Typography>
-              <Divider
-                sx={{
-                  width: "24px",
-                  margin: "0 0 32px 0",
-                  background: "rgba(255,255,255,.7)",
-                }}
-              />
               <NewAppointMents />
             </TabPanel>
 
             <TabPanel value={value} index={3}>
               <Typography
+                component="div"
                 sx={{
                   textAlign: "",
                   margin: "0 0 12px 0",
@@ -526,6 +474,7 @@ export const ProfileComponent = () => {
 
             <TabPanel value={value} index={4}>
               <Typography
+                component="div"
                 sx={{
                   textAlign: "",
                   margin: "0 0 12px 0",
@@ -572,6 +521,7 @@ const Social = () => {
     >
       <LockIcon sx={{ fontSize: "100px" }} />
       <Typography
+        component="div"
         sx={{
           textAlign: "center",
           color: "#111",
@@ -586,6 +536,7 @@ const Social = () => {
         {"Access Denied"}
       </Typography>
       <Typography
+        component="div"
         sx={{
           textAlign: "center",
           color: "#111",
@@ -619,158 +570,182 @@ const Social = () => {
 
 const NewAppointMents = () => {
   return (
-    <Swiper
-      effect={"cards"}
-      grabCursor={true}
-      modules={[EffectCards]}
-      className="appointments-swiper"
-    >
-      {DUMMY_USERS.map((item, index) => {
-        return (
-          <SwiperSlide key={index}>
-            <Box
-              sx={{
-                minHeight: "50vh",
-                width: "100%",
-                background: "rgba(1,1,1,.85)",
-                // scale: "0.99",
-                borderRadius: "21px 21px 0 0",
-                padding: "0 0 12px 0",
-              }}
-            >
-              <Box
-                sx={{
-                  height: "300px",
-                  width: "100%",
-                  backgroundImage: `url("${item.img}")`,
-                  backgroundSize: "cover",
-                  backgroundRepeat: "no-repeat",
-                  borderRadius: "12px 12px 0 0",
-                  backgroundPostion: "center",
-                }}
-              >
+    <Box>
+      <Typography
+        component="div"
+        sx={{
+          textAlign: "",
+          margin: "0 0 12px 0",
+          fontWeight: 100,
+          color: "rgba(255,255,255,.5)",
+          fontSize: "32px",
+        }}
+      >
+        {" "}
+        New Appointments{" "}
+      </Typography>
+      <Divider
+        sx={{
+          width: "24px",
+          margin: "0 0 32px 0",
+          background: "rgba(255,255,255,.7)",
+        }}
+      />
+      {domLoaded && (
+        <Swiper
+          effect={"cards"}
+          grabCursor={true}
+          modules={[EffectCards]}
+          className="appointments-swiper"
+        >
+          {DUMMY_USERS.map((item, index) => {
+            return (
+              <SwiperSlide key={index}>
                 <Box
                   sx={{
+                    minHeight: "50vh",
                     width: "100%",
-                    height: "100%",
-                    display: "flex",
-                    // flexDirection: "column",
-                    justifyContent: "space-between",
-                    alignItems: "flex-end",
+                    background: "rgba(1,1,1,.85)",
+                    // scale: "0.99",
                     borderRadius: "21px 21px 0 0",
-                    padding: "12px",
-                    background:
-                      "linear-gradient(180deg, rgba(0,0,0,0.23012955182072825) 0%, rgba(0,0,0,0.8847514005602241) 80%, rgba(0,0,0,0.10968137254901966) 1000%);",
-                    // background: "rgba(1,1,1,.7)",
+                    padding: "0 0 12px 0",
                   }}
-                />
-              </Box>
-              <Typography
-                variant="span"
-                sx={{
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  fontSize: "18px",
-                  display: "flex",
-                  margin: "21px 8px",
-                  alignItems: "center",
-                  color: "rgba(200,200,200,0.7)",
-                }}
-              >
-                {" "}
-                <PersonIcon sx={{ scale: "0.9", margin: "0 6px" }} />
-                {item.username.toUpperCase()}
-              </Typography>{" "}
-              <Typography
-                variant="span"
-                sx={{
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  fontSize: "18px",
-                  display: "flex",
-                  margin: "21px 8px",
-                  alignItems: "center",
-                  color: "rgba(200,200,200,0.7)",
-                }}
-              >
-                {" "}
-                <LocalPhoneIcon sx={{ scale: "0.9", margin: "0 6px" }} />
-                {item.phone.toUpperCase()}
-              </Typography>{" "}
-              <Typography
-                variant="span"
-                sx={{
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  fontSize: "18px",
-                  display: "flex",
-                  margin: "21px 8px",
-                  alignItems: "center",
-                  color: "rgba(200,200,200,0.7)",
-                }}
-              >
-                {" "}
-                <LocationOnIcon sx={{ scale: "0.9", margin: "0 6px" }} />
-                {item.address.city.toUpperCase()}
-              </Typography>{" "}
-              <Typography
-                variant="span"
-                sx={{
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  fontSize: "18px",
-                  display: "flex",
-                  margin: "21px 8px",
-                  alignItems: "center",
-                  color: "rgba(200,200,200,0.7)",
-                }}
-              >
-                {" "}
-                <CalendarMonthIcon sx={{ scale: "0.9", margin: "0 6px" }} />
-                {" 17 Feb 2023 - 17:00"}
-              </Typography>{" "}
-              <Typography
-                variant="span"
-                sx={{
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  fontSize: "18px",
-                  display: "flex",
-                  margin: "21px 8px",
-                  alignItems: "center",
-                  color: "rgba(200,200,200,0.7)",
-                }}
-              >
-                {" "}
-                <ScheduleIcon sx={{ scale: "0.9", margin: "0 6px" }} />
-                {" 1 Hour"}
-              </Typography>{" "}
-              <Box
-                sx={{
-                  width: "50%",
-                  margin: "0 auto",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-evenly",
-                }}
-              >
-                <IconButton>
-                  <DoneIcon sx={{ color: "#999" }} />
-                </IconButton>
+                >
+                  <Box
+                    sx={{
+                      height: "300px",
+                      width: "100%",
+                      backgroundImage: `url("${item.img}")`,
+                      backgroundSize: "cover",
+                      backgroundRepeat: "no-repeat",
+                      borderRadius: "12px 12px 0 0",
+                      backgroundPostion: "center",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        // flexDirection: "column",
+                        justifyContent: "space-between",
+                        alignItems: "flex-end",
+                        borderRadius: "21px 21px 0 0",
+                        padding: "12px",
+                        background:
+                          "linear-gradient(180deg, rgba(0,0,0,0.23012955182072825) 0%, rgba(0,0,0,0.8847514005602241) 80%, rgba(0,0,0,0.10968137254901966) 1000%);",
+                        // background: "rgba(1,1,1,.7)",
+                      }}
+                    />
+                  </Box>
+                  <Typography
+                    component="div"
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      fontSize: "18px",
+                      display: "flex",
+                      margin: "21px 8px",
+                      alignItems: "center",
+                      color: "rgba(200,200,200,0.7)",
+                    }}
+                  >
+                    {" "}
+                    <PersonIcon sx={{ scale: "0.9", margin: "0 6px" }} />
+                    {item.username.toUpperCase()}
+                  </Typography>{" "}
+                  <Typography
+                    component="div"
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      fontSize: "18px",
+                      display: "flex",
+                      margin: "21px 8px",
+                      alignItems: "center",
+                      color: "rgba(200,200,200,0.7)",
+                    }}
+                  >
+                    {" "}
+                    <LocalPhoneIcon sx={{ scale: "0.9", margin: "0 6px" }} />
+                    {item.phone.toUpperCase()}
+                  </Typography>{" "}
+                  <Typography
+                    component="div"
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      fontSize: "18px",
+                      display: "flex",
+                      margin: "21px 8px",
+                      alignItems: "center",
+                      color: "rgba(200,200,200,0.7)",
+                    }}
+                  >
+                    {" "}
+                    <LocationOnIcon sx={{ scale: "0.9", margin: "0 6px" }} />
+                    {item.address.city.toUpperCase()}
+                  </Typography>{" "}
+                  <Typography
+                    component="div"
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      fontSize: "18px",
+                      display: "flex",
+                      margin: "21px 8px",
+                      alignItems: "center",
+                      color: "rgba(200,200,200,0.7)",
+                    }}
+                  >
+                    {" "}
+                    <CalendarMonthIcon sx={{ scale: "0.9", margin: "0 6px" }} />
+                    {" 17 Feb 2023 - 17:00"}
+                  </Typography>{" "}
+                  <Typography
+                    component="div"
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      fontSize: "18px",
+                      display: "flex",
+                      margin: "21px 8px",
+                      alignItems: "center",
+                      color: "rgba(200,200,200,0.7)",
+                    }}
+                  >
+                    {" "}
+                    <ScheduleIcon sx={{ scale: "0.9", margin: "0 6px" }} />
+                    {" 1 Hour"}
+                  </Typography>{" "}
+                  <Box
+                    sx={{
+                      width: "50%",
+                      margin: "0 auto",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-evenly",
+                    }}
+                  >
+                    <IconButton>
+                      <DoneIcon sx={{ color: "#999" }} />
+                    </IconButton>
 
-                <IconButton>
-                  <ClearIcon sx={{ color: "#999" }} />
-                </IconButton>
+                    <IconButton>
+                      <ClearIcon sx={{ color: "#999" }} />
+                    </IconButton>
 
-                <IconButton>
-                  <ReportGmailerrorredIcon sx={{ color: "#999" }} />
-                </IconButton>
-              </Box>
-            </Box>
-          </SwiperSlide>
-        );
-      })}
-    </Swiper>
+                    <IconButton>
+                      <ReportGmailerrorredIcon sx={{ color: "#999" }} />
+                    </IconButton>
+                  </Box>
+                </Box>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+      )}
+    </Box>
   );
 };
 
@@ -789,25 +764,7 @@ const PersonalForm = () => {
       }}
     >
       <Typography
-        sx={{
-          textAlign: "",
-          margin: "12px 0 0 0",
-          fontWeight: 100,
-          color: "rgba(200,200,200,.5)",
-          fontSize: "32px",
-        }}
-      >
-        {" "}
-        Personal{" "}
-      </Typography>
-      <Divider
-        sx={{
-          width: "24px",
-          margin: "0 0 32px 0",
-          background: "rgba(255,255,255,.7)",
-        }}
-      />
-      <Typography
+        component="div"
         sx={{
           color: "rgba(200,200,200,.7)",
           margin: "0",
@@ -832,6 +789,7 @@ const PersonalForm = () => {
         }}
       />
       <Typography
+        component="div"
         sx={{
           color: "rgba(200,200,200,.7)",
           margin: "0",
@@ -856,6 +814,7 @@ const PersonalForm = () => {
         }}
       />
       <Typography
+        component="div"
         sx={{
           color: "rgba(200,200,200,.7)",
           margin: "0",
@@ -880,6 +839,7 @@ const PersonalForm = () => {
         }}
       />
       <Typography
+        component="div"
         sx={{
           color: "rgba(200,200,200,.7)",
           margin: "0",
@@ -904,6 +864,7 @@ const PersonalForm = () => {
         }}
       />
       <Typography
+        component="div"
         sx={{
           color: "rgba(200,200,200,.7)",
           margin: "0",
@@ -928,6 +889,7 @@ const PersonalForm = () => {
         }}
       />
       <Typography
+        component="div"
         sx={{
           color: "rgba(200,200,200,.7)",
           margin: "0",
@@ -952,6 +914,7 @@ const PersonalForm = () => {
         }}
       />
       <Typography
+        component="div"
         sx={{
           color: "rgba(200,200,200,.7)",
           margin: "0",
@@ -984,6 +947,7 @@ const PersonalForm = () => {
         <MenuItem value="Female">Female</MenuItem>
       </TextField>
       <Typography
+        component="div"
         sx={{
           color: "rgba(200,200,200,.7)",
           margin: "0",
@@ -1016,6 +980,7 @@ const PersonalForm = () => {
         <MenuItem value="Escort">Escort</MenuItem>
       </TextField>
       <Typography
+        component="div"
         sx={{
           textAlign: "",
           margin: "21px 0 0 0",
@@ -1035,6 +1000,7 @@ const PersonalForm = () => {
         }}
       />
       <Typography
+        component="div"
         sx={{
           color: "rgba(200,200,200,.7)",
           margin: "0",
@@ -1059,6 +1025,7 @@ const PersonalForm = () => {
         }}
       />
       <Typography
+        component="div"
         sx={{
           color: "rgba(200,200,200,.7)",
           margin: "0",
@@ -1083,6 +1050,7 @@ const PersonalForm = () => {
         }}
       />
       <Typography
+        component="div"
         sx={{
           color: "rgba(200,200,200,.7)",
           margin: "0",
@@ -1107,6 +1075,7 @@ const PersonalForm = () => {
         }}
       />
       <Typography
+        component="div"
         sx={{
           color: "rgba(200,200,200,.7)",
           margin: "0",
@@ -1131,6 +1100,7 @@ const PersonalForm = () => {
         }}
       />
       <Typography
+        component="div"
         sx={{
           color: "rgba(200,200,200,.7)",
           margin: "0",
@@ -1155,6 +1125,7 @@ const PersonalForm = () => {
         }}
       />
       <Typography
+        component="div"
         sx={{
           color: "rgba(200,200,200,.7)",
           margin: "0",
@@ -1179,6 +1150,7 @@ const PersonalForm = () => {
         }}
       />
       <Typography
+        component="div"
         sx={{
           color: "rgba(200,200,200,.7)",
           margin: "0",
