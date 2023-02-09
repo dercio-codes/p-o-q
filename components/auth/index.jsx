@@ -226,7 +226,7 @@ const DUMMY_USERS = [
 export const Auth = (props) => {
   const router = useRouter();
   const [signUp, setSignUp] = useState(false);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const { user, setUser } = useContext(UserContext);
 
   const googleHandler = async () => {
