@@ -173,3 +173,6 @@ a {
 .appointments-swiper .swiper-slide:nth-child(10n) {
   background-color: rgba(54, 94, 77, 1);
 }
+div.css-3dah0e-MuiModal-root-MuiDialog-root {
+  z-index: 9999999 !important ;
+}

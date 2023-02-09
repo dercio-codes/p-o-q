@@ -21,6 +21,7 @@ import RecommendIcon from "@mui/icons-material/Recommend";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import CloseIcon from "@mui/icons-material/Close";
+import ChatIcon from "@mui/icons-material/Chat";
 import Link from "next/link";
 
 import AddIcon from "@mui/icons-material/Add";
@@ -108,7 +109,7 @@ export const Navbar = (props) => {
         )}
       </Button>
 
-      <Link href="/" style={{ flex: 1, height: "100%" }}>
+      <Link href="/inbox" style={{ flex: 1, height: "100%" }}>
         <Button
           sx={{
             // background: active == "recommend" ? "##16F529" : "transparent",
@@ -119,7 +120,7 @@ export const Navbar = (props) => {
             borderRadius: "0",
           }}
         >
-          <RecommendIcon sx={{ color: "rgba(255,255,255,.7)" }} />
+          <ChatIcon sx={{ color: "rgba(255,255,255,.7)" }} />
         </Button>
       </Link>
       <Link href="/profile" style={{ flex: 1, height: "100%" }}>
@@ -165,9 +166,7 @@ export const Navbar = (props) => {
               />
             </Button>
             <Button sx={{ background: "" }}>
-              <LiveTvIcon
-                sx={{ margin: "21px 0", color: "rgba(255,255,255,.7)" }}
-              />
+              <RecommendIcon sx={{ color: "rgba(255,255,255,.7)" }} />
             </Button>
             <Button sx={{ background: "" }}>
               <ExitToAppIcon
