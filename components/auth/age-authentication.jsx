@@ -187,7 +187,7 @@ ColorlibStepIcon.propTypes = {
   icon: PropTypes.node,
 };
 
-const steps = ["Age", "Likes", "Location", "Complete"];
+const steps = ["Age", "Fetish", "Location", "Complete"];
 
 export const AgeAuthentication = ({ user, setUser }) => {
   const [activeStep, setActiveStep] = React.useState(0);
@@ -506,7 +506,7 @@ const FetishesComponent = ({ activeStep }) => {
         }}
       >
         {" "}
-        Lkkes{" "}
+        Fetish{" "}
       </Typography>
       <Divider
         sx={{
