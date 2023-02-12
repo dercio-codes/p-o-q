@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -22,6 +22,24 @@ import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import PersonIcon from "@mui/icons-material/Person";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import {
+  query,
+  collection,
+  addDoc,
+  setDoc,
+  deleteDoc,
+  doc,
+  getDocs,
+  where,
+  updateDoc,
+} from "firebase/firestore";
+import {
+  storage,
+  googleProvider,
+  facebookProvider,
+  auth,
+  db,
+} from "./../../config/firebaseConfig";
 
 const DUMMY_USERS = [
   {
@@ -209,49 +227,24 @@ const DUMMY_USERS = [
 export const Models = () => {
   const [signUp, setSignUp] = useState(false);
   const [open, setOpen] = useState(false);
+  const [models, setModels] = useState([]);
   const [openModel, setOpenMOdel] = useState({});
   const [selectedGender, setSelectedGender] = useState(
     "Select Preferred Gender"
   );
-  const [user, setUser] = useState({
-    personal: {
-      uid: "",
-      name: "",
-      surname: "",
-      username: "",
-      email: "2",
-      age: "",
-      dob: "",
-      gender: "",
-      userType: "",
-      address: {
-        number: "",
-        street: "",
-        town: "",
-        city: "",
-        province: "",
-        country: "",
-        postal: "",
-        coordinates: {
-          latitude: "",
-          longitude: "",
-        },
-      },
-    },
-    social: {
-      // users profile picture
-      profilePicture: "",
 
-      // featured images are images or videos put up
-      stories: [],
-
-      // if unique id is subscribed we add them to subscribed users if not we hide the content and prompt user to purchase content
-      subscribedUsers: [],
-      content: [],
-    },
-    hotelReccomendations: [],
-    appointments: [],
-  });
+  useEffect(() => {
+    const getData = async () => {
+      let localModels = [];
+      const querySnapshot = await getDocs(collection(db, "users"));
+      querySnapshot.forEach((item, index) => {
+        localModels.push(item.data());
+      });
+      console.log(localModels);
+      setModels(localModels);
+    };
+    getData();
+  }, []);
 
   return (
     <Box
@@ -263,6 +256,7 @@ export const Models = () => {
     >
       <Box sx={{ minHeight: "100vh", margin: "0" }}>
         <Typography
+          component="h1"
           sx={{
             textAlign: "",
             margin: "0 0 12px 0",
@@ -282,6 +276,7 @@ export const Models = () => {
           }}
         />
         <Typography
+          component="h6"
           sx={{
             color: "rgba(255,255,255,.7)",
             margin: "0",
@@ -352,11 +347,11 @@ export const Models = () => {
           spacing={6}
           sx={{
             display:
-              selectedGender == "Select Preferred Gender" ? "none" : "block",
+              selectedGender == "Select Preferred Gender" ? "none" : "flex",
           }}
         >
-          {DUMMY_USERS.map((item, index) => {
-            if (selectedGender == item.gender) {
+          {models.map((item, index) => {
+            if (selectedGender == item.personal.gender) {
               return (
                 <Grid key={index} item xs={12} md={6} lg={4}>
                   <Box
@@ -379,7 +374,7 @@ export const Models = () => {
                       sx={{
                         height: "300px",
                         width: "100%",
-                        backgroundImage: `url("${item.img}")`,
+                        backgroundImage: `url("${item.social.profilePicture}")`,
                         backgroundSize: "cover",
                         backgroundRepeat: "no-repeat",
                         borderRadius: "21px 21px 0 0",
@@ -402,7 +397,8 @@ export const Models = () => {
                         }}
                       >
                         <Typography
-                          variant="span"
+                          component="div"
+                          variant="div"
                           sx={{
                             fontSize: "16px",
                             fontWeight: "600",
@@ -417,9 +413,9 @@ export const Models = () => {
                           <LocationOnIcon
                             sx={{ scale: "0.7", margin: "0 6px" }}
                           />
-                          {item.address.city.toUpperCase()}
+                          {item.personal.address.city.toUpperCase()}
                         </Typography>{" "}
-                        <Rating readOnly value={item.id} />
+                        <Rating readOnly value={index} />
                       </Box>
                     </Box>
 
@@ -435,73 +431,88 @@ export const Models = () => {
                       }}
                     >
                       <Typography
+                        component="div"
                         sx={{
                           textAlign: "",
                           margin: "8px 0 0 0",
                           fontWeight: 600,
                           color: "rgba(200,200,200,.8)",
+                          display: "flex",
+                          alignItems: "center",
                           fontSize: "18px",
                         }}
                       >
                         {" "}
                         <Typography
-                          variant="span"
+                          component="div"
+                          variant="div"
                           sx={{
                             fontSize: "16px",
                             fontWeight: "100",
                             color: "rgba(200,200,200,.6)",
+                            margin: "0 12px 0 0",
                           }}
                         >
                           {" "}
                           Name :
                         </Typography>{" "}
-                        {item.username}{" "}
+                        {item.personal.username}{" "}
                       </Typography>
                       <Typography
+                        component="div"
                         sx={{
                           textAlign: "",
                           margin: "8px 0 0 0",
                           fontWeight: 600,
                           color: "rgba(200,200,200,.8)",
+                          display: "flex",
+                          alignItems: "center",
                           fontSize: "18px",
                         }}
                       >
                         {" "}
                         <Typography
-                          variant="span"
+                          component="div"
+                          variant="div"
                           sx={{
                             fontSize: "16px",
                             fontWeight: "100",
                             color: "rgba(200,200,200,.6)",
+                            margin: "0 12px 0 0",
                           }}
                         >
                           {" "}
                           Tel :
                         </Typography>{" "}
-                        {item.phone}{" "}
+                        {item.personal.tel}{" "}
                       </Typography>
                       <Typography
+                        component="div"
                         sx={{
                           textAlign: "",
                           margin: "8px 0 0 0",
                           fontWeight: 600,
                           color: "rgba(200,200,200,.8)",
+                          display: "flex",
+                          alignItems: "center",
                           fontSize: "18px",
                         }}
                       >
                         {" "}
                         <Typography
-                          variant="span"
+                          component="div"
+                          variant="div"
                           sx={{
                             fontSize: "16px",
                             fontWeight: "100",
                             color: "rgba(200,200,200,.6)",
+                            margin: "0 12px 0 0",
                           }}
                         >
                           {" "}
                           Status :
                         </Typography>{" "}
-                        {"Available"}{" "}
+                        {index % 2 == 0 ? "Available" : "Busy"}{" "}
                       </Typography>
                       <Box
                         sx={{
@@ -563,10 +574,10 @@ export const Models = () => {
           spacing={6}
           sx={{
             display:
-              selectedGender == "Select Preferred Gender" ? "block" : "none",
+              selectedGender == "Select Preferred Gender" ? "flex" : "none",
           }}
         >
-          {DUMMY_USERS.map((item, index) => {
+          {models.map((item, index) => {
             return (
               <Grid key={index} item xs={12} md={6} lg={4}>
                 <Box
@@ -589,7 +600,7 @@ export const Models = () => {
                     sx={{
                       height: "300px",
                       width: "100%",
-                      backgroundImage: `url("${item.img}")`,
+                      backgroundImage: `url("${item.social.profilePicture}")`,
                       backgroundSize: "cover",
                       backgroundRepeat: "no-repeat",
                       borderRadius: "21px 21px 0 0",
@@ -612,7 +623,8 @@ export const Models = () => {
                       }}
                     >
                       <Typography
-                        variant="span"
+                        component="div"
+                        variant="div"
                         sx={{
                           fontSize: "16px",
                           fontWeight: "600",
@@ -627,9 +639,9 @@ export const Models = () => {
                         <LocationOnIcon
                           sx={{ scale: "0.7", margin: "0 6px" }}
                         />
-                        {item.address.city.toUpperCase()}
+                        {item.personal.address.city.toUpperCase()}
                       </Typography>{" "}
-                      <Rating readOnly value={item.id} />
+                      <Rating readOnly value={index} />
                     </Box>
                   </Box>
 
@@ -645,67 +657,82 @@ export const Models = () => {
                     }}
                   >
                     <Typography
+                      component="div"
                       sx={{
                         textAlign: "",
                         margin: "8px 0 0 0",
                         fontWeight: 600,
                         color: "rgba(200,200,200,.8)",
+                        display: "flex",
+                        alignItems: "center",
                         fontSize: "18px",
                       }}
                     >
                       {" "}
                       <Typography
-                        variant="span"
+                        component="div"
+                        variant="div"
                         sx={{
                           fontSize: "16px",
                           fontWeight: "100",
                           color: "rgba(200,200,200,.6)",
+                          margin: "0 12px 0 0",
                         }}
                       >
                         {" "}
                         Name :
                       </Typography>{" "}
-                      {item.username}{" "}
+                      {item.personal.username}{" "}
                     </Typography>
                     <Typography
+                      component="div"
                       sx={{
                         textAlign: "",
                         margin: "8px 0 0 0",
                         fontWeight: 600,
                         color: "rgba(200,200,200,.8)",
+                        display: "flex",
+                        alignItems: "center",
                         fontSize: "18px",
                       }}
                     >
                       {" "}
                       <Typography
-                        variant="span"
+                        component="div"
+                        variant="div"
                         sx={{
                           fontSize: "16px",
                           fontWeight: "100",
                           color: "rgba(200,200,200,.6)",
+                          margin: "0 12px 0 0",
                         }}
                       >
                         {" "}
                         Tel :
                       </Typography>{" "}
-                      {item.phone}{" "}
+                      {item.personal.tel}{" "}
                     </Typography>
                     <Typography
+                      component="div"
                       sx={{
                         textAlign: "",
                         margin: "8px 0 0 0",
                         fontWeight: 600,
                         color: "rgba(200,200,200,.8)",
+                        display: "flex",
+                        alignItems: "center",
                         fontSize: "18px",
                       }}
                     >
                       {" "}
                       <Typography
-                        variant="span"
+                        component="div"
+                        variant="div"
                         sx={{
                           fontSize: "16px",
                           fontWeight: "100",
                           color: "rgba(200,200,200,.6)",
+                          margin: "0 12px 0 0",
                         }}
                       >
                         {" "}
@@ -800,11 +827,12 @@ export const Models = () => {
             />
           </Box>
           <Avatar
-            src={openModel.img}
+            src={open ? openModel.social.profilePicture : ""}
             sx={{ height: "150px", width: "150px", border: "1px dashed red " }}
           />
           <Typography
-            variant="span"
+            component="div"
+            variant="div"
             sx={{
               margin: "32px 0 12px 0",
               fontSize: "21px",
@@ -815,10 +843,11 @@ export const Models = () => {
             }}
           >
             <PersonIcon sx={{ scale: "0.9", margin: "0 6px" }} />
-            {openModel.username}{" "}
+            {open ? openModel.personal.username : ""}{" "}
           </Typography>
           <Typography
-            variant="span"
+            component="div"
+            variant="div"
             sx={{
               margin: "12px 0",
               fontSize: "21px",
@@ -829,10 +858,11 @@ export const Models = () => {
             }}
           >
             <LocalPhoneIcon sx={{ scale: "0.9", margin: "0 6px" }} />
-            {openModel.phone}{" "}
+            {open ? openModel.personal.tel : ""}{" "}
           </Typography>
           <Typography
-            variant="span"
+            component="div"
+            variant="div"
             sx={{
               fontSize: "16px",
               fontWeight: "600",
@@ -845,7 +875,7 @@ export const Models = () => {
           >
             {" "}
             <LocationOnIcon sx={{ scale: "0.9", margin: "0 6px" }} />
-            {open ? openModel.address.city.toUpperCase() : ""}
+            {open ? openModel.personal.address.city.toUpperCase() : ""}
           </Typography>{" "}
           <Grid container>
             {[

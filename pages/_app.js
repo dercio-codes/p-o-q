@@ -14,7 +14,7 @@ export default function App({ Component, pageProps }) {
       username: "",
       email: "2",
       age: "",
-      dob: "",
+      dob: "01/01/2000",
       gender: "",
       userType: "",
       address: {
@@ -31,7 +31,7 @@ export default function App({ Component, pageProps }) {
         },
       },
     },
-    preferences: [],
+    fetishes: [],
     social: {
       // users profile picture
       profilePicture: "",

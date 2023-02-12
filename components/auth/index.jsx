@@ -226,7 +226,7 @@ const DUMMY_USERS = [
 export const Auth = (props) => {
   const router = useRouter();
   const [signUp, setSignUp] = useState(false);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const { user, setUser } = useContext(UserContext);
 
   const googleHandler = async () => {
@@ -262,38 +262,17 @@ export const Auth = (props) => {
             // });
 
             let userExists = false;
-            // const querySnapshot = await getDocs(collection(db, "users"));
+            const querySnapshot = await getDocs(collection(db, "users"));
 
-            // querySnapshot.forEach((item) => {
-            //   console.log("snapshop result :", item.id);
-            //   if (item.id === result.user.email) {
-            //     userExists = true;
-            //     setUser({ ...item.data() });
-            //   }
-            // });
-
-            // if (userExists) {
-            //   console.log("updating");
-            // } else {
-            //   console.log("adding doc");
-            //   await setDoc(doc(db, "users", result.user.email), {
-            //     ...user,
-            //     personal: {
-            //       ...user.personal,
-            //       uid: result.user.uid,
-            //       email: result.user.email,
-            //       username: result.user.displayName,
-            //     },
-            //     social: {
-            //       // users profile picture
-            //       profilePicture: result.user.photoURL,
-            //     },
-            //   });
-            // }
-
-            // router.push("/profile");
-            setOpen(true);
-            // window.location.href = "/profile";
+            querySnapshot.forEach((item) => {
+              console.log("snapshop result :", item.id);
+              if (item.id === user.personal.email) {
+                userExists = true;
+                setUser({ ...item.data() });
+                setOpen(true);
+                return;
+              }
+            });
           } catch (err) {
             alert(err.message);
           }
@@ -313,11 +292,17 @@ export const Auth = (props) => {
       });
   };
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
+  const updateUserOnDB = async () => {
+    await setDoc(doc(db, "users", user.personal.email), {
+      ...user,
+    });
+    localStorage.setItem("authUser", JSON.stringify(user));
+    router.push("/profile");
+  };
 
-  return (
+  return open ? (
+    <AgeAuthentication updateUserOnDB={updateUserOnDB} />
+  ) : (
     <Box
       sx={{
         minHeight: "100vh",
