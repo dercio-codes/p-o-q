@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   Box,
   Grid,
@@ -23,20 +23,66 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import CloseIcon from "@mui/icons-material/Close";
 import ChatIcon from "@mui/icons-material/Chat";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import AddIcon from "@mui/icons-material/Add";
 import { signOut } from "firebase/auth";
 import { auth } from "./../../config/firebaseConfig"; // update path to your firestore config
+import { UserContext } from "../../pages/_app";
 
 export const Navbar = (props) => {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
+  const router = useRouter();
+  const { user, setUser } = useContext(UserContext);
 
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
         console.log("logged out");
-        navigate("/");
+        localStorage.removeItem("authUser");
+        setUser({
+          personal: {
+            uid: "",
+            name: "",
+            surname: "",
+            username: "",
+            email: "2",
+            age: "",
+            dob: "01/01/2000",
+            tel: "",
+            gender: "",
+            userType: "",
+            address: {
+              number: "",
+              street: "",
+              town: "",
+              city: "",
+              province: "",
+              country: "",
+              postal: "",
+              coordinates: {
+                latitude: "",
+                longitude: "",
+              },
+            },
+          },
+          fetishes: [],
+          social: {
+            // users profile picture
+            profilePicture: "",
+
+            // featured images are images or videos put up
+            stories: [],
+
+            // if unique id is subscribed we add them to subscribed users if not we hide the content and prompt user to purchase content
+            subscribedUsers: [],
+            content: [],
+          },
+          hotelReccomendations: [],
+          appointments: [],
+        });
+        router.push("/");
       })
       .catch((error) => {
         console.log(error);

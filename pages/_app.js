@@ -15,6 +15,7 @@ export default function App({ Component, pageProps }) {
       email: "2",
       age: "",
       dob: "01/01/2000",
+      tel: "",
       gender: "",
       userType: "",
       address: {
@@ -56,6 +57,8 @@ export default function App({ Component, pageProps }) {
   if (!showChild) {
     return null;
   }
+
+  // auth.onAuthStateChanged
 
   if (typeof window === "undefined") {
     return <></>;

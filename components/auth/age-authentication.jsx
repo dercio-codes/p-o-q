@@ -261,8 +261,6 @@ export const AgeAuthentication = ({ updateUserOnDB }) => {
     setCompleted({});
   };
 
-  console.log(user);
-
   return (
     <Box
       sx={{
@@ -357,41 +355,55 @@ export const AgeAuthentication = ({ updateUserOnDB }) => {
                 <FetishesComponent activeStep={activeStep} />
                 <LocationComponent activeStep={activeStep} />
 
-                <Box
-                  sx={{
-                    minHeight: "45vh",
-                    margin: "12px 0",
-                    background: "",
-                    display: activeStep === 3 ? "flex" : " none",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-                  }}
-                >
-                  <img
-                    src="https://img.icons8.com/office/256/approval.png"
-                    alt="COmplete"
-                    style={{
-                      width: "250px",
-                      height: "250px",
-                      objectFit: "contain",
-                    }}
-                  />
-                  <Typography
-                    component="div"
+                {loading ? (
+                  <Box
                     sx={{
-                      textAlign: "Center",
-                      margin: "21px 0",
-                      fontWeight: 600,
-                      color: "rgba(255,255,255,.5)",
-                      fontSize: "28px",
+                      minHeight: "50vh",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "100%",
                     }}
                   >
-                    {" "}
-                    Profile Setup Succesfully{" "}
-                  </Typography>
-                </Box>
+                    <CircularProgress size={"10rem"} color={"secondary"} />
+                  </Box>
+                ) : (
+                  <Box
+                    sx={{
+                      minHeight: "45vh",
+                      margin: "12px 0",
+                      background: "",
+                      display: activeStep === 3 ? "flex" : " none",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      width: "100%",
+                    }}
+                  >
+                    <img
+                      src="https://img.icons8.com/office/256/approval.png"
+                      alt="COmplete"
+                      style={{
+                        width: "250px",
+                        height: "250px",
+                        objectFit: "contain",
+                      }}
+                    />
+                    <Typography
+                      component="div"
+                      sx={{
+                        textAlign: "Center",
+                        margin: "21px 0",
+                        fontWeight: 600,
+                        color: "rgba(255,255,255,.5)",
+                        fontSize: "28px",
+                      }}
+                    >
+                      {" "}
+                      Profile Setup Succesfully{" "}
+                    </Typography>
+                  </Box>
+                )}
               </Box>
             )}
             <Box
@@ -447,6 +459,16 @@ export default function DatePicker({ activeStep, oldEnough, setOldEnough }) {
     });
   };
 
+  const handleTelChange = (value) => {
+    setUser({
+      ...user,
+      personal: {
+        ...user.personal,
+        tel: value,
+      },
+    });
+  };
+
   const handleDOBChange = (newValue) => {
     const myDate = JSON.stringify(newValue.$d).split("-")[0].slice(1);
     const localDOB = JSON.stringify(newValue.$d).split("T")[0].slice(1);
@@ -454,7 +476,6 @@ export default function DatePicker({ activeStep, oldEnough, setOldEnough }) {
     const processedDOB = `${localDOB.split("-")[0]}/${localDOB.split("-")[1]}/${
       Number(localDOB.split("-")[2]) + 1
     }`;
-    console.log(processedDOB);
     setUser({
       ...user,
       personal: {
@@ -618,6 +639,16 @@ export default function DatePicker({ activeStep, oldEnough, setOldEnough }) {
               Client{" "}
             </MenuItem>
           </TextField>
+
+          <TextField
+            type={"tel"}
+            value={user.personal.tel}
+            onChange={(e) => {
+              handleTelChange(e.target.value);
+            }}
+            fullWidth
+            sx={{ ...whiteForm }}
+          />
         </Box>
       ) : (
         <Typography

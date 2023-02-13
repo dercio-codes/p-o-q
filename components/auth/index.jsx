@@ -52,201 +52,36 @@ import {
 import { UserContext } from "../../pages/_app";
 import { AgeAuthentication } from "./age-authentication";
 
-const DUMMY_USERS = [
-  {
-    address: {
-      geolocation: { lat: "-37.3159", long: "81.1496" },
-      city: "kilcoole",
-      street: "new road",
-      number: 7682,
-      zipcode: "12926-3874",
-    },
-    id: 1,
-    img: "https://images.pexels.com/photos/247204/pexels-photo-247204.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    email: "john@gmail.com",
-    username: "johnd",
-    password: "m38rmF$",
-    name: { firstname: "john", lastname: "doe" },
-    phone: "1-570-236-7033",
-    __v: 0,
-  },
-  {
-    address: {
-      geolocation: { lat: "-37.3159", long: "81.1496" },
-      city: "kilcoole",
-      street: "Lovers Ln",
-      number: 7267,
-      zipcode: "12926-3874",
-    },
-    id: 2,
-    img: "https://images.pexels.com/photos/1462637/pexels-photo-1462637.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    email: "morrison@gmail.com",
-    username: "mor_2314",
-    password: "83r5^_",
-    name: { firstname: "david", lastname: "morrison" },
-    phone: "1-570-236-7033",
-    __v: 0,
-  },
-  {
-    address: {
-      geolocation: { lat: "40.3467", long: "-30.1310" },
-      city: "Cullman",
-      street: "Frances Ct",
-      number: 86,
-      zipcode: "29567-1452",
-    },
-    id: 3,
-    img: "https://images.pexels.com/photos/2065203/pexels-photo-2065203.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    email: "kevin@gmail.com",
-    username: "kevinryan",
-    password: "kev02937@",
-    name: { firstname: "kevin", lastname: "ryan" },
-    phone: "1-567-094-1345",
-    __v: 0,
-  },
-  {
-    address: {
-      geolocation: { lat: "50.3467", long: "-20.1310" },
-      city: "San Antonio",
-      street: "Hunters Creek Dr",
-      number: 6454,
-      zipcode: "98234-1734",
-    },
-    id: 4,
-    img: "https://images.pexels.com/photos/1689731/pexels-photo-1689731.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    email: "don@gmail.com",
-    username: "donero",
-    password: "ewedon",
-    name: { firstname: "don", lastname: "romer" },
-    phone: "1-765-789-6734",
-    __v: 0,
-  },
-  {
-    address: {
-      geolocation: { lat: "40.3467", long: "-40.1310" },
-      city: "san Antonio",
-      street: "adams St",
-      number: 245,
-      zipcode: "80796-1234",
-    },
-    id: 5,
-    img: "https://images.pexels.com/photos/1162983/pexels-photo-1162983.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    email: "derek@gmail.com",
-    username: "derek",
-    password: "jklg*_56",
-    name: { firstname: "derek", lastname: "powell" },
-    phone: "1-956-001-1945",
-    __v: 0,
-  },
-  {
-    address: {
-      geolocation: { lat: "20.1677", long: "-10.6789" },
-      city: "el paso",
-      street: "prospect st",
-      number: 124,
-      zipcode: "12346-0456",
-    },
-    id: 6,
-    email: "david_r@gmail.com",
-    username: "david_r",
-    password: "3478*#54",
-    name: { firstname: "david", lastname: "russell" },
-    phone: "1-678-345-9856",
-    __v: 0,
-  },
-  {
-    address: {
-      geolocation: { lat: "10.3456", long: "20.6419" },
-      city: "fresno",
-      street: "saddle st",
-      number: 1342,
-      zipcode: "96378-0245",
-    },
-    id: 7,
-    img: "https://images.pexels.com/photos/2036646/pexels-photo-2036646.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    email: "miriam@gmail.com",
-    username: "snyder",
-    password: "f238&@*$",
-    name: { firstname: "miriam", lastname: "snyder" },
-    phone: "1-123-943-0563",
-    __v: 0,
-  },
-  {
-    address: {
-      geolocation: { lat: "50.3456", long: "10.6419" },
-      city: "mesa",
-      street: "vally view ln",
-      number: 1342,
-      zipcode: "96378-0245",
-    },
-    id: 8,
-    img: "https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    email: "william@gmail.com",
-    username: "hopkins",
-    password: "William56$hj",
-    name: { firstname: "william", lastname: "hopkins" },
-    phone: "1-478-001-0890",
-    __v: 0,
-  },
-  {
-    address: {
-      geolocation: { lat: "40.12456", long: "20.5419" },
-      city: "miami",
-      street: "avondale ave",
-      number: 345,
-      zipcode: "96378-0245",
-    },
-    id: 9,
-    img: "https://images.pexels.com/photos/432059/pexels-photo-432059.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    email: "kate@gmail.com",
-    username: "kate_h",
-    password: "kfejk@*_",
-    name: { firstname: "kate", lastname: "hale" },
-    phone: "1-678-456-1934",
-    __v: 0,
-  },
-  {
-    address: {
-      geolocation: { lat: "30.24788", long: "-20.545419" },
-      city: "fort wayne",
-      street: "oak lawn ave",
-      number: 526,
-      zipcode: "10256-4532",
-    },
-    id: 10,
-    email: "jimmie@gmail.com",
-    username: "jimmie_k",
-    password: "klein*#%*",
-    name: { firstname: "jimmie", lastname: "klein" },
-    phone: "1-104-001-4567",
-    __v: 0,
-  },
-];
-
 export const Auth = (props) => {
   const router = useRouter();
   const [signUp, setSignUp] = useState(false);
   const [open, setOpen] = useState(false);
   const { user, setUser } = useContext(UserContext);
 
+  useEffect(() => {
+    const localStorageUser = localStorage.getItem("authUser");
+    const localStorageUserCopy = JSON.parse(localStorageUser);
+    auth.onAuthStateChanged((localStorageUser) => {
+      if (localStorageUser) {
+        console.log("Logged in");
+        setUser({ ...localStorageUserCopy });
+        router.push("/home");
+      } else {
+        console.log("Not logged in");
+      }
+    });
+  }, []);
+
   const googleHandler = async () => {
     googleProvider.setCustomParameters({ prompt: "select_account" });
     signInWithPopup(auth, googleProvider)
       .then(async (result) => {
-        console.log(result);
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
 
         // The signed-in user info.
         const resultUser = result.user;
-
-        // auth.onAuthStateChanged((user)=> console.log("changed user here: " , user))
-        auth.onAuthStateChanged((authUser) => {
-          authUser
-            ? localStorage.setItem("authUser", resultUser.accessToken)
-            : localStorage.removeItem("authUser");
-        });
 
         const updateUserResponse = async (result) => {
           // console.log(uploadingUser);
@@ -260,19 +95,45 @@ export const Auth = (props) => {
             //     username: result.user.displayName,
             //   },
             // });
+            setUser({
+              ...user,
+              personal: {
+                ...user.personal,
+                uid: result.user.uid,
+                email: result.user.email,
+                username: result.user.displayName,
+              },
+              social: {
+                ...user.social,
+                profilePicture: result.user.photoURL,
+              },
+            });
 
             let userExists = false;
             const querySnapshot = await getDocs(collection(db, "users"));
 
-            querySnapshot.forEach((item) => {
-              console.log("snapshop result :", item.id);
-              if (item.id === user.personal.email) {
-                userExists = true;
-                setUser({ ...item.data() });
-                setOpen(true);
-                return;
-              }
-            });
+            const checkIfUserExists = () => {
+              let exists = false;
+              querySnapshot.forEach((item) => {
+                if (item.id === resultUser.email) {
+                  console.log("snapshop result :", item.id);
+                  exists = true;
+                  setUser({ ...item.data() });
+                  return;
+                } else {
+                  exists = false;
+                }
+              });
+              return exists;
+            };
+
+            const doesExist = checkIfUserExists();
+            console.log(doesExist);
+            if (checkIfUserExists()) {
+              router.push("/home");
+            } else {
+              setOpen(true);
+            }
           } catch (err) {
             alert(err.message);
           }
@@ -312,17 +173,42 @@ export const Auth = (props) => {
     >
       <Box
         sx={{
-          height: "250px",
+          height: { xs: "250px" },
           width: "100%",
-          backgroundColor: "#eee",
+          backgroundColor: "#000",
           backgroundImage:
             'url("https://images.pexels.com/photos/230986/pexels-photo-230986.jpeg?auto=compress&cs=tinysrgb&w=1600")',
           // 'url("https://images.pexels.com/photos/1157936/pexels-photo-1157936.jpeg?auto=compress&cs=tinysrgb&w=1600")',
-          backgroundSize: "cover",
+          backgroundSize: "contain",
           backgroundRepeat: "no-repeat",
-          backgroundPostion: "center",
+          backgroundPosition: "center",
         }}
       ></Box>
+      <Box
+        sx={{
+          minHeight: "200px",
+          background: "",
+          display: "flex",
+          alignItems: "center",
+          margin: "0 0 12px 0",
+        }}
+      >
+        <Typography
+          className={"paradise-font"}
+          sx={{
+            textAlign: "center",
+            color: "#111",
+            margin: "auto auto",
+            letterSpacing: { xs: "12px", lg: "32px" },
+            fontSize: { xs: "32px", lg: "62px" },
+            fontWeight: 900,
+            color: "#F56EB3",
+          }}
+        >
+          {" "}
+          PARADISE <br /> FOR <br /> QUEENS{" "}
+        </Typography>
+      </Box>
       <Grid container sx={{ margin: "8px 0" }}>
         <Grid
           item
@@ -343,41 +229,24 @@ export const Auth = (props) => {
         >
           <Box
             sx={{
-              height: "200px",
-              background: "",
-              display: "flex",
-              alignItems: "center",
-              margin: "0 0 12px 0",
-            }}
-          >
-            <Typography
-              className={"paradise-font"}
-              sx={{
-                textAlign: "center",
-                color: "#111",
-                margin: "auto auto",
-                letterSpacing: { xs: "12px", lg: "32px" },
-                fontSize: { xs: "32px", lg: "62px" },
-                fontWeight: 900,
-                color: "#F56EB3",
-              }}
-            >
-              {" "}
-              PARADISE <br /> FOR <br /> QUEENS{" "}
-            </Typography>
-          </Box>
-          <Box
-            sx={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
             }}
           >
-            <Box>
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
               <Typography
                 sx={{
                   color: "rgba(255,255,255,.7)",
-                  margin: "0",
+                  margin: "0 auto",
+                  textAlign: "center",
                   width: "80%",
                   fontSize: "21px",
                   fontWeight: 600,
@@ -416,11 +285,19 @@ export const Auth = (props) => {
               />{" "}
               <br />
             </Box>
-            <Box>
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
               <Typography
                 sx={{
                   color: "rgba(255,255,255,.7)",
-                  margin: "0",
+                  margin: "0 auto",
+                  textAlign: "center",
                   width: "80%",
                   fontSize: "21px",
                   fontWeight: 600,

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   Box,
   Grid,
@@ -22,6 +22,8 @@ import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import PersonIcon from "@mui/icons-material/Person";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import LockIcon from "@mui/icons-material/Lock";
+
 import {
   query,
   collection,
@@ -40,190 +42,7 @@ import {
   auth,
   db,
 } from "./../../config/firebaseConfig";
-
-const DUMMY_USERS = [
-  {
-    address: {
-      geolocation: { lat: "-37.3159", long: "81.1496" },
-      city: "Durban",
-      street: "new road",
-      number: 7682,
-      zipcode: "12926-3874",
-    },
-    id: 1,
-    img: "https://images.pexels.com/photos/247204/pexels-photo-247204.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    email: "john@gmail.com",
-    username: "Nate Twins",
-    password: "m38rmF$",
-    name: { firstname: "nathan", lastname: "levi" },
-    phone: "067-123-456",
-    gender: "Transgender Female",
-    __v: 0,
-  },
-  {
-    address: {
-      geolocation: { lat: "-37.3159", long: "81.1496" },
-      city: "Durban",
-      street: "Lovers Ln",
-      number: 7267,
-      zipcode: "12926-3874",
-    },
-    id: 2,
-    img: "https://images.pexels.com/photos/1462637/pexels-photo-1462637.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    email: "morrison@gmail.com",
-    username: "Calvin",
-    password: "83r5^_",
-    name: { firstname: "Donovan", lastname: "Morrison" },
-    phone: "072-456-234",
-    gender: "Female",
-    __v: 0,
-  },
-  {
-    address: {
-      geolocation: { lat: "40.3467", long: "-30.1310" },
-      city: "Port ELizabeth",
-      street: "Frances Ct",
-      number: 86,
-      zipcode: "29567-1452",
-    },
-    id: 3,
-    img: "https://images.pexels.com/photos/2065203/pexels-photo-2065203.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    email: "kevin@gmail.com",
-    username: "Rian",
-    password: "kev02937@",
-    name: { firstname: "kevin", lastname: "rian" },
-    phone: "065-555-5005",
-    gender: "Transgender Female",
-    __v: 0,
-  },
-  {
-    address: {
-      geolocation: { lat: "50.3467", long: "-20.1310" },
-      city: "Rosebank",
-      street: "Hunters Creek Dr",
-      number: 6454,
-      zipcode: "98234-1734",
-    },
-    id: 4,
-    img: "https://images.pexels.com/photos/1689731/pexels-photo-1689731.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    email: "don@gmail.com",
-    username: "Troy",
-    password: "ewedon",
-    name: { firstname: "don", lastname: "romer" },
-    phone: "067-555-6234",
-    gender: "Female",
-    __v: 0,
-  },
-  {
-    address: {
-      geolocation: { lat: "40.3467", long: "-40.1310" },
-      city: "Soutgate",
-      street: "adams St",
-      number: 245,
-      zipcode: "80796-1234",
-    },
-    id: 5,
-    img: "https://images.pexels.com/photos/1162983/pexels-photo-1162983.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    email: "derek@gmail.com",
-    username: "Ken",
-    password: "jklg*_56",
-    name: { firstname: "derek", lastname: "powell" },
-    phone: "087-888-5432",
-    gender: "Transgender Female",
-    __v: 0,
-  },
-  {
-    address: {
-      geolocation: { lat: "20.1677", long: "-10.6789" },
-      city: "Cape Town",
-      street: "prospect st",
-      number: 124,
-      zipcode: "12346-0456",
-    },
-    id: 6,
-    img: "https://images.pexels.com/photos/219575/pexels-photo-219575.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    email: "david_r@gmail.com",
-    username: "Diesel",
-    password: "3478*#54",
-    name: { firstname: "david", lastname: "russell" },
-    phone: "068-890-5552",
-    gender: "Transgender Female",
-    __v: 0,
-  },
-  {
-    address: {
-      geolocation: { lat: "10.3456", long: "20.6419" },
-      city: "Bloemfontein",
-      street: "saddle st",
-      number: 1342,
-      zipcode: "96378-0245",
-    },
-    id: 7,
-    img: "https://images.pexels.com/photos/2036646/pexels-photo-2036646.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    email: "miriam@gmail.com",
-    username: "Amber",
-    password: "f238&@*$",
-    name: { firstname: "amber", lastname: "snyder" },
-    phone: "076-123-6789",
-    gender: "Female",
-    __v: 0,
-  },
-  {
-    address: {
-      geolocation: { lat: "50.3456", long: "10.6419" },
-      city: "Sandton",
-      street: "vally view ln",
-      number: 1342,
-      zipcode: "96378-0245",
-    },
-    id: 8,
-    img: "https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    email: "william@gmail.com",
-    username: "Sebastian",
-    password: "William56$hj",
-    name: { firstname: "william", lastname: "hopkins" },
-    phone: "087-980-8850",
-    gender: "Male",
-    __v: 0,
-  },
-  {
-    address: {
-      geolocation: { lat: "40.12456", long: "20.5419" },
-      city: "Tshwane",
-      street: "avondale ave",
-      number: 345,
-      zipcode: "96378-0245",
-    },
-    id: 9,
-    img: "https://images.pexels.com/photos/432059/pexels-photo-432059.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    email: "kate@gmail.com",
-    username: "Ashley",
-    password: "kfejk@*_",
-    name: { firstname: "kate", lastname: "hale" },
-    phone: "076-920-8250",
-    gender: "Transgender Male",
-    __v: 0,
-  },
-  {
-    address: {
-      geolocation: { lat: "30.24788", long: "-20.545419" },
-      city: "Hammanskraal",
-      street: "oak lawn ave",
-      number: 526,
-      zipcode: "10256-4532",
-    },
-    id: 10,
-    img: "https://images.pexels.com/photos/3470076/pexels-photo-3470076.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    email: "jimmie@gmail.com",
-    username: "Jay",
-    password: "klein*#%*",
-    name: { firstname: "jimmie", lastname: "klein" },
-    phone: "067-960-8660",
-    gender: "Female",
-    __v: 0,
-  },
-];
-
+import { UserContext } from "../../pages/_app";
 export const Models = () => {
   const [signUp, setSignUp] = useState(false);
   const [open, setOpen] = useState(false);
@@ -232,7 +51,7 @@ export const Models = () => {
   const [selectedGender, setSelectedGender] = useState(
     "Select Preferred Gender"
   );
-
+  const { user, setUser } = useContext(UserContext);
   useEffect(() => {
     const getData = async () => {
       let localModels = [];
@@ -240,7 +59,6 @@ export const Models = () => {
       querySnapshot.forEach((item, index) => {
         localModels.push(item.data());
       });
-      console.log(localModels);
       setModels(localModels);
     };
     getData();
@@ -351,7 +169,12 @@ export const Models = () => {
           }}
         >
           {models.map((item, index) => {
-            if (selectedGender == item.personal.gender) {
+            if (
+              selectedGender == item.personal.gender &&
+              item.personal.userType === "Escort" &&
+              item.personal.uid !== user.personal.uid &&
+              item.personal.uid !== user.personal.uid
+            ) {
               return (
                 <Grid key={index} item xs={12} md={6} lg={4}>
                   <Box
@@ -578,204 +401,208 @@ export const Models = () => {
           }}
         >
           {models.map((item, index) => {
-            return (
-              <Grid key={index} item xs={12} md={6} lg={4}>
-                <Box
-                  sx={{
-                    height: "500px",
-                    scale: "0.99",
-                    "&:hover": { scale: "1" },
-                    transition: "800ms",
-                    // background: "rgba(255,255,255,.7)",
-                    background: "#111",
-                    width: "100%",
-                    padding: "0",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    borderRadius: "21px",
-                  }}
-                >
+            if (
+              item.personal.userType === "Escort" &&
+              item.personal.uid !== user.personal.uid
+            ) {
+              return (
+                <Grid key={index} item xs={12} md={6} lg={4}>
                   <Box
                     sx={{
-                      height: "300px",
+                      height: "500px",
+                      scale: "0.99",
+                      "&:hover": { scale: "1" },
+                      transition: "800ms",
+                      // background: "rgba(255,255,255,.7)",
+                      background: "#111",
                       width: "100%",
-                      backgroundImage: `url("${item.social.profilePicture}")`,
-                      backgroundSize: "cover",
-                      backgroundRepeat: "no-repeat",
-                      borderRadius: "21px 21px 0 0",
-                      backgroundPostion: "center",
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        width: "100%",
-                        height: "100%",
-                        display: "flex",
-                        // flexDirection: "column",
-                        justifyContent: "space-between",
-                        alignItems: "flex-end",
-                        borderRadius: "21px 21px 0 0",
-                        padding: "12px",
-                        background:
-                          "linear-gradient(180deg, rgba(0,0,0,0.23012955182072825) 0%, rgba(0,0,0,0.8847514005602241) 80%, rgba(0,0,0,0.10968137254901966) 1000%);",
-                        // background: "rgba(1,1,1,.7)",
-                      }}
-                    >
-                      <Typography
-                        component="div"
-                        variant="div"
-                        sx={{
-                          fontSize: "16px",
-                          fontWeight: "600",
-                          fontSize: "18px",
-                          display: "flex",
-
-                          alignItems: "center",
-                          color: "rgba(200,200,200,1)",
-                        }}
-                      >
-                        {" "}
-                        <LocationOnIcon
-                          sx={{ scale: "0.7", margin: "0 6px" }}
-                        />
-                        {item.personal.address.city.toUpperCase()}
-                      </Typography>{" "}
-                      <Rating readOnly value={index} />
-                    </Box>
-                  </Box>
-
-                  <Box
-                    sx={{
-                      height: "210px",
-                      background: "",
-                      width: "100%",
-                      padding: "0 21px",
+                      padding: "0",
                       display: "flex",
                       flexDirection: "column",
-                      justifyContent: "space-evenly",
+                      justifyContent: "center",
+                      borderRadius: "21px",
                     }}
                   >
-                    <Typography
-                      component="div"
-                      sx={{
-                        textAlign: "",
-                        margin: "8px 0 0 0",
-                        fontWeight: 600,
-                        color: "rgba(200,200,200,.8)",
-                        display: "flex",
-                        alignItems: "center",
-                        fontSize: "18px",
-                      }}
-                    >
-                      {" "}
-                      <Typography
-                        component="div"
-                        variant="div"
-                        sx={{
-                          fontSize: "16px",
-                          fontWeight: "100",
-                          color: "rgba(200,200,200,.6)",
-                          margin: "0 12px 0 0",
-                        }}
-                      >
-                        {" "}
-                        Name :
-                      </Typography>{" "}
-                      {item.personal.username}{" "}
-                    </Typography>
-                    <Typography
-                      component="div"
-                      sx={{
-                        textAlign: "",
-                        margin: "8px 0 0 0",
-                        fontWeight: 600,
-                        color: "rgba(200,200,200,.8)",
-                        display: "flex",
-                        alignItems: "center",
-                        fontSize: "18px",
-                      }}
-                    >
-                      {" "}
-                      <Typography
-                        component="div"
-                        variant="div"
-                        sx={{
-                          fontSize: "16px",
-                          fontWeight: "100",
-                          color: "rgba(200,200,200,.6)",
-                          margin: "0 12px 0 0",
-                        }}
-                      >
-                        {" "}
-                        Tel :
-                      </Typography>{" "}
-                      {item.personal.tel}{" "}
-                    </Typography>
-                    <Typography
-                      component="div"
-                      sx={{
-                        textAlign: "",
-                        margin: "8px 0 0 0",
-                        fontWeight: 600,
-                        color: "rgba(200,200,200,.8)",
-                        display: "flex",
-                        alignItems: "center",
-                        fontSize: "18px",
-                      }}
-                    >
-                      {" "}
-                      <Typography
-                        component="div"
-                        variant="div"
-                        sx={{
-                          fontSize: "16px",
-                          fontWeight: "100",
-                          color: "rgba(200,200,200,.6)",
-                          margin: "0 12px 0 0",
-                        }}
-                      >
-                        {" "}
-                        Status :
-                      </Typography>{" "}
-                      {index % 2 == 0 ? "Available" : "Busy"}{" "}
-                    </Typography>
                     <Box
                       sx={{
-                        // height: "12px 0",
-                        // background: "red",
+                        height: "300px",
                         width: "100%",
+                        backgroundImage: `url("${item.social.profilePicture}")`,
+                        backgroundSize: "cover",
+                        backgroundRepeat: "no-repeat",
+                        borderRadius: "21px 21px 0 0",
+                        backgroundPostion: "center",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          width: "100%",
+                          height: "100%",
+                          display: "flex",
+                          // flexDirection: "column",
+                          justifyContent: "space-between",
+                          alignItems: "flex-end",
+                          borderRadius: "21px 21px 0 0",
+                          padding: "12px",
+                          background:
+                            "linear-gradient(180deg, rgba(0,0,0,0.23012955182072825) 0%, rgba(0,0,0,0.8847514005602241) 80%, rgba(0,0,0,0.10968137254901966) 1000%);",
+                          // background: "rgba(1,1,1,.7)",
+                        }}
+                      >
+                        <Typography
+                          component="div"
+                          variant="div"
+                          sx={{
+                            fontSize: "16px",
+                            fontWeight: "600",
+                            fontSize: "18px",
+                            display: "flex",
+
+                            alignItems: "center",
+                            color: "rgba(200,200,200,1)",
+                          }}
+                        >
+                          {" "}
+                          <LocationOnIcon
+                            sx={{ scale: "0.7", margin: "0 6px" }}
+                          />
+                          {item.personal.address.city.toUpperCase()}
+                        </Typography>{" "}
+                        <Rating readOnly value={index} />
+                      </Box>
+                    </Box>
+
+                    <Box
+                      sx={{
+                        height: "210px",
+                        background: "",
+                        width: "100%",
+                        padding: "0 21px",
                         display: "flex",
-                        alignItems: "center",
+                        flexDirection: "column",
                         justifyContent: "space-evenly",
                       }}
                     >
-                      {/* #16F529
-                      FiberManualRecordIcon */}
-                      <IconButton>
-                        <FiberManualRecordIcon sx={{ color: "#16F529" }} />
-                      </IconButton>
-                      <IconButton>
-                        <FavoriteBorderIcon
-                          sx={{
-                            color: "#999",
-                            "&:hover": { fill: "red", opacity: 0.7 },
-                          }}
-                        />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => {
-                          setOpenMOdel({ ...item });
-                          setOpen(true);
+                      <Typography
+                        component="div"
+                        sx={{
+                          textAlign: "",
+                          margin: "8px 0 0 0",
+                          fontWeight: 600,
+                          color: "rgba(200,200,200,.8)",
+                          display: "flex",
+                          alignItems: "center",
+                          fontSize: "18px",
                         }}
                       >
-                        <LaunchIcon sx={{ color: "#999" }} />
-                      </IconButton>
-                      <IconButton>
-                        <ReportGmailerrorredIcon sx={{ color: "#999" }} />
-                      </IconButton>
-                    </Box>
-                    {/* <Button
+                        {" "}
+                        <Typography
+                          component="div"
+                          variant="div"
+                          sx={{
+                            fontSize: "16px",
+                            fontWeight: "100",
+                            color: "rgba(200,200,200,.6)",
+                            margin: "0 12px 0 0",
+                          }}
+                        >
+                          {" "}
+                          Name :
+                        </Typography>{" "}
+                        {item.personal.username}{" "}
+                      </Typography>
+                      <Typography
+                        component="div"
+                        sx={{
+                          textAlign: "",
+                          margin: "8px 0 0 0",
+                          fontWeight: 600,
+                          color: "rgba(200,200,200,.8)",
+                          display: "flex",
+                          alignItems: "center",
+                          fontSize: "18px",
+                        }}
+                      >
+                        {" "}
+                        <Typography
+                          component="div"
+                          variant="div"
+                          sx={{
+                            fontSize: "16px",
+                            fontWeight: "100",
+                            color: "rgba(200,200,200,.6)",
+                            margin: "0 12px 0 0",
+                          }}
+                        >
+                          {" "}
+                          Tel :
+                        </Typography>{" "}
+                        {item.personal.tel}{" "}
+                      </Typography>
+                      <Typography
+                        component="div"
+                        sx={{
+                          textAlign: "",
+                          margin: "8px 0 0 0",
+                          fontWeight: 600,
+                          color: "rgba(200,200,200,.8)",
+                          display: "flex",
+                          alignItems: "center",
+                          fontSize: "18px",
+                        }}
+                      >
+                        {" "}
+                        <Typography
+                          component="div"
+                          variant="div"
+                          sx={{
+                            fontSize: "16px",
+                            fontWeight: "100",
+                            color: "rgba(200,200,200,.6)",
+                            margin: "0 12px 0 0",
+                          }}
+                        >
+                          {" "}
+                          Status :
+                        </Typography>{" "}
+                        {index % 2 == 0 ? "Available" : "Busy"}{" "}
+                      </Typography>
+                      <Box
+                        sx={{
+                          // height: "12px 0",
+                          // background: "red",
+                          width: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-evenly",
+                        }}
+                      >
+                        {/* #16F529
+                      FiberManualRecordIcon */}
+                        <IconButton>
+                          <FiberManualRecordIcon sx={{ color: "#16F529" }} />
+                        </IconButton>
+                        <IconButton>
+                          <FavoriteBorderIcon
+                            sx={{
+                              color: "#999",
+                              "&:hover": { fill: "red", opacity: 0.7 },
+                            }}
+                          />
+                        </IconButton>
+                        <IconButton
+                          onClick={() => {
+                            setOpenMOdel({ ...item });
+                            setOpen(true);
+                          }}
+                        >
+                          <LaunchIcon sx={{ color: "#999" }} />
+                        </IconButton>
+                        <IconButton>
+                          <ReportGmailerrorredIcon sx={{ color: "#999" }} />
+                        </IconButton>
+                      </Box>
+                      {/* <Button
                       sx={{
                         background: "#460C68",
                         padding: "12px 0",
@@ -788,10 +615,11 @@ export const Models = () => {
                       {" "}
                       View{" "}
                     </Button> */}
+                    </Box>
                   </Box>
-                </Box>
-              </Grid>
-            );
+                </Grid>
+              );
+            }
           })}
         </Grid>
       </Box>
@@ -877,51 +705,135 @@ export const Models = () => {
             <LocationOnIcon sx={{ scale: "0.9", margin: "0 6px" }} />
             {open ? openModel.personal.address.city.toUpperCase() : ""}
           </Typography>{" "}
-          <Grid container>
-            {[
-              "https://images.pexels.com/photos/1548274/pexels-photo-1548274.jpeg?auto=compress&cs=tinysrgb&w=1600",
-              "https://images.pexels.com/photos/289262/pexels-photo-289262.jpeg?auto=compress&cs=tinysrgb&w=1600",
-              "https://images.pexels.com/photos/8956318/pexels-photo-8956318.jpeg?auto=compress&cs=tinysrgb&w=1600",
-              "https://images.pexels.com/photos/9039112/pexels-photo-9039112.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
-              "https://images.pexels.com/photos/6423097/pexels-photo-6423097.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
-            ].map((item, index) => {
+          {openModel.fetishes &&
+            openModel.fetishes.map((item, index) => {
               return (
+                <Box
+                  key={index}
+                  sx={{
+                    background: "#222",
+                    borderRadius: "16px",
+                    padding: "12px",
+                    margin: "0 8px 8px 0",
+                    minWidth: "100px",
+                    height: "fit-content",
+                    display: "flex",
+                    alignItems: "center",
+                    textAlign: "center",
+                    color: "#eee",
+                    justifyContent: "center",
+                    fontWeight: "600",
+                  }}
+                >
+                  {item}
+                </Box>
+              );
+            })}
+          {openModel.personal &&
+            openModel.personal.userType === "Escort" &&
+            (openModel.social.subscribedUsers &&
+            openModel.social.subscribedUsers.includes(user.personal.uid) ? (
+              <Grid container>
+                {[
+                  "https://images.pexels.com/photos/1548274/pexels-photo-1548274.jpeg?auto=compress&cs=tinysrgb&w=1600",
+                  "https://images.pexels.com/photos/289262/pexels-photo-289262.jpeg?auto=compress&cs=tinysrgb&w=1600",
+                  "https://images.pexels.com/photos/8956318/pexels-photo-8956318.jpeg?auto=compress&cs=tinysrgb&w=1600",
+                  "https://images.pexels.com/photos/9039112/pexels-photo-9039112.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
+                  "https://images.pexels.com/photos/6423097/pexels-photo-6423097.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
+                ].map((item, index) => {
+                  return (
+                    <Grid
+                      item
+                      key={index}
+                      xs={6}
+                      sx={{
+                        height: "150px",
+                        backgroundImage: `url("${item}")`,
+                        backgroundSize: "cover",
+                        backgroundRepeat: "no-repeat",
+                        // borderRadius: "21px 21px 0 0",
+                        backgroundPostion: "center",
+                        border: "3px solid #111",
+                      }}
+                    ></Grid>
+                  );
+                })}
                 <Grid
                   item
-                  key={index}
                   xs={6}
                   sx={{
                     height: "150px",
-                    backgroundImage: `url("${item}")`,
-                    backgroundSize: "cover",
-                    backgroundRepeat: "no-repeat",
-                    // borderRadius: "21px 21px 0 0",
-                    backgroundPostion: "center",
+                    background: "rgba(200,200,200,.7)",
                     border: "3px solid #111",
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    scale: "0.90",
+                    transition: "800ms",
+                    "&:is(:hover)": { scale: "0.95" },
                   }}
-                ></Grid>
-              );
-            })}
-            <Grid
-              item
-              xs={6}
-              sx={{
-                height: "150px",
-                background: "rgba(200,200,200,.7)",
-                border: "3px solid #111",
-                display: "flex",
-                alignItems: "center",
-                flexDirection: "column",
-                justifyContent: "center",
-                scale: "0.90",
-                transition: "800ms",
-                "&:is(:hover)": { scale: "0.95" },
-              }}
-            >
-              {" "}
-              View More <AddIcon />
-            </Grid>
-          </Grid>
+                >
+                  {" "}
+                  View More <AddIcon />
+                </Grid>
+              </Grid>
+            ) : (
+              <Box
+                sx={{
+                  minHeight: "40vh",
+                  // background: "red",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <LockIcon sx={{ fontSize: "100px" }} />
+                <Typography
+                  component="div"
+                  sx={{
+                    textAlign: "center",
+                    color: "#111",
+                    // margin: "auto auto",
+                    // letterSpacing: { xs: "6px" },
+                    fontSize: { xs: "14px" },
+                    lineHeight: "2.5rem",
+                    // fontWeight: 900,
+                    color: "rgba(255,255,255,.7)",
+                  }}
+                >
+                  {"Access Denied"}
+                </Typography>
+                <Typography
+                  component="div"
+                  sx={{
+                    textAlign: "center",
+                    color: "#111",
+                    fontSize: { xs: "14px" },
+                    lineHeight: "2.5rem",
+                    // fontWeight: 900,
+                    color: "rgba(255,255,255,.7)",
+                  }}
+                >
+                  {`Subscribe To View ${openModel.personal.username}'s Exclusive Content`}
+                </Typography>
+                <Button
+                  sx={{
+                    background: "#460C68",
+                    padding: "21px 0",
+                    color: "#eee",
+                    fontWeight: "600",
+                    width: { xs: "80%", lg: "300px" },
+                    margin: "21px 0",
+                    "&:hover": { color: "#460C68" },
+                  }}
+                >
+                  {" "}
+                  Subscribe{" "}
+                </Button>
+              </Box>
+            ))}
           <Box sx={{ height: "20vh", margin: "50px 0 " }} />
         </Box>
       </Drawer>
