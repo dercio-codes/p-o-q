@@ -44,6 +44,7 @@ import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { UserContext } from "../../pages/_app";
+import { AgeAuthentication } from "../auth/age-authentication";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -439,13 +440,14 @@ export const ProfileComponent = () => {
               </Tabs>
             </Box>
             <TabPanel value={value} index={0} sx={{ background: "red" }}>
-              <PersonalForm />
+              {/* <PersonalForm /> */}
+              <AgeAuthentication />
             </TabPanel>
             <TabPanel value={value} index={1}>
               <Social />
             </TabPanel>
             <TabPanel value={value} index={2}>
-              <NewAppointMents />
+              <NewAppointMents domLoaded={domLoaded} />
             </TabPanel>
 
             <TabPanel value={value} index={3}>
@@ -568,7 +570,7 @@ const Social = () => {
   );
 };
 
-const NewAppointMents = () => {
+const NewAppointMents = ({ domLoaded }) => {
   return (
     <Box>
       <Typography

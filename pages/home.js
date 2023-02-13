@@ -29,6 +29,7 @@ export default function HomePage() {
         }}
       >
         <Typography
+          component="div"
           className={"paradise-font"}
           sx={{
             textAlign: "center",
@@ -45,6 +46,7 @@ export default function HomePage() {
         </Typography>
 
         <Typography
+          component="div"
           className={"normal-font"}
           sx={{
             textAlign: "center",
@@ -64,6 +66,7 @@ export default function HomePage() {
         </Typography>
 
         <Typography
+          component="div"
           sx={{
             textAlign: "center",
             color: "#111",
