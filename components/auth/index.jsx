@@ -28,6 +28,7 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  getDoc,
   where,
   updateDoc,
 } from "firebase/firestore";
@@ -48,6 +49,7 @@ import {
   browserLocalPersistence,
   browserSessionPersistence,
   inMemoryPersistence,
+  onAuthStateChanged,
 } from "firebase/auth";
 import { UserContext } from "../../pages/_app";
 import { AgeAuthentication } from "./age-authentication";
@@ -56,23 +58,10 @@ export const Auth = (props) => {
   const router = useRouter();
   const [signUp, setSignUp] = useState(false);
   const [open, setOpen] = useState(false);
-  const { user, setUser } = useContext(UserContext);
-
-  useEffect(() => {
-    const localStorageUser = localStorage.getItem("authUser");
-    const localStorageUserCopy = JSON.parse(localStorageUser);
-    auth.onAuthStateChanged((localStorageUser) => {
-      if (localStorageUser) {
-        console.log("Logged in");
-        setUser({ ...localStorageUserCopy });
-        router.push("/home");
-      } else {
-        console.log("Not logged in");
-      }
-    });
-  }, []);
+  const { user, setUser, setLoading } = useContext(UserContext);
 
   const googleHandler = async () => {
+    setLoading(true);
     googleProvider.setCustomParameters({ prompt: "select_account" });
     signInWithPopup(auth, googleProvider)
       .then(async (result) => {
@@ -84,56 +73,87 @@ export const Auth = (props) => {
         const resultUser = result.user;
 
         const updateUserResponse = async (result) => {
-          // console.log(uploadingUser);
           try {
-            // console.log("uploading : ", {
-            //   ...user,
-            //   personal: {
-            //     ...user.personal,
-            //     uid: result.user.uid,
-            //     email: result.user.email,
-            //     username: result.user.displayName,
-            //   },
-            // });
-            setUser({
-              ...user,
-              personal: {
-                ...user.personal,
-                uid: result.user.uid,
-                email: result.user.email,
-                username: result.user.displayName,
-              },
-              social: {
-                ...user.social,
-                profilePicture: result.user.photoURL,
-              },
+            onAuthStateChanged(auth, (receivedUser) => {
+              console.log(receivedUser);
+              console.log("Changing state");
+              if (receivedUser !== null && receivedUser.email !== "") {
+                const newUser = {
+                  ...user,
+                  personal: {
+                    ...user.personal,
+                    uid: receivedUser.accessToken,
+                    email: receivedUser.email,
+                    username: receivedUser.displayName,
+                  },
+                  social: {
+                    ...user.social,
+                    profilePicture: receivedUser.photoURL,
+                  },
+                };
+                // get user's document from Firestore
+                const userRef = doc(db, "users", newUser.personal.email);
+                getDoc(userRef)
+                  .then((docSnapshot) => {
+                    console.log(docSnapshot.data());
+                    if (docSnapshot.exists()) {
+                      console.log("Exists");
+                      const convertedData = docSnapshot.data();
+                      setUser({ ...user, ...convertedData });
+                      console.log("new user ", { ...user, ...convertedData });
+                      router.push("/home");
+                    }
+                    const convertedData = docSnapshot.data();
+                    setUser({ ...user, ...convertedData });
+                  })
+                  .catch((error) => {
+                    console.log("Error getting user document: ", error);
+                  });
+
+                const getUser = () => {
+                  // assuming you have the JWT token stored in a variable called `token`
+                  const decoded = jwt.verify(token, "your-secret-key");
+
+                  // `decoded` will contain the user information you stored in the token
+                  const user = decoded.user;
+                };
+              } else {
+                // user is signed out, remove JWT token from localStorage
+                // localStorage.removeItem("jwt");
+              }
             });
-
-            let userExists = false;
-            const querySnapshot = await getDocs(collection(db, "users"));
-
-            const checkIfUserExists = () => {
-              let exists = false;
-              querySnapshot.forEach((item) => {
-                if (item.id === resultUser.email) {
-                  console.log("snapshop result :", item.id);
-                  exists = true;
-                  setUser({ ...item.data() });
-                  return;
-                } else {
-                  exists = false;
-                }
-              });
-              return exists;
-            };
-
-            const doesExist = checkIfUserExists();
-            console.log(doesExist);
-            if (checkIfUserExists()) {
-              router.push("/home");
-            } else {
+            if (user.personal.age < 18 || user.personal.age == "") {
               setOpen(true);
+            } else {
+              alert("Lets Go");
             }
+
+            // router.push("/profile");
+            // let userExists = false;
+            // const querySnapshot = await getDocs(collection(db, "users"));
+
+            // const checkIfUserExists = () => {
+            //   let exists = false;
+            //   querySnapshot.forEach((item) => {
+            //     if (item.id === resultUser.email) {
+            //       console.log("snapshop result :", item.id);
+            //       exists = true;
+            //       setUser({ ...item.data() });
+            //       return;
+            //     } else {
+            //       exists = false;
+            //     }
+            //   });
+            //   return exists;
+            // };
+
+            // const doesExist = checkIfUserExists();
+            // console.log(doesExist);
+            // if (checkIfUserExists()) {
+            //   router.push("/home");
+            // } else {
+            //   setOpen(true);
+            // }
           } catch (err) {
             alert(err.message);
           }
@@ -151,12 +171,14 @@ export const Auth = (props) => {
         const credential = GoogleAuthProvider.credentialFromError(error);
         // ...
       });
+    setLoading(false);
   };
 
   const updateUserOnDB = async () => {
-    await setDoc(doc(db, "users", user.personal.email), {
+    const putResponse = await setDoc(doc(db, "users", user.personal.email), {
       ...user,
     });
+    console.log(putResponse);
     localStorage.setItem("authUser", JSON.stringify(user));
     router.push("/profile");
   };
