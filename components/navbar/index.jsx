@@ -22,7 +22,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import CloseIcon from "@mui/icons-material/Close";
 import ChatIcon from "@mui/icons-material/Chat";
-import Link from "next/link";
+// import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import AddIcon from "@mui/icons-material/Add";
@@ -34,9 +34,10 @@ export const Navbar = (props) => {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
   const router = useRouter();
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser, loading, setLoading } = useContext(UserContext);
 
   const handleSignOut = () => {
+    setLoading(true);
     signOut(auth)
       .then(() => {
         console.log("logged out");
@@ -47,7 +48,7 @@ export const Navbar = (props) => {
             name: "",
             surname: "",
             username: "",
-            email: "2",
+            email: "",
             age: "",
             dob: "01/01/2000",
             tel: "",
@@ -87,60 +88,70 @@ export const Navbar = (props) => {
       .catch((error) => {
         console.log(error);
       });
+    setLoading(false);
+  };
+
+  const handleRouteClick = (destination) => {
+    setTimeout(() => {
+      setLoading(true);
+      router.push(`${destination}`);
+      setLoading(false);
+    }, 3000);
   };
   useEffect(() => {
     const page = window.location.href.split("/");
-    setActive(page.pop());
+    console.log(page);
+    setActive(page[page.length - 1]);
   }, []);
   return (
     <Box
       sx={{
-        // minHeight: "100vh",
         background: "#111",
-        // padding: { xs: "0 1.2rem", lg: "0 5rem" },
         width: "100%",
         position: "fixed",
         bottom: 0,
         height: "80px",
         zIndex: 9999,
         display: "flex",
-        // justifyContent: "space-evenly",
       }}
     >
-      <Link href="/home" style={{ flex: 1, height: "100%" }}>
-        <Button
-          sx={{
-            background: active == "home" ? "#F56EB3" : "transparent",
-            "&:hover": { background: "#F56EB3" },
-            // flex: 1,
-            width: "100%",
-            height: "100%",
-            borderRadius: "0",
-          }}
-        >
-          <HomeIcon sx={{ color: "rgba(255,255,255,.7)" }} />
-        </Button>
-      </Link>
-      <Link href="/search" style={{ flex: 1, height: "100%" }}>
-        <Button
-          sx={{
-            background: active == "search" ? "#1589FF" : "transparent",
-            width: "100%",
-            height: "100%",
-            borderRadius: "0",
-          }}
-        >
-          <SearchIcon sx={{ color: "rgba(255,255,255,.7)" }} />
-        </Button>
-      </Link>
+      <Button
+        onClick={() => {
+          handleRouteClick("home");
+        }}
+        sx={{
+          background: active == "home" ? "#F56EB3" : "transparent",
+          "&:hover": { background: "#F56EB3" },
+          // flex: 1,
+          width: "100%",
+          height: "100%",
+          borderRadius: "0",
+        }}
+      >
+        <HomeIcon sx={{ color: "rgba(255,255,255,.7)" }} />
+      </Button>
+
+      <Button
+        onClick={() => {
+          handleRouteClick("search");
+        }}
+        sx={{
+          background: active == "search" ? "#1589FF" : "transparent",
+          width: "100%",
+          height: "100%",
+          borderRadius: "0",
+        }}
+      >
+        <SearchIcon sx={{ color: "rgba(255,255,255,.7)" }} />
+      </Button>
 
       <Button
         onClick={() => setOpen(!open)}
         sx={{
           "&:hover": { background: "#FF3131" },
-          // width: "100%",
-          // height: "100%",
-          flex: 1,
+          width: "100%",
+          height: "100%",
+          // flex: 1,
           borderRadius: "0",
         }}
       >
@@ -155,33 +166,35 @@ export const Navbar = (props) => {
         )}
       </Button>
 
-      <Link href="/inbox" style={{ flex: 1, height: "100%" }}>
-        <Button
-          sx={{
-            // background: active == "recommend" ? "##16F529" : "transparent",
-            "&:hover": { background: "#16F529" },
+      <Button
+        onClick={() => {
+          handleRouteClick("inbox");
+        }}
+        sx={{
+          // background: active == "recommend" ? "##16F529" : "transparent",
+          "&:hover": { background: "#16F529" },
 
-            width: "100%",
-            height: "100%",
-            borderRadius: "0",
-          }}
-        >
-          <ChatIcon sx={{ color: "rgba(255,255,255,.7)" }} />
-        </Button>
-      </Link>
-      <Link href="/profile" style={{ flex: 1, height: "100%" }}>
-        <Button
-          sx={{
-            // background: active == "home" ? "#FFFF33" : "transparent",
-            "&:hover": { background: "#FFFF33" },
-            width: "100%",
-            height: "100%",
-            borderRadius: "0",
-          }}
-        >
-          <AccountCircleIcon sx={{ color: "rgba(255,255,255,.7)" }} />
-        </Button>
-      </Link>
+          width: "100%",
+          height: "100%",
+          borderRadius: "0",
+        }}
+      >
+        <ChatIcon sx={{ color: "rgba(255,255,255,.7)" }} />
+      </Button>
+      <Button
+        onClick={() => {
+          handleRouteClick("profile");
+        }}
+        sx={{
+          // background: active == "home" ? "#FFFF33" : "transparent",
+          "&:hover": { background: "#FFFF33" },
+          width: "100%",
+          height: "100%",
+          borderRadius: "0",
+        }}
+      >
+        <AccountCircleIcon sx={{ color: "rgba(255,255,255,.7)" }} />
+      </Button>
 
       <Fade in={open}>
         <Box

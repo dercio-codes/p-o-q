@@ -4,26 +4,22 @@ import {
   Grid,
   TextField,
   Button,
-  IconButton,
   Divider,
   Typography,
   MenuItem,
-  Rating,
-  Avatar,
-  Drawer,
+  Modal,
+  Paper,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import AddIcon from "@mui/icons-material/Add";
-
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { useRouter } from "next/navigation";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import MenuIcon from "@mui/icons-material/Menu";
+import DoneIcon from "@mui/icons-material/Done";
+import ClearIcon from "@mui/icons-material/Clear";
 import LaunchIcon from "@mui/icons-material/Launch";
-import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import PersonIcon from "@mui/icons-material/Person";
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import LockIcon from "@mui/icons-material/Lock";
-
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import GoogleIcon from "@mui/icons-material/Google";
+import TwitterIcon from "@mui/icons-material/Twitter";
 import {
   query,
   collection,
@@ -32,6 +28,7 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  getDoc,
   where,
   updateDoc,
 } from "firebase/firestore";
@@ -42,29 +39,153 @@ import {
   auth,
   db,
 } from "./../../config/firebaseConfig";
+import {
+  signInWithPopup,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  setPersistence,
+  browserLocalPersistence,
+  browserSessionPersistence,
+  inMemoryPersistence,
+  onAuthStateChanged,
+} from "firebase/auth";
 import { UserContext } from "../../pages/_app";
-export const Models = () => {
+import { AgeAuthentication } from "./age-authentication";
+
+export const Auth = (props) => {
+  const router = useRouter();
   const [signUp, setSignUp] = useState(false);
   const [open, setOpen] = useState(false);
-  const [models, setModels] = useState([]);
-  const [openModel, setOpenMOdel] = useState({});
-  const [selectedGender, setSelectedGender] = useState(
-    "Select Preferred Gender"
-  );
-  const { user, setUser } = useContext(UserContext);
-  useEffect(() => {
-    const getData = async () => {
-      let localModels = [];
-      const querySnapshot = await getDocs(collection(db, "users"));
-      querySnapshot.forEach((item, index) => {
-        localModels.push(item.data());
-      });
-      setModels(localModels);
-    };
-    getData();
-  }, []);
+  const { user, setUser, setLoading } = useContext(UserContext);
 
-  return (
+  const googleHandler = async () => {
+    setLoading(true);
+    googleProvider.setCustomParameters({ prompt: "select_account" });
+    signInWithPopup(auth, googleProvider)
+      .then(async (result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+
+        // The signed-in user info.
+        const resultUser = result.user;
+
+        const updateUserResponse = async (result) => {
+          try {
+            onAuthStateChanged(auth, (receivedUser) => {
+              console.log(receivedUser);
+              console.log("Changing state");
+              if (receivedUser !== null && receivedUser.email !== "") {
+                const newUser = {
+                  ...user,
+                  personal: {
+                    ...user.personal,
+                    uid: receivedUser.accessToken,
+                    email: receivedUser.email,
+                    username: receivedUser.displayName,
+                  },
+                  social: {
+                    ...user.social,
+                    profilePicture: receivedUser.photoURL,
+                  },
+                };
+                // get user's document from Firestore
+                const userRef = doc(db, "users", newUser.personal.email);
+                getDoc(userRef)
+                  .then((docSnapshot) => {
+                    console.log(docSnapshot.data());
+                    if (docSnapshot.exists()) {
+                      console.log("Exists");
+                      const convertedData = docSnapshot.data();
+                      setUser({ ...user, ...convertedData });
+                      console.log("new user ", { ...user, ...convertedData });
+                      router.push("/home");
+                    }
+                    const convertedData = docSnapshot.data();
+                    setUser({ ...user, ...convertedData });
+                  })
+                  .catch((error) => {
+                    console.log("Error getting user document: ", error);
+                  });
+
+                const getUser = () => {
+                  // assuming you have the JWT token stored in a variable called `token`
+                  const decoded = jwt.verify(token, "your-secret-key");
+
+                  // `decoded` will contain the user information you stored in the token
+                  const user = decoded.user;
+                };
+              } else {
+                // user is signed out, remove JWT token from localStorage
+                // localStorage.removeItem("jwt");
+              }
+            });
+            if (user.personal.age < 18 || user.personal.age == "") {
+              setOpen(true);
+            } else {
+              alert("Lets Go");
+            }
+
+            // router.push("/profile");
+            // let userExists = false;
+            // const querySnapshot = await getDocs(collection(db, "users"));
+
+            // const checkIfUserExists = () => {
+            //   let exists = false;
+            //   querySnapshot.forEach((item) => {
+            //     if (item.id === resultUser.email) {
+            //       console.log("snapshop result :", item.id);
+            //       exists = true;
+            //       setUser({ ...item.data() });
+            //       return;
+            //     } else {
+            //       exists = false;
+            //     }
+            //   });
+            //   return exists;
+            // };
+
+            // const doesExist = checkIfUserExists();
+            // console.log(doesExist);
+            // if (checkIfUserExists()) {
+            //   router.push("/home");
+            // } else {
+            //   setOpen(true);
+            // }
+          } catch (err) {
+            alert(err.message);
+          }
+        };
+        updateUserResponse(result);
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        console.log(error);
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+    setLoading(false);
+  };
+
+  const updateUserOnDB = async () => {
+    const putResponse = await setDoc(doc(db, "users", user.personal.email), {
+      ...user,
+    });
+    console.log(putResponse);
+    localStorage.setItem("authUser", JSON.stringify(user));
+    router.push("/profile");
+  };
+
+  return open ? (
+    <AgeAuthentication updateUserOnDB={updateUserOnDB} />
+  ) : (
     <Box
       sx={{
         minHeight: "100vh",
@@ -72,771 +193,814 @@ export const Models = () => {
         padding: { xs: "0 1.2rem", lg: "0 5rem" },
       }}
     >
-      <Box sx={{ minHeight: "100vh", margin: "0" }}>
+      <Box
+        sx={{
+          height: { xs: "250px" },
+          width: "100%",
+          backgroundColor: "#000",
+          backgroundImage:
+            'url("https://images.pexels.com/photos/230986/pexels-photo-230986.jpeg?auto=compress&cs=tinysrgb&w=1600")',
+          // 'url("https://images.pexels.com/photos/1157936/pexels-photo-1157936.jpeg?auto=compress&cs=tinysrgb&w=1600")',
+          backgroundSize: "contain",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+        }}
+      ></Box>
+      <Box
+        sx={{
+          minHeight: "200px",
+          background: "",
+          display: "flex",
+          alignItems: "center",
+          margin: "0 0 12px 0",
+        }}
+      >
         <Typography
-          component="h1"
+          className={"paradise-font"}
           sx={{
-            textAlign: "",
-            margin: "0 0 12px 0",
-            fontWeight: 100,
-            color: "rgba(255,255,255,.5)",
-            fontSize: "32px",
+            textAlign: "center",
+            color: "#111",
+            margin: "auto auto",
+            letterSpacing: { xs: "12px", lg: "32px" },
+            fontSize: { xs: "32px", lg: "62px" },
+            fontWeight: 900,
+            color: "#F56EB3",
           }}
         >
           {" "}
-          Escorts Available Now{" "}
+          PARADISE <br /> FOR <br /> QUEENS{" "}
         </Typography>
-        <Divider
-          sx={{
-            width: "24px",
-            margin: "0 0 12px 0",
-            background: "rgba(255,255,255,.7)",
-          }}
-        />
-        <Typography
-          component="h6"
-          sx={{
-            color: "rgba(255,255,255,.7)",
-            margin: "0",
-            width: "80%",
-            fontSize: "21px",
-            fontWeight: 600,
-            cursor: "pointer",
-          }}
-        >
-          {" "}
-          Gender:{" "}
-        </Typography>{" "}
-        <TextField
-          fullWidth
-          placeholder={"Gender"}
-          name="Gender"
-          type="select"
-          select
-          value={selectedGender}
-          sx={{
-            margin: "12px 0 21px 0",
-            "& .MuiOutlinedInput-root": {
-              border: "2px solid rgba(255,255,255,.7)",
-              color: "rgba(255,255,255,.7)",
-            },
-            "& .MuiOutlinedInput-root.Mui-focused": {
-              "& > fieldset": {
-                border: "1px solid rgba(255,255,255,.7)",
-                color: "rgba(255,255,255,.7)",
-              },
-            },
-            "& .MuiOutlinedInput-root.Mui-focused": {
-              "& > fieldset": {
-                border: "1px solid rgba(255,255,255,.7)",
-                color: "rgba(255,255,255,.7)",
-              },
-            },
-          }}
-        >
-          <MenuItem
-            onClick={() => setSelectedGender("Select Preferred Gender")}
-            value={"Select Preferred Gender"}
-            // sx={{ color: "transparent" }}
-          >
-            Select Preferred Gender
-          </MenuItem>
-          <MenuItem onClick={() => setSelectedGender("Male")} value="Male">
-            Male
-          </MenuItem>
-          <MenuItem onClick={() => setSelectedGender("Female")} value="Female">
-            Female
-          </MenuItem>
-          <MenuItem
-            onClick={() => setSelectedGender("Transgender Female")}
-            value="Transgender Female"
-          >
-            Transgender Female
-          </MenuItem>
-          <MenuItem
-            onClick={() => setSelectedGender("Transgender Male")}
-            value="Transgender Male"
-          >
-            Transgender Male
-          </MenuItem>
-        </TextField>
-        <Grid
-          container
-          spacing={6}
-          sx={{
-            display:
-              selectedGender == "Select Preferred Gender" ? "none" : "flex",
-          }}
-        >
-          {models.map((item, index) => {
-            if (
-              selectedGender == item.personal.gender &&
-              item.personal.userType === "Escort" &&
-              item.personal.uid !== user.personal.uid &&
-              item.personal.uid !== user.personal.uid
-            ) {
-              return (
-                <Grid key={index} item xs={12} md={6} lg={4}>
-                  <Box
-                    sx={{
-                      height: "500px",
-                      scale: "0.99",
-                      "&:hover": { scale: "1" },
-                      transition: "800ms",
-                      // background: "rgba(255,255,255,.7)",
-                      background: "#111",
-                      width: "100%",
-                      padding: "0",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      borderRadius: "21px",
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        height: "300px",
-                        width: "100%",
-                        backgroundImage: `url("${item.social.profilePicture}")`,
-                        backgroundSize: "cover",
-                        backgroundRepeat: "no-repeat",
-                        borderRadius: "21px 21px 0 0",
-                        backgroundPostion: "center",
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          width: "100%",
-                          height: "100%",
-                          display: "flex",
-                          // flexDirection: "column",
-                          justifyContent: "space-between",
-                          alignItems: "flex-end",
-                          borderRadius: "21px 21px 0 0",
-                          padding: "12px",
-                          background:
-                            "linear-gradient(180deg, rgba(0,0,0,0.23012955182072825) 0%, rgba(0,0,0,0.8847514005602241) 80%, rgba(0,0,0,0.10968137254901966) 1000%);",
-                          // background: "rgba(1,1,1,.7)",
-                        }}
-                      >
-                        <Typography
-                          component="div"
-                          variant="div"
-                          sx={{
-                            fontSize: "16px",
-                            fontWeight: "600",
-                            fontSize: "18px",
-                            display: "flex",
-
-                            alignItems: "center",
-                            color: "rgba(200,200,200,1)",
-                          }}
-                        >
-                          {" "}
-                          <LocationOnIcon
-                            sx={{ scale: "0.7", margin: "0 6px" }}
-                          />
-                          {item.personal.address.city.toUpperCase()}
-                        </Typography>{" "}
-                        <Rating readOnly value={index} />
-                      </Box>
-                    </Box>
-
-                    <Box
-                      sx={{
-                        height: "210px",
-                        background: "",
-                        width: "100%",
-                        padding: "0 21px",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "space-evenly",
-                      }}
-                    >
-                      <Typography
-                        component="div"
-                        sx={{
-                          textAlign: "",
-                          margin: "8px 0 0 0",
-                          fontWeight: 600,
-                          color: "rgba(200,200,200,.8)",
-                          display: "flex",
-                          alignItems: "center",
-                          fontSize: "18px",
-                        }}
-                      >
-                        {" "}
-                        <Typography
-                          component="div"
-                          variant="div"
-                          sx={{
-                            fontSize: "16px",
-                            fontWeight: "100",
-                            color: "rgba(200,200,200,.6)",
-                            margin: "0 12px 0 0",
-                          }}
-                        >
-                          {" "}
-                          Name :
-                        </Typography>{" "}
-                        {item.personal.username}{" "}
-                      </Typography>
-                      <Typography
-                        component="div"
-                        sx={{
-                          textAlign: "",
-                          margin: "8px 0 0 0",
-                          fontWeight: 600,
-                          color: "rgba(200,200,200,.8)",
-                          display: "flex",
-                          alignItems: "center",
-                          fontSize: "18px",
-                        }}
-                      >
-                        {" "}
-                        <Typography
-                          component="div"
-                          variant="div"
-                          sx={{
-                            fontSize: "16px",
-                            fontWeight: "100",
-                            color: "rgba(200,200,200,.6)",
-                            margin: "0 12px 0 0",
-                          }}
-                        >
-                          {" "}
-                          Tel :
-                        </Typography>{" "}
-                        {item.personal.tel}{" "}
-                      </Typography>
-                      <Typography
-                        component="div"
-                        sx={{
-                          textAlign: "",
-                          margin: "8px 0 0 0",
-                          fontWeight: 600,
-                          color: "rgba(200,200,200,.8)",
-                          display: "flex",
-                          alignItems: "center",
-                          fontSize: "18px",
-                        }}
-                      >
-                        {" "}
-                        <Typography
-                          component="div"
-                          variant="div"
-                          sx={{
-                            fontSize: "16px",
-                            fontWeight: "100",
-                            color: "rgba(200,200,200,.6)",
-                            margin: "0 12px 0 0",
-                          }}
-                        >
-                          {" "}
-                          Status :
-                        </Typography>{" "}
-                        {index % 2 == 0 ? "Available" : "Busy"}{" "}
-                      </Typography>
-                      <Box
-                        sx={{
-                          // height: "12px 0",
-                          // background: "red",
-                          width: "100%",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-evenly",
-                        }}
-                      >
-                        {/* #16F529
-                      FiberManualRecordIcon */}
-                        <IconButton>
-                          <FiberManualRecordIcon sx={{ color: "#16F529" }} />
-                        </IconButton>
-                        <IconButton>
-                          <FavoriteBorderIcon
-                            sx={{
-                              color: "#999",
-                              "&:hover": { fill: "red", opacity: 0.7 },
-                            }}
-                          />
-                        </IconButton>
-                        <IconButton
-                          onClick={() => {
-                            setOpenMOdel({ ...item });
-                            setOpen(true);
-                          }}
-                        >
-                          <LaunchIcon sx={{ color: "#999" }} />
-                        </IconButton>
-                        <IconButton>
-                          <ReportGmailerrorredIcon sx={{ color: "#999" }} />
-                        </IconButton>
-                      </Box>
-                      {/* <Button
-                      sx={{
-                        background: "#460C68",
-                        padding: "12px 0",
-                        color: "#eee",
-                        fontWeight: "600",
-                        width: "100%",
-                        margin: "8px 0",
-                      }}
-                    >
-                      {" "}
-                      View{" "}
-                    </Button> */}
-                    </Box>
-                  </Box>
-                </Grid>
-              );
-            }
-          })}
-        </Grid>
-        <Grid
-          container
-          spacing={6}
-          sx={{
-            display:
-              selectedGender == "Select Preferred Gender" ? "flex" : "none",
-          }}
-        >
-          {models.map((item, index) => {
-            if (
-              item.personal.userType === "Escort" &&
-              item.personal.uid !== user.personal.uid
-            ) {
-              return (
-                <Grid key={index} item xs={12} md={6} lg={4}>
-                  <Box
-                    sx={{
-                      height: "500px",
-                      scale: "0.99",
-                      "&:hover": { scale: "1" },
-                      transition: "800ms",
-                      // background: "rgba(255,255,255,.7)",
-                      background: "#111",
-                      width: "100%",
-                      padding: "0",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      borderRadius: "21px",
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        height: "300px",
-                        width: "100%",
-                        backgroundImage: `url("${item.social.profilePicture}")`,
-                        backgroundSize: "cover",
-                        backgroundRepeat: "no-repeat",
-                        borderRadius: "21px 21px 0 0",
-                        backgroundPostion: "center",
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          width: "100%",
-                          height: "100%",
-                          display: "flex",
-                          // flexDirection: "column",
-                          justifyContent: "space-between",
-                          alignItems: "flex-end",
-                          borderRadius: "21px 21px 0 0",
-                          padding: "12px",
-                          background:
-                            "linear-gradient(180deg, rgba(0,0,0,0.23012955182072825) 0%, rgba(0,0,0,0.8847514005602241) 80%, rgba(0,0,0,0.10968137254901966) 1000%);",
-                          // background: "rgba(1,1,1,.7)",
-                        }}
-                      >
-                        <Typography
-                          component="div"
-                          variant="div"
-                          sx={{
-                            fontSize: "16px",
-                            fontWeight: "600",
-                            fontSize: "18px",
-                            display: "flex",
-
-                            alignItems: "center",
-                            color: "rgba(200,200,200,1)",
-                          }}
-                        >
-                          {" "}
-                          <LocationOnIcon
-                            sx={{ scale: "0.7", margin: "0 6px" }}
-                          />
-                          {item.personal.address.city.toUpperCase()}
-                        </Typography>{" "}
-                        <Rating readOnly value={index} />
-                      </Box>
-                    </Box>
-
-                    <Box
-                      sx={{
-                        height: "210px",
-                        background: "",
-                        width: "100%",
-                        padding: "0 21px",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "space-evenly",
-                      }}
-                    >
-                      <Typography
-                        component="div"
-                        sx={{
-                          textAlign: "",
-                          margin: "8px 0 0 0",
-                          fontWeight: 600,
-                          color: "rgba(200,200,200,.8)",
-                          display: "flex",
-                          alignItems: "center",
-                          fontSize: "18px",
-                        }}
-                      >
-                        {" "}
-                        <Typography
-                          component="div"
-                          variant="div"
-                          sx={{
-                            fontSize: "16px",
-                            fontWeight: "100",
-                            color: "rgba(200,200,200,.6)",
-                            margin: "0 12px 0 0",
-                          }}
-                        >
-                          {" "}
-                          Name :
-                        </Typography>{" "}
-                        {item.personal.username}{" "}
-                      </Typography>
-                      <Typography
-                        component="div"
-                        sx={{
-                          textAlign: "",
-                          margin: "8px 0 0 0",
-                          fontWeight: 600,
-                          color: "rgba(200,200,200,.8)",
-                          display: "flex",
-                          alignItems: "center",
-                          fontSize: "18px",
-                        }}
-                      >
-                        {" "}
-                        <Typography
-                          component="div"
-                          variant="div"
-                          sx={{
-                            fontSize: "16px",
-                            fontWeight: "100",
-                            color: "rgba(200,200,200,.6)",
-                            margin: "0 12px 0 0",
-                          }}
-                        >
-                          {" "}
-                          Tel :
-                        </Typography>{" "}
-                        {item.personal.tel}{" "}
-                      </Typography>
-                      <Typography
-                        component="div"
-                        sx={{
-                          textAlign: "",
-                          margin: "8px 0 0 0",
-                          fontWeight: 600,
-                          color: "rgba(200,200,200,.8)",
-                          display: "flex",
-                          alignItems: "center",
-                          fontSize: "18px",
-                        }}
-                      >
-                        {" "}
-                        <Typography
-                          component="div"
-                          variant="div"
-                          sx={{
-                            fontSize: "16px",
-                            fontWeight: "100",
-                            color: "rgba(200,200,200,.6)",
-                            margin: "0 12px 0 0",
-                          }}
-                        >
-                          {" "}
-                          Status :
-                        </Typography>{" "}
-                        {index % 2 == 0 ? "Available" : "Busy"}{" "}
-                      </Typography>
-                      <Box
-                        sx={{
-                          // height: "12px 0",
-                          // background: "red",
-                          width: "100%",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-evenly",
-                        }}
-                      >
-                        {/* #16F529
-                      FiberManualRecordIcon */}
-                        <IconButton>
-                          <FiberManualRecordIcon sx={{ color: "#16F529" }} />
-                        </IconButton>
-                        <IconButton>
-                          <FavoriteBorderIcon
-                            sx={{
-                              color: "#999",
-                              "&:hover": { fill: "red", opacity: 0.7 },
-                            }}
-                          />
-                        </IconButton>
-                        <IconButton
-                          onClick={() => {
-                            setOpenMOdel({ ...item });
-                            setOpen(true);
-                          }}
-                        >
-                          <LaunchIcon sx={{ color: "#999" }} />
-                        </IconButton>
-                        <IconButton>
-                          <ReportGmailerrorredIcon sx={{ color: "#999" }} />
-                        </IconButton>
-                      </Box>
-                      {/* <Button
-                      sx={{
-                        background: "#460C68",
-                        padding: "12px 0",
-                        color: "#eee",
-                        fontWeight: "600",
-                        width: "100%",
-                        margin: "8px 0",
-                      }}
-                    >
-                      {" "}
-                      View{" "}
-                    </Button> */}
-                    </Box>
-                  </Box>
-                </Grid>
-              );
-            }
-          })}
-        </Grid>
       </Box>
-
-      <Drawer open={open} anchor={"bottom"} onClose={() => setOpen(false)}>
-        <Box
+      <Grid container sx={{ margin: "8px 0" }}>
+        <Grid
+          item
+          xs={12}
+          lg={6}
           sx={{
-            height: "95vh",
-            width: "100vw",
-            background: "#111",
-            overflowY: "auto",
-            padding: "32px 6px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            "&:hover": { scale: "1" },
+            display: signUp ? "none" : "block",
+            boxShadow: "12px 21px 21px 21px rgba(1,1,1,.3)",
+            opacity: signUp ? "0.3" : "1",
+            transition: "800ms",
+            scale: "0.98",
+            minHeight: { xs: "50vh", lg: "95vh" },
+            borderRadius: { xs: "32px 32px 0 0", lg: "32px 0 0 32px" },
+            background: "rgba(1,1,1,.8)",
+            padding: "2.5rem",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "rgba(255,255,255,.7)",
+                  margin: "0 auto",
+                  textAlign: "center",
+                  width: "80%",
+                  fontSize: "21px",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                {" "}
+                Email{" "}
+              </Typography>
+              <TextField
+                fullWidth
+                placeholder={"Email"}
+                name="email"
+                type="email"
+                // label="Name"
+                sx={{
+                  margin: "12px auto 21px auto",
+                  width: { xs: "100%", lg: "60%" },
+                  "& .MuiOutlinedInput-root": {
+                    border: "2px solid rgba(255,255,255,.7)",
+                    color: "rgba(255,255,255,.7)",
+                  },
+                  "& .MuiOutlinedInput-root.Mui-focused": {
+                    "& > fieldset": {
+                      border: "1px solid rgba(255,255,255,.7)",
+                      color: "rgba(255,255,255,.7)",
+                    },
+                  },
+                  "& .MuiOutlinedInput-root.Mui-focused": {
+                    "& > fieldset": {
+                      border: "1px solid rgba(255,255,255,.7)",
+                      color: "rgba(255,255,255,.7)",
+                    },
+                  },
+                }}
+              />{" "}
+              <br />
+            </Box>
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "rgba(255,255,255,.7)",
+                  margin: "0 auto",
+                  textAlign: "center",
+                  width: "80%",
+                  fontSize: "21px",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                {" "}
+                Password{" "}
+              </Typography>
+              <TextField
+                fullWidth
+                placeholder={"Password"}
+                name="password"
+                type="password"
+                sx={{
+                  margin: "12px auto 21px auto",
+                  width: { xs: "100%", lg: "60%" },
+                  "& .MuiOutlinedInput-root": {
+                    border: "2px solid rgba(255,255,255,.7)",
+                    color: "rgba(255,255,255,.7)",
+                  },
+                  "& .MuiOutlinedInput-root.Mui-focused": {
+                    "& > fieldset": {
+                      border: "1px solid rgba(255,255,255,.7)",
+                      color: "rgba(255,255,255,.7)",
+                    },
+                  },
+                  "& .MuiOutlinedInput-root.Mui-focused": {
+                    "& > fieldset": {
+                      border: "1px solid rgba(255,255,255,.7)",
+                      color: "rgba(255,255,255,.7)",
+                    },
+                  },
+                }}
+              />{" "}
+              <br />
+              <Button
+                sx={{
+                  background: "#460C68",
+                  padding: "21px 0",
+                  color: "#eee",
+                  fontWeight: "600",
+                  width: { xs: "100%", lg: "350px" },
+                  margin: "21px 0",
+                  "&:hover": { color: "#460C68" },
+                }}
+              >
+                {" "}
+                Login{" "}
+              </Button>
+            </Box>
+          </Box>
+          <Typography
+            sx={{
+              textAlign: "center",
+              color: "rgba(255,255,255,.7)",
+              margin: "21px 0",
+              textDecoration: "underline",
+            }}
+          >
+            {" "}
+            Terms & Conditions{" "}
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              sx={{
+                textAlign: "center",
+                color: "#7f167f",
+                margin: "12px 0",
+                width: "fit-content",
+                fontWeight: 600,
+                "&:hover": { color: "#7F167F", textDecoration: "underline" },
+                cursor: "pointer",
+              }}
+              onClick={() => setSignUp(!signUp)}
+            >
+              {" "}
+              Sign Up Here{" "}
+            </Typography>
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            {/* color: "rgba(255,255,255,.7)", */}
+            <Divider
+              sx={{
+                margin: "21px 0",
+                width: "40%",
+                background: "rgba(255,255,255,.7)",
+              }}
+            />
+            <Typography
+              sx={{
+                textAlign: "center",
+                color: "rgba(255,255,255,.7)",
+                fontWeight: "600",
+                fontSize: "21px",
+              }}
+            >
+              {" "}
+              OR{" "}
+            </Typography>
+            <Divider
+              sx={{
+                margin: "21px 0",
+                width: "40%",
+                background: "rgba(255,255,255,.7)",
+              }}
+            />
+          </Box>
+
+          <Typography
+            sx={{
+              textAlign: "center",
+              color: "rgba(255,255,255,.7)",
+              margin: "21px 0",
+            }}
+          >
+            {" "}
+            Use Social Media{" "}
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexDirection: { xs: "column", lg: "row" },
+            }}
+          >
+            <Button
+              sx={{
+                margin: "12px 6px",
+                border: "1px solid transparent",
+                "&:hover": {
+                  border: "1px solid #3b5998",
+                  filter: "invert(1px)",
+                },
+                padding: "16px 0",
+                color: "#3b5998",
+                fontWeight: "600",
+                width: "230px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {" "}
+              Continue with{" "}
+              <FacebookIcon sx={{ color: "#3b5998", margin: "0 12px" }} />
+            </Button>
+            {/* GoogleIcon - #F4B400 */}
+            {/* TwitterIcon - #1DA1F2 */}
+            <Button
+              onClick={googleHandler}
+              sx={{
+                margin: "12px 6px",
+                border: "1px solid transparent",
+                "&:hover": {
+                  border: "1px solid #F4B400",
+                  filter: "invert(1px)",
+                },
+                padding: "16px 0",
+                color: "#F4B400",
+                fontWeight: "600",
+                width: "230px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {" "}
+              Continue with{" "}
+              <GoogleIcon sx={{ color: "#F4B400", margin: "0 12px" }} />
+            </Button>
+            <Button
+              sx={{
+                margin: "12px 6px",
+                border: "1px solid transparent",
+                "&:hover": {
+                  border: "1px solid #1DA1F2",
+                  filter: "invert(1px)",
+                },
+                padding: "16px 0",
+                color: "#1DA1F2",
+                fontWeight: "600",
+                width: "230px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {" "}
+              Continue with{" "}
+              <TwitterIcon sx={{ color: "#1DA1F2", margin: "0 12px" }} />
+            </Button>
+          </Box>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          lg={6}
+          sx={{
+            minHeight: { xs: "50vh", lg: "95vh" },
+            borderRadius: { xs: "0 0 32px 32px", lg: "0 32px 32px 0" },
+            background: "red",
+            display: signUp ? "none" : "block",
+            backgroundImage:
+              'url("https://images.pexels.com/photos/267285/pexels-photo-267285.jpeg?auto=compress&cs=tinysrgb&w=1600")',
+            // backgroundImage:'url("https://images.pexels.com/photos/925746/pexels-photo-925746.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load")' ,
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            background: "center bottom",
+            padding: "0",
           }}
         >
           <Box
             sx={{
               width: "100%",
-              // background: "green",
-              display: "flex",
-              padding: "0 32px",
-              justifyContent: "flex-end",
+              height: "100%",
+              background: "rgba(1,1,1,.7)",
+              borderRadius: "0 32px 32px 0",
             }}
-          >
-            <CloseIcon
-              onClick={() => setOpen(false)}
-              sx={{
-                color: "#eee",
-                cursor: "pointer",
-              }}
-            />
-          </Box>
-          <Avatar
-            src={open ? openModel.social.profilePicture : ""}
-            sx={{ height: "150px", width: "150px", border: "1px dashed red " }}
           />
-          <Typography
-            component="div"
-            variant="div"
+        </Grid>
+
+        <Grid
+          item
+          xs={12}
+          lg={6}
+          sx={{
+            minHeight: { xs: "95vh", lg: "95vh" },
+            borderRadius: "32px 0 0 32px",
+            background: "red",
+            display: signUp ? "block" : "none",
+            backgroundImage:
+              'url("https://images.pexels.com/photos/1548274/pexels-photo-1548274.jpeg?auto=compress&cs=tinysrgb&w=1600")',
+            // backgroundImage:'url("https://images.pexels.com/photos/925746/pexels-photo-925746.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load")' ,
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            background: "center",
+            padding: "2.5rem",
+          }}
+        ></Grid>
+
+        <Grid
+          item
+          xs={12}
+          lg={6}
+          sx={{
+            background: "white",
+            borderRadius: "0 32px 32px 0",
+            transition: "800ms",
+            display: signUp ? "block" : "none",
+            position: "relative",
+            padding: "2.5rem",
+          }}
+        >
+          <Button
             sx={{
-              margin: "32px 0 12px 0",
-              fontSize: "21px",
-              fontWeight: "100",
-              display: "flex",
-              alignItems: "center",
-              color: "rgba(200,200,200,1)",
+              position: "absolute",
+              top: "1.5rem",
+              left: "2rem",
+              color: "rgba(1,1,1,.5)",
             }}
+            onClick={() => setSignUp(!signUp)}
           >
-            <PersonIcon sx={{ scale: "0.9", margin: "0 6px" }} />
-            {open ? openModel.personal.username : ""}{" "}
-          </Typography>
+            {" "}
+            <ArrowBackIcon sx={{ margin: "0 8px 0 0" }} /> Back to Sign In{" "}
+          </Button>
           <Typography
-            component="div"
-            variant="div"
             sx={{
-              margin: "12px 0",
-              fontSize: "21px",
+              textAlign: "",
+              margin: "42px 0 0 0",
               fontWeight: 100,
-              display: "flex",
-              alignItems: "center",
-              color: "rgba(200,200,200,1)",
-            }}
-          >
-            <LocalPhoneIcon sx={{ scale: "0.9", margin: "0 6px" }} />
-            {open ? openModel.personal.tel : ""}{" "}
-          </Typography>
-          <Typography
-            component="div"
-            variant="div"
-            sx={{
-              fontSize: "16px",
-              fontWeight: "600",
-              fontSize: "18px",
-              display: "flex",
-              margin: "12px 0 32px 0",
-              alignItems: "center",
-              color: "rgba(200,200,200,1)",
+              color: "rgba(1,1,1,.5)",
+              fontSize: "32px",
             }}
           >
             {" "}
-            <LocationOnIcon sx={{ scale: "0.9", margin: "0 6px" }} />
-            {open ? openModel.personal.address.city.toUpperCase() : ""}
+            Personal{" "}
+          </Typography>
+          <Divider sx={{ width: "24px", margin: "0 0 21px 0" }} />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Name:{" "}
+          </Typography>
+          <TextField
+            fullWidth
+            placeholder={"John Doe"}
+            // name="name"
+            type="text"
+            label="Name"
+            sx={{ margin: "12px 0 21px " }}
+          />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Surname:{" "}
+          </Typography>
+          <TextField
+            fullWidth
+            placeholder={"Surname"}
+            name="surname"
+            type="text"
+            label="Surname"
+            sx={{ margin: "12px 0 21px 0" }}
+          />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Username:{" "}
+          </Typography>
+          <TextField
+            fullWidth
+            placeholder={"Username"}
+            name="username"
+            type="text"
+            label="Username"
+            sx={{ margin: "12px 0 21px 0" }}
+          />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Email:{" "}
+          </Typography>
+          <TextField
+            fullWidth
+            placeholder={"Email"}
+            name="email"
+            type="email"
+            label="Email"
+            sx={{ margin: "12px 0 21px 0" }}
+          />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Age:{" "}
+          </Typography>
+          <TextField
+            fullWidth
+            placeholder={"Age"}
+            name="age"
+            type="number"
+            label="Age"
+            sx={{ margin: "12px 0 21px 0" }}
+          />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Date of Birth:{" "}
+          </Typography>
+          <TextField
+            fullWidth
+            placeholder={"DOB"}
+            name="dob"
+            type="date"
+            label=""
+            sx={{ margin: "12px 0 21px 0" }}
+          />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Gender:{" "}
+          </Typography>
+          <TextField
+            fullWidth
+            placeholder={"Gender"}
+            name="gender"
+            type="select"
+            select
+            label="Gender"
+            value={""}
+            sx={{ margin: "12px 0 21px 0" }}
+          >
+            <MenuItem value="" sx={{ color: "transparent" }}>
+              Client
+            </MenuItem>
+            <MenuItem value="Male">Male</MenuItem>
+            <MenuItem value="Female">Female</MenuItem>
+          </TextField>
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            User Type:{" "}
           </Typography>{" "}
-          {openModel.fetishes &&
-            openModel.fetishes.map((item, index) => {
-              return (
-                <Box
-                  key={index}
-                  sx={{
-                    background: "#222",
-                    borderRadius: "16px",
-                    padding: "12px",
-                    margin: "0 8px 8px 0",
-                    minWidth: "100px",
-                    height: "fit-content",
-                    display: "flex",
-                    alignItems: "center",
-                    textAlign: "center",
-                    color: "#eee",
-                    justifyContent: "center",
-                    fontWeight: "600",
-                  }}
-                >
-                  {item}
-                </Box>
-              );
-            })}
-          {openModel.personal &&
-            openModel.personal.userType === "Escort" &&
-            (openModel.social.subscribedUsers &&
-            openModel.social.subscribedUsers.includes(user.personal.uid) ? (
-              <Grid container>
-                {[
-                  "https://images.pexels.com/photos/1548274/pexels-photo-1548274.jpeg?auto=compress&cs=tinysrgb&w=1600",
-                  "https://images.pexels.com/photos/289262/pexels-photo-289262.jpeg?auto=compress&cs=tinysrgb&w=1600",
-                  "https://images.pexels.com/photos/8956318/pexels-photo-8956318.jpeg?auto=compress&cs=tinysrgb&w=1600",
-                  "https://images.pexels.com/photos/9039112/pexels-photo-9039112.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
-                  "https://images.pexels.com/photos/6423097/pexels-photo-6423097.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
-                ].map((item, index) => {
-                  return (
-                    <Grid
-                      item
-                      key={index}
-                      xs={6}
-                      sx={{
-                        height: "150px",
-                        backgroundImage: `url("${item}")`,
-                        backgroundSize: "cover",
-                        backgroundRepeat: "no-repeat",
-                        // borderRadius: "21px 21px 0 0",
-                        backgroundPostion: "center",
-                        border: "3px solid #111",
-                      }}
-                    ></Grid>
-                  );
-                })}
-                <Grid
-                  item
-                  xs={6}
-                  sx={{
-                    height: "150px",
-                    background: "rgba(200,200,200,.7)",
-                    border: "3px solid #111",
-                    display: "flex",
-                    alignItems: "center",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    scale: "0.90",
-                    transition: "800ms",
-                    "&:is(:hover)": { scale: "0.95" },
-                  }}
-                >
-                  {" "}
-                  View More <AddIcon />
-                </Grid>
-              </Grid>
-            ) : (
-              <Box
-                sx={{
-                  minHeight: "40vh",
-                  // background: "red",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <LockIcon sx={{ fontSize: "100px" }} />
-                <Typography
-                  component="div"
-                  sx={{
-                    textAlign: "center",
-                    color: "#111",
-                    // margin: "auto auto",
-                    // letterSpacing: { xs: "6px" },
-                    fontSize: { xs: "14px" },
-                    lineHeight: "2.5rem",
-                    // fontWeight: 900,
-                    color: "rgba(255,255,255,.7)",
-                  }}
-                >
-                  {"Access Denied"}
-                </Typography>
-                <Typography
-                  component="div"
-                  sx={{
-                    textAlign: "center",
-                    color: "#111",
-                    fontSize: { xs: "14px" },
-                    lineHeight: "2.5rem",
-                    // fontWeight: 900,
-                    color: "rgba(255,255,255,.7)",
-                  }}
-                >
-                  {`Subscribe To View ${openModel.personal.username}'s Exclusive Content`}
-                </Typography>
-                <Button
-                  sx={{
-                    background: "#460C68",
-                    padding: "21px 0",
-                    color: "#eee",
-                    fontWeight: "600",
-                    width: { xs: "80%", lg: "300px" },
-                    margin: "21px 0",
-                    "&:hover": { color: "#460C68" },
-                  }}
-                >
-                  {" "}
-                  Subscribe{" "}
-                </Button>
-              </Box>
-            ))}
-          <Box sx={{ height: "20vh", margin: "50px 0 " }} />
+          <TextField
+            fullWidth
+            placeholder={"User Type"}
+            name="userType"
+            type="select"
+            select
+            value={""}
+            label="User Type"
+            sx={{ margin: "12px 0 21px 0" }}
+          >
+            <MenuItem value="" sx={{ color: "transparent" }}>
+              Client
+            </MenuItem>
+            <MenuItem value="Client">Client</MenuItem>
+            <MenuItem value="Escort">Escort</MenuItem>
+          </TextField>
+          <Typography
+            sx={{
+              textAlign: "",
+              margin: "21px 0 0 0",
+              fontWeight: 100,
+              color: "rgba(1,1,1,.5)",
+              fontSize: "32px",
+            }}
+          >
+            {" "}
+            Location{" "}
+          </Typography>
+          <Divider sx={{ width: "24px", margin: "0 0 21px 0" }} />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            House Number:{" "}
+          </Typography>
+          <TextField
+            fullWidth
+            placeholder={"Number"}
+            name=""
+            type=""
+            label="Number"
+            sx={{ margin: "12px 0 21px 0" }}
+          />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Street Name:{" "}
+          </Typography>
+          <TextField
+            fullWidth
+            placeholder={"StreetName"}
+            name="name"
+            type="text"
+            label="Street Name"
+            sx={{ margin: "12px 0 21px 0" }}
+          />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Town:{" "}
+          </Typography>
+          <TextField
+            fullWidth
+            placeholder={"Town"}
+            name=""
+            type=""
+            label="Town"
+            sx={{ margin: "12px 0 21px 0" }}
+          />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            City:{" "}
+          </Typography>
+          <TextField
+            fullWidth
+            placeholder={"City"}
+            name="name"
+            type="text"
+            label="City"
+            sx={{ margin: "12px 0 21px 0" }}
+          />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Province:{" "}
+          </Typography>
+          <TextField
+            fullWidth
+            placeholder={"Province"}
+            name=""
+            type=""
+            label="Province"
+            sx={{ margin: "12px 0 21px 0" }}
+          />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Postal:{" "}
+          </Typography>
+          <TextField
+            fullWidth
+            placeholder={"Postal"}
+            name="name"
+            type="text"
+            label="Postal"
+            sx={{ margin: "12px 0 21px 0" }}
+          />
+          <Typography
+            sx={{
+              color: "rgba(1,1,1,.7)",
+              margin: "0",
+              width: "80%",
+              fontSize: "21px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            {" "}
+            Country:{" "}
+          </Typography>
+          <TextField
+            fullWidth
+            placeholder={"Country"}
+            name=""
+            type=""
+            label="Country"
+            sx={{ margin: "12px 0 21px 0" }}
+          />
+        </Grid>
+      </Grid>
+      <Modal
+        open={open}
+        sx={{
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          zIndex: 99999,
+        }}
+      >
+        <Box
+          sx={{
+            width: "95%",
+            margin: "auto auto",
+            background: "#111",
+            minHeight: "90vh",
+            padding: "2.5rem 1rem",
+          }}
+        >
+          <Typography
+            component="div"
+            sx={{
+              textAlign: "",
+              margin: "0 0 12px 0",
+              fontWeight: 100,
+              color: "rgba(255,255,255,.5)",
+              fontSize: "32px",
+            }}
+          >
+            {" "}
+            Complete Profile{" "}
+          </Typography>
+          <Divider
+            sx={{
+              width: "24px",
+              margin: "0 0 32px 0",
+              background: "rgba(255,255,255,.7)",
+            }}
+          />
+          <AgeAuthentication user={user} setUser={setUser} />
         </Box>
-      </Drawer>
+      </Modal>
     </Box>
   );
 };
