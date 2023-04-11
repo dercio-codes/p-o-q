@@ -27,6 +27,7 @@ import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import LockIcon from "@mui/icons-material/Lock";
 import React, { useContext, useState, useEffect } from "react";
+import { useDropzone } from "react-dropzone";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -45,6 +46,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { UserContext } from "../../pages/_app";
 import { AgeAuthentication } from "../auth/age-authentication";
+import { useRouter } from "next/navigation";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -265,6 +267,7 @@ export const ProfileComponent = () => {
   const [value, setValue] = React.useState(0);
   const { user, setUser } = useContext(UserContext);
   const [domLoaded, setDomLoaded] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setDomLoaded(true);
@@ -441,61 +444,380 @@ export const ProfileComponent = () => {
             </Box>
             <TabPanel value={value} index={0} sx={{ background: "red" }}>
               {/* <PersonalForm /> */}
-              <AgeAuthentication />
+              {user.personal.email !== "" &&
+              user.personal.email !== "escort" ? (
+                <AgeAuthentication />
+              ) : (
+                <Box
+                  sx={{
+                    minHeight: "40vh",
+                    // background: "red",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <LockIcon sx={{ fontSize: "100px" }} />
+                  <Typography
+                    component="div"
+                    sx={{
+                      textAlign: "center",
+                      color: "#111",
+                      // margin: "auto auto",
+                      // letterSpacing: { xs: "6px" },
+                      fontSize: { xs: "14px" },
+                      lineHeight: "2.5rem",
+                      // fontWeight: 900,
+                      color: "rgba(255,255,255,.7)",
+                    }}
+                  >
+                    {"Access Denied"}
+                  </Typography>
+                  <Typography
+                    component="div"
+                    sx={{
+                      textAlign: "center",
+                      color: "#111",
+                      // margin: "auto auto",
+                      // letterSpacing: { xs: "6px" },
+                      fontSize: { xs: "14px" },
+                      lineHeight: "2.5rem",
+                      // fontWeight: 900,
+                      color: "rgba(255,255,255,.7)",
+                    }}
+                  >
+                    {"You need to be logged in or create an account"}
+                  </Typography>
+                  <Button
+                    onClick={() => {
+                      router.push("/");
+                    }}
+                    sx={{
+                      background: "#460C68",
+                      padding: "21px 0",
+                      color: "#eee",
+                      fontWeight: "600",
+                      width: { xs: "80%", lg: "350px" },
+                      margin: "21px 0",
+                      "&:hover": { color: "#460C68" },
+                    }}
+                  >
+                    {" "}
+                    Create Account{" "}
+                  </Button>
+                </Box>
+              )}
             </TabPanel>
             <TabPanel value={value} index={1}>
-              <Social />
+              {user.personal.email !== "" &&
+              user.personal.email !== "escort" ? (
+                <Social />
+              ) : (
+                <Box
+                  sx={{
+                    minHeight: "40vh",
+                    // background: "red",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <LockIcon sx={{ fontSize: "100px" }} />
+                  <Typography
+                    component="div"
+                    sx={{
+                      textAlign: "center",
+                      color: "#111",
+                      // margin: "auto auto",
+                      // letterSpacing: { xs: "6px" },
+                      fontSize: { xs: "14px" },
+                      lineHeight: "2.5rem",
+                      // fontWeight: 900,
+                      color: "rgba(255,255,255,.7)",
+                    }}
+                  >
+                    {"Access Denied"}
+                  </Typography>
+                  <Typography
+                    component="div"
+                    sx={{
+                      textAlign: "center",
+                      color: "#111",
+                      // margin: "auto auto",
+                      // letterSpacing: { xs: "6px" },
+                      fontSize: { xs: "14px" },
+                      lineHeight: "2.5rem",
+                      // fontWeight: 900,
+                      color: "rgba(255,255,255,.7)",
+                    }}
+                  >
+                    {"Become An Escort To Access This Feature"}
+                  </Typography>
+                  <Button
+                    onClick={() => {
+                      router.push("/");
+                    }}
+                    sx={{
+                      background: "#460C68",
+                      padding: "21px 0",
+                      color: "#eee",
+                      fontWeight: "600",
+                      width: { xs: "80%", lg: "350px" },
+                      margin: "21px 0",
+                      "&:hover": { color: "#460C68" },
+                    }}
+                  >
+                    {" "}
+                    Become a Escort{" "}
+                  </Button>
+                </Box>
+              )}
             </TabPanel>
             <TabPanel value={value} index={2}>
-              <NewAppointMents domLoaded={domLoaded} />
+              {user.personal.email !== "" &&
+              user.personal.email !== "escort" ? (
+                <NewAppointMents domLoaded={domLoaded} />
+              ) : (
+                <Box
+                  sx={{
+                    minHeight: "40vh",
+                    // background: "red",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <LockIcon sx={{ fontSize: "100px" }} />
+                  <Typography
+                    component="div"
+                    sx={{
+                      textAlign: "center",
+                      color: "#111",
+                      // margin: "auto auto",
+                      // letterSpacing: { xs: "6px" },
+                      fontSize: { xs: "14px" },
+                      lineHeight: "2.5rem",
+                      // fontWeight: 900,
+                      color: "rgba(255,255,255,.7)",
+                    }}
+                  >
+                    {"Access Denied"}
+                  </Typography>
+                  <Typography
+                    component="div"
+                    sx={{
+                      textAlign: "center",
+                      color: "#111",
+                      // margin: "auto auto",
+                      // letterSpacing: { xs: "6px" },
+                      fontSize: { xs: "14px" },
+                      lineHeight: "2.5rem",
+                      // fontWeight: 900,
+                      color: "rgba(255,255,255,.7)",
+                    }}
+                  >
+                    {"Become An Escort To Access This Feature"}
+                  </Typography>
+                  <Button
+                    onClick={() => {
+                      router.push("/");
+                    }}
+                    sx={{
+                      background: "#460C68",
+                      padding: "21px 0",
+                      color: "#eee",
+                      fontWeight: "600",
+                      width: { xs: "80%", lg: "350px" },
+                      margin: "21px 0",
+                      "&:hover": { color: "#460C68" },
+                    }}
+                  >
+                    {" "}
+                    Become a Escort{" "}
+                  </Button>
+                </Box>
+              )}
             </TabPanel>
 
             <TabPanel value={value} index={3}>
-              <Typography
-                component="div"
-                sx={{
-                  textAlign: "",
-                  margin: "0 0 12px 0",
-                  fontWeight: 100,
-                  color: "rgba(255,255,255,.5)",
-                  fontSize: "32px",
-                }}
-              >
-                {" "}
-                Exclusive Content{" "}
-              </Typography>
-              <Divider
-                sx={{
-                  width: "24px",
-                  margin: "0 0 32px 0",
-                  background: "rgba(255,255,255,.7)",
-                }}
-              />
-              <ExclusiveContent />
+              {user.personal.email !== "" &&
+              user.personal.email !== "escort" ? (
+                <Box>
+                  <Typography
+                    component="div"
+                    sx={{
+                      textAlign: "",
+                      margin: "0 0 12px 0",
+                      fontWeight: 100,
+                      color: "rgba(255,255,255,.5)",
+                      fontSize: "32px",
+                    }}
+                  >
+                    {" "}
+                    Exclusive Content{" "}
+                  </Typography>
+                  <Divider
+                    sx={{
+                      width: "24px",
+                      margin: "0 0 32px 0",
+                      background: "rgba(255,255,255,.7)",
+                    }}
+                  />
+                  <ExclusiveContent />
+                </Box>
+              ) : (
+                <Box
+                  sx={{
+                    minHeight: "40vh",
+                    // background: "red",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <LockIcon sx={{ fontSize: "100px" }} />
+                  <Typography
+                    component="div"
+                    sx={{
+                      textAlign: "center",
+                      color: "#111",
+                      // margin: "auto auto",
+                      // letterSpacing: { xs: "6px" },
+                      fontSize: { xs: "14px" },
+                      lineHeight: "2.5rem",
+                      // fontWeight: 900,
+                      color: "rgba(255,255,255,.7)",
+                    }}
+                  >
+                    {"Access Denied"}
+                  </Typography>
+                  <Typography
+                    component="div"
+                    sx={{
+                      textAlign: "center",
+                      color: "#111",
+                      // margin: "auto auto",
+                      // letterSpacing: { xs: "6px" },
+                      fontSize: { xs: "14px" },
+                      lineHeight: "2.5rem",
+                      // fontWeight: 900,
+                      color: "rgba(255,255,255,.7)",
+                    }}
+                  >
+                    {"Become An Escort To Access This Feature"}
+                  </Typography>
+                  <Button
+                    onClick={() => {
+                      router.push("/");
+                    }}
+                    sx={{
+                      background: "#460C68",
+                      padding: "21px 0",
+                      color: "#eee",
+                      fontWeight: "600",
+                      width: { xs: "80%", lg: "350px" },
+                      margin: "21px 0",
+                      "&:hover": { color: "#460C68" },
+                    }}
+                  >
+                    {" "}
+                    Become a Escort{" "}
+                  </Button>
+                </Box>
+              )}
             </TabPanel>
 
             <TabPanel value={value} index={4}>
-              <Typography
-                component="div"
-                sx={{
-                  textAlign: "",
-                  margin: "0 0 12px 0",
-                  fontWeight: 100,
-                  color: "rgba(255,255,255,.5)",
-                  fontSize: "32px",
-                }}
-              >
-                {" "}
-                Subscribers{" "}
-              </Typography>
-              <Divider
-                sx={{
-                  width: "24px",
-                  margin: "0 0 32px 0",
-                  background: "rgba(255,255,255,.7)",
-                }}
-              />
-              <Subscribers />
+              {user.personal.email !== "" &&
+              user.personal.email !== "escort" ? (
+                <Box>
+                  <Typography
+                    component="div"
+                    sx={{
+                      textAlign: "",
+                      margin: "0 0 12px 0",
+                      fontWeight: 100,
+                      color: "rgba(255,255,255,.5)",
+                      fontSize: "32px",
+                    }}
+                  >
+                    {" "}
+                    Subscribers{" "}
+                  </Typography>
+                  <Divider
+                    sx={{
+                      width: "24px",
+                      margin: "0 0 32px 0",
+                      background: "rgba(255,255,255,.7)",
+                    }}
+                  />
+                  <Subscribers />
+                </Box>
+              ) : (
+                <Box
+                  sx={{
+                    minHeight: "40vh",
+                    // background: "red",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <LockIcon sx={{ fontSize: "100px" }} />
+                  <Typography
+                    component="div"
+                    sx={{
+                      textAlign: "center",
+                      color: "#111",
+                      // margin: "auto auto",
+                      // letterSpacing: { xs: "6px" },
+                      fontSize: { xs: "14px" },
+                      lineHeight: "2.5rem",
+                      // fontWeight: 900,
+                      color: "rgba(255,255,255,.7)",
+                    }}
+                  >
+                    {"Access Denied"}
+                  </Typography>
+                  <Typography
+                    component="div"
+                    sx={{
+                      textAlign: "center",
+                      color: "#111",
+                      // margin: "auto auto",
+                      // letterSpacing: { xs: "6px" },
+                      fontSize: { xs: "14px" },
+                      lineHeight: "2.5rem",
+                      // fontWeight: 900,
+                      color: "rgba(255,255,255,.7)",
+                    }}
+                  >
+                    {"Become An Escort To Access This Feature"}
+                  </Typography>
+                  <Button
+                    onClick={() => {
+                      router.push("/");
+                    }}
+                    sx={{
+                      background: "#460C68",
+                      padding: "21px 0",
+                      color: "#eee",
+                      fontWeight: "600",
+                      width: { xs: "80%", lg: "350px" },
+                      margin: "21px 0",
+                      "&:hover": { color: "#460C68" },
+                    }}
+                  >
+                    {" "}
+                    Become a Escort{" "}
+                  </Button>
+                </Box>
+              )}
             </TabPanel>
           </Box>
         </Grid>
@@ -509,7 +831,200 @@ export const ProfileComponent = () => {
   );
 };
 
+function ImageDropZone(props) {
+  // fetch()
+  const handleCheck = (e) => {
+    console.log(e.target.value);
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: {
+      "image/png": [".png"],
+      "image/jpg": [".jpg"],
+      "image/jpeg": [".jpeg"],
+    },
+    onClick: (acceptedFiles) =>
+      acceptedFiles.map((file) =>
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        })
+      ),
+
+    // my drag and drop functionality
+    onDrop: (acceptedFiles) => {
+      props.setFiles(
+        acceptedFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        )
+      );
+    },
+  });
+
+  const thumbs = props.files.map((file) => (
+    <div style={thumb} key={file.name}>
+      <div style={thumbInner}>
+        {<img src={file.preview} style={img} />}
+        {}
+      </div>
+      {/* <div style={{margin:"10px 0"},absolute}>file name: {file.name} </div> */}
+    </div>
+  ));
+
+  useEffect(() => {
+    // Make sure to revoke the data uris to avoid memory leaks
+    props.files.forEach((file) => URL.revokeObjectURL(file.preview));
+  }, [props.files]);
+
+  return (
+    <section className="container" style={container}>
+      <div {...getRootProps({ className: "dropzone" })}>
+        <input
+          {...getInputProps()}
+          onChange={(e) => {
+            handleCheck;
+          }}
+        />
+        <p style={{ fontSize: "12px", textTransform: "uppercase" }}>
+          {"  Drag 'n' drop the .story"}
+        </p>
+        <p
+          style={{
+            fontSize: "10px",
+            textTransform: "uppercase",
+            margin: "10px 0 5px 0",
+          }}
+        >
+          Accepted files TYPES : {props.accepted_type}
+        </p>
+        <div style={{ height: "350px", width: "100%", padding: "0 0 10px 0" }}>
+          <aside style={thumbsContainer}>{thumbs}</aside>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const thumbsContainer = {
+  display: "flex",
+  flexDirection: "column",
+  flexWrap: "wrap",
+  marginTop: 5,
+  width: "100%",
+  height: "100%",
+  background: "#222",
+};
+
+const thumb = {
+  borderRadius: 2,
+  marginRight: 8,
+  width: "100%",
+  height: "100%",
+  boxSizing: "border-box",
+};
+
+const thumbInner = {
+  display: "flex",
+  minWidth: 0,
+  width: "100%",
+  height: "100%",
+  // overflow: 'auto',
+};
+
+const img = {
+  display: "block",
+  width: "100%",
+  height: "100%",
+  objectFit: "contain",
+};
+const container = {
+  // overflow:"auto"
+  width: "100%",
+};
+
+const absolute = {
+  position: "absolute",
+  background: "red",
+};
+
 const Social = () => {
+  const [files, setFiles] = useState([]);
+  const handleFileUpload = async () => {
+    const fileName = files[0]["name"];
+    const idxDot = fileName.lastIndexOf(".") + 1;
+    const extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+
+    if (!files || files.length === 0) {
+      //  toast.error(`Please upload an image first!`, {
+      //           theme:"dark",
+      //           position: "top-right",
+      //           autoClose: 5000,
+      //           hideProgressBar: false,
+      //         });
+    }
+
+    if (
+      extFile == "jpg" ||
+      extFile == "gif" ||
+      extFile == "jpeg" ||
+      extFile == "png"
+    ) {
+      // Create a referene of where the files will be stored
+      const storageRef = ref(storage, `/events/${files[0]["name"]}`);
+
+      // progress can be paused and resumed. It also exposes progress updates.
+      const uploadArtworkTask = uploadBytesResumable(storageRef, files[0]);
+
+      uploadArtworkTask.on(
+        "state_changed",
+        (snapshot) => {
+          const percent = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+
+          // update progress
+          setPercent(percent);
+          console.log(percent);
+          setLoading(true);
+        },
+        (err) => console.log(err),
+        async () => {
+          // download url
+          // Receives the storage reference and the file to upload.
+
+          getDownloadURL(uploadArtworkTask.snapshot.ref).then(async (url) => {
+            try {
+              console.log("GOing in");
+              await setDoc(doc(db, "events", `${new Date().getTime()} `), {
+                ...newEventItem,
+                image: url,
+              });
+              getContent();
+              // toast.success(`Successfully uploaded a new event..`, {
+              //       theme:"dark",
+              //       position: "top-right",
+              //       autoClose: 5000,
+              //       hideProgressBar: false,
+              //     });
+              // setLoading(false)
+            } catch (err) {
+              console.error(err);
+              //  toast.error(err.message, {
+              //       theme:"dark",
+              //       position: "top-right",
+              //       autoClose: 5000,
+              //       hideProgressBar: false,
+              //     });
+            }
+          });
+        }
+      );
+    } else {
+      alert("Only jpg/jpeg and png files are allowed!");
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -521,58 +1036,23 @@ const Social = () => {
         justifyContent: "center",
       }}
     >
-      <LockIcon sx={{ fontSize: "100px" }} />
-      <Typography
-        component="div"
-        sx={{
-          textAlign: "center",
-          color: "#111",
-          // margin: "auto auto",
-          // letterSpacing: { xs: "6px" },
-          fontSize: { xs: "14px" },
-          lineHeight: "2.5rem",
-          // fontWeight: 900,
-          color: "rgba(255,255,255,.7)",
-        }}
-      >
-        {"Access Denied"}
-      </Typography>
-      <Typography
-        component="div"
-        sx={{
-          textAlign: "center",
-          color: "#111",
-          // margin: "auto auto",
-          // letterSpacing: { xs: "6px" },
-          fontSize: { xs: "14px" },
-          lineHeight: "2.5rem",
-          // fontWeight: 900,
-          color: "rgba(255,255,255,.7)",
-        }}
-      >
-        {"Become An Escort To Access This Feature"}
-      </Typography>
+      <ImageDropZone files={files} setFiles={setFiles} />
+
       <Button
-        sx={{
-          background: "#460C68",
-          padding: "21px 0",
-          color: "#eee",
-          fontWeight: "600",
-          width: { xs: "80%", lg: "350px" },
-          margin: "21px 0",
-          "&:hover": { color: "#460C68" },
-        }}
+        sx={{ width: "100%", padding: "21px", background: "rgba(1,1,1,.9)" }}
+        onClick={handleFileUpload}
       >
-        {" "}
-        Become a Escort{" "}
+        Upload
       </Button>
     </Box>
   );
 };
 
 const NewAppointMents = ({ domLoaded }) => {
+  const { user, setUser } = useContext(UserContext);
+
   return (
-    <Box>
+    <Box sx={{ minHeight: "100vh", marginBottom: "100px" }}>
       <Typography
         component="div"
         sx={{
@@ -600,151 +1080,160 @@ const NewAppointMents = ({ domLoaded }) => {
           modules={[EffectCards]}
           className="appointments-swiper"
         >
-          {DUMMY_USERS.map((item, index) => {
-            return (
-              <SwiperSlide key={index}>
-                <Box
-                  sx={{
-                    minHeight: "50vh",
-                    width: "100%",
-                    background: "rgba(1,1,1,.85)",
-                    // scale: "0.99",
-                    borderRadius: "21px 21px 0 0",
-                    padding: "0 0 12px 0",
-                  }}
-                >
+          {user.appointments &&
+            user.appointments.map((item, index) => {
+              return (
+                // <Box key={index}>
+                //   {item.client}
+                //   {item.length}
+                //   {/* {/* {item.dateAndTime} */} */}
+                //   {item.escort}
+                // </Box>
+                <SwiperSlide key={index}>
                   <Box
                     sx={{
-                      height: "300px",
+                      minHeight: "50vh",
                       width: "100%",
-                      backgroundImage: `url("${item.img}")`,
-                      backgroundSize: "cover",
-                      backgroundRepeat: "no-repeat",
-                      borderRadius: "12px 12px 0 0",
-                      backgroundPostion: "center",
+                      background: "rgba(1,1,1,.85)",
+                      // scale: "0.99",
+                      borderRadius: "21px 21px 0 0",
+                      padding: "0 0 12px 0",
                     }}
                   >
                     <Box
                       sx={{
+                        height: "300px",
                         width: "100%",
-                        height: "100%",
-                        display: "flex",
-                        // flexDirection: "column",
-                        justifyContent: "space-between",
-                        alignItems: "flex-end",
-                        borderRadius: "21px 21px 0 0",
-                        padding: "12px",
-                        background:
-                          "linear-gradient(180deg, rgba(0,0,0,0.23012955182072825) 0%, rgba(0,0,0,0.8847514005602241) 80%, rgba(0,0,0,0.10968137254901966) 1000%);",
-                        // background: "rgba(1,1,1,.7)",
+                        backgroundImage: `url("${item.escortImageProfile}")`,
+                        backgroundSize: "cover",
+                        backgroundRepeat: "no-repeat",
+                        borderRadius: "12px 12px 0 0",
+                        backgroundPostion: "center",
                       }}
-                    />
+                    >
+                      <Box
+                        sx={{
+                          width: "100%",
+                          height: "100%",
+                          display: "flex",
+                          // flexDirection: "column",
+                          justifyContent: "space-between",
+                          alignItems: "flex-end",
+                          borderRadius: "21px 21px 0 0",
+                          padding: "12px",
+                          background:
+                            "linear-gradient(180deg, rgba(0,0,0,0.23012955182072825) 0%, rgba(0,0,0,0.8847514005602241) 80%, rgba(0,0,0,0.10968137254901966) 1000%);",
+                          // background: "rgba(1,1,1,.7)",
+                        }}
+                      />
+                    </Box>
+                    <Typography
+                      component="div"
+                      sx={{
+                        fontSize: "16px",
+                        fontWeight: "600",
+                        fontSize: "18px",
+                        display: "flex",
+                        margin: "21px 8px",
+                        alignItems: "center",
+                        color: "rgba(200,200,200,0.7)",
+                      }}
+                    >
+                      {" "}
+                      <PersonIcon sx={{ scale: "0.9", margin: "0 6px" }} />
+                      {item.username}
+                    </Typography>{" "}
+                    <Typography
+                      component="div"
+                      sx={{
+                        fontSize: "16px",
+                        fontWeight: "600",
+                        fontSize: "18px",
+                        display: "flex",
+                        margin: "21px 8px",
+                        alignItems: "center",
+                        color: "rgba(200,200,200,0.7)",
+                      }}
+                    >
+                      {" "}
+                      <LocalPhoneIcon sx={{ scale: "0.9", margin: "0 6px" }} />
+                      {item.tel}
+                    </Typography>{" "}
+                    <Typography
+                      component="div"
+                      sx={{
+                        fontSize: "16px",
+                        fontWeight: "600",
+                        fontSize: "18px",
+                        display: "flex",
+                        margin: "21px 8px",
+                        alignItems: "center",
+                        color: "rgba(200,200,200,0.7)",
+                      }}
+                    >
+                      {" "}
+                      <LocationOnIcon sx={{ scale: "0.9", margin: "0 6px" }} />
+                      {item.location}
+                    </Typography>{" "}
+                    <Typography
+                      component="div"
+                      sx={{
+                        fontSize: "16px",
+                        fontWeight: "600",
+                        fontSize: "18px",
+                        display: "flex",
+                        margin: "21px 8px",
+                        alignItems: "center",
+                        color: "rgba(200,200,200,0.7)",
+                      }}
+                    >
+                      {" "}
+                      <CalendarMonthIcon
+                        sx={{ scale: "0.9", margin: "0 6px" }}
+                      />
+                      {" 17 Feb 2023 - 17:00"}
+                    </Typography>{" "}
+                    <Typography
+                      component="div"
+                      sx={{
+                        fontSize: "16px",
+                        fontWeight: "600",
+                        fontSize: "18px",
+                        display: "flex",
+                        margin: "21px 8px",
+                        alignItems: "center",
+                        color: "rgba(200,200,200,0.7)",
+                      }}
+                    >
+                      {" "}
+                      <ScheduleIcon sx={{ scale: "0.9", margin: "0 6px" }} />
+                      {item.length}
+                    </Typography>{" "}
+                    {user.personal.userType.toLowerCase() === "escort" && (
+                      <Box
+                        sx={{
+                          width: "50%",
+                          margin: "0 auto",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-evenly",
+                        }}
+                      >
+                        <IconButton>
+                          <DoneIcon sx={{ color: "#999" }} />
+                        </IconButton>
+                        <IconButton>
+                          <ClearIcon sx={{ color: "#999" }} />
+                        </IconButton>
+                        <IconButton>
+                          <ReportGmailerrorredIcon sx={{ color: "#999" }} />
+                        </IconButton>
+                      </Box>
+                    )}
                   </Box>
-                  <Typography
-                    component="div"
-                    sx={{
-                      fontSize: "16px",
-                      fontWeight: "600",
-                      fontSize: "18px",
-                      display: "flex",
-                      margin: "21px 8px",
-                      alignItems: "center",
-                      color: "rgba(200,200,200,0.7)",
-                    }}
-                  >
-                    {" "}
-                    <PersonIcon sx={{ scale: "0.9", margin: "0 6px" }} />
-                    {item.username.toUpperCase()}
-                  </Typography>{" "}
-                  <Typography
-                    component="div"
-                    sx={{
-                      fontSize: "16px",
-                      fontWeight: "600",
-                      fontSize: "18px",
-                      display: "flex",
-                      margin: "21px 8px",
-                      alignItems: "center",
-                      color: "rgba(200,200,200,0.7)",
-                    }}
-                  >
-                    {" "}
-                    <LocalPhoneIcon sx={{ scale: "0.9", margin: "0 6px" }} />
-                    {item.phone.toUpperCase()}
-                  </Typography>{" "}
-                  <Typography
-                    component="div"
-                    sx={{
-                      fontSize: "16px",
-                      fontWeight: "600",
-                      fontSize: "18px",
-                      display: "flex",
-                      margin: "21px 8px",
-                      alignItems: "center",
-                      color: "rgba(200,200,200,0.7)",
-                    }}
-                  >
-                    {" "}
-                    <LocationOnIcon sx={{ scale: "0.9", margin: "0 6px" }} />
-                    {item.address.city.toUpperCase()}
-                  </Typography>{" "}
-                  <Typography
-                    component="div"
-                    sx={{
-                      fontSize: "16px",
-                      fontWeight: "600",
-                      fontSize: "18px",
-                      display: "flex",
-                      margin: "21px 8px",
-                      alignItems: "center",
-                      color: "rgba(200,200,200,0.7)",
-                    }}
-                  >
-                    {" "}
-                    <CalendarMonthIcon sx={{ scale: "0.9", margin: "0 6px" }} />
-                    {" 17 Feb 2023 - 17:00"}
-                  </Typography>{" "}
-                  <Typography
-                    component="div"
-                    sx={{
-                      fontSize: "16px",
-                      fontWeight: "600",
-                      fontSize: "18px",
-                      display: "flex",
-                      margin: "21px 8px",
-                      alignItems: "center",
-                      color: "rgba(200,200,200,0.7)",
-                    }}
-                  >
-                    {" "}
-                    <ScheduleIcon sx={{ scale: "0.9", margin: "0 6px" }} />
-                    {" 1 Hour"}
-                  </Typography>{" "}
-                  <Box
-                    sx={{
-                      width: "50%",
-                      margin: "0 auto",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-evenly",
-                    }}
-                  >
-                    <IconButton>
-                      <DoneIcon sx={{ color: "#999" }} />
-                    </IconButton>
-
-                    <IconButton>
-                      <ClearIcon sx={{ color: "#999" }} />
-                    </IconButton>
-
-                    <IconButton>
-                      <ReportGmailerrorredIcon sx={{ color: "#999" }} />
-                    </IconButton>
-                  </Box>
-                </Box>
-              </SwiperSlide>
-            );
-          })}
+                </SwiperSlide>
+              );
+            })}
         </Swiper>
       )}
     </Box>
