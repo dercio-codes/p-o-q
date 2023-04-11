@@ -3,7 +3,7 @@ import { Navbar } from "./../components/navbar";
 import { createContext, useContext, useState, useEffect } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
-import jwt from "jsonwebtoken";
+import { jwt } from "json5";
 import { RotatingSquare } from "react-loader-spinner";
 import Box from "@mui/material/Box";
 import {
