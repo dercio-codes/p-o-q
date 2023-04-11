@@ -23,15 +23,24 @@ import {
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
 export const firebaseConfig = {
-  apiKey: "AIzaSyADJ6ufECSzyf7iNeIygyrcfHGs1eQZ15o",
-  authDomain: "p-o-q-a06f0.firebaseapp.com",
-  projectId: "p-o-q-a06f0",
-  storageBucket: "p-o-q-a06f0.appspot.com",
-  messagingSenderId: "676422481956",
-  appId: "1:676422481956:web:4fff2b8ca29602ccd600b1",
+  apiKey: "AIzaSyDHuKU5MEW7aimKbFfKGXNBlGzHA9AgQfU",
+  authDomain: "paradise-65517.firebaseapp.com",
+  projectId: "paradise-65517",
+  storageBucket: "paradise-65517.appspot.com",
+  messagingSenderId: "794731508927",
+  appId: "1:794731508927:web:0c7da2f7c07fd8fc8c420a",
 };
+
+// Your web app's Firebase configuration
+// export const firebaseConfig = {
+//   apiKey: "AIzaSyADJ6ufECSzyf7iNeIygyrcfHGs1eQZ15o",
+//   authDomain: "p-o-q-a06f0.firebaseapp.com",
+//   projectId: "p-o-q-a06f0",
+//   storageBucket: "p-o-q-a06f0.appspot.com",
+//   messagingSenderId: "676422481956",
+//   appId: "1:676422481956:web:4fff2b8ca29602ccd600b1",
+// };
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
