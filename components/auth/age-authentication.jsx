@@ -195,7 +195,7 @@ const steps = ["Personal", "Fetish", "Location", "Complete"];
 export const AgeAuthentication = ({ updateUserOnDB }) => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState({});
-  const [oldEnough, setOldEnough] = React.useState(false);
+  const [oldEnough, setOldEnough] = React.useState(true);
   const [loading, setLoading] = React.useState();
   const { user, setUser } = React.useContext(UserContext);
 
@@ -223,7 +223,9 @@ export const AgeAuthentication = ({ updateUserOnDB }) => {
       updateUserOnDB();
       setLoading(false);
     } else {
-      if (oldEnough) {
+      const currentYear = new Date().getFullYear();
+      setOldEnough(currentYear - user.personal.dob.split("/")[0]);
+      if (oldEnough && currentYear - user.personal.dob.split("/")[0] >= 18) {
         const newActiveStep =
           isLastStep() && !allStepsCompleted()
             ? // It's the last step, but not all steps have been completed,
@@ -535,7 +537,7 @@ export default function DatePicker({ activeStep, oldEnough, setOldEnough }) {
           </Typography>
           <MobileDatePicker
             inputFormat="YYYY/MM/DD"
-            value={user.personal.dob || "2000/01/01"}
+            value={user.personal.dob}
             onChange={handleDOBChange}
             renderInput={(params) => (
               <TextField
@@ -640,6 +642,19 @@ export default function DatePicker({ activeStep, oldEnough, setOldEnough }) {
             </MenuItem>
           </TextField>
 
+          <Typography
+            component="div"
+            sx={{
+              textAlign: "",
+              margin: "32px 0 21px 0",
+              fontWeight: 100,
+              color: "rgba(255,255,255,.5)",
+              fontSize: "21px",
+            }}
+          >
+            {" "}
+            Phone Number:{" "}
+          </Typography>
           <TextField
             type={"tel"}
             value={user.personal.tel}
@@ -1115,7 +1130,7 @@ const LocationComponent = ({ activeStep }) => {
   );
 };
 
-const whiteForm = {
+export const whiteForm = {
   "& .MuiOutlinedInput-root": {
     border: "2px solid rgba(255,255,255,.7)",
     // color: "#111",
